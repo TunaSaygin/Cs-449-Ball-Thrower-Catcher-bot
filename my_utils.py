@@ -1,8 +1,8 @@
 import numpy as np
-def find_line_intersections(bin_pos, initial_position, bin_dimensions):
+def find_line_intersections_2d(bin_pos, initial_position, bin_dimensions):
     """
     Finds the intersection points of the line defined by bin_pos and initial_position
-    with the boundaries of the bin.
+    with the boundaries of the bin in the x-y plane.
 
     Args:
         bin_pos (list): Position of the bin center.
@@ -10,40 +10,35 @@ def find_line_intersections(bin_pos, initial_position, bin_dimensions):
         bin_dimensions (dict): Dictionary defining the bin dimensions with 'bottom_left' and 'top_right'.
 
     Returns:
-        list: Intersection points of the line with the bin boundaries.
+        list: Intersection points of the line with the bin boundaries in the x-y plane.
     """
-    line_dir = np.array(bin_pos) - np.array(initial_position)  # Line direction vector
+    line_dir = np.array([bin_pos[0] - initial_position[0], bin_pos[1] - initial_position[1]])  # Line direction in x-y
     line_dir /= np.linalg.norm(line_dir)  # Normalize the direction vector
-    line_point = np.array(initial_position)
+    line_point = np.array([initial_position[0], initial_position[1]])
 
     intersections = []
-    # Define bin boundary planes
-    planes = [
-        {'normal': [1, 0, 0], 'point': [bin_dimensions['bottom_left'][0], 0, 0]},  # Left plane
-        {'normal': [-1, 0, 0], 'point': [bin_dimensions['top_right'][0], 0, 0]},  # Right plane
-        {'normal': [0, 1, 0], 'point': [0, bin_dimensions['bottom_left'][1], 0]},  # Front plane
-        {'normal': [0, -1, 0], 'point': [0, bin_dimensions['top_right'][1], 0]},  # Back plane
-    ]
 
-    # Loop through each plane and compute intersection
-    for plane in planes:
-        normal = np.array(plane['normal'])
-        plane_point = np.array(plane['point'])
+    # Extract bin boundaries
+    x_min, y_min = bin_dimensions['bottom_left'][0], bin_dimensions['bottom_left'][1]
+    x_max, y_max = bin_dimensions['top_right'][0], bin_dimensions['top_right'][1]
 
-        # Compute t (intersection parameter) for the line-plane intersection
-        denominator = np.dot(normal, line_dir)
-        if np.abs(denominator) > 1e-6:  # Check if the line is not parallel to the plane
-            t = np.dot(normal, (plane_point - line_point)) / denominator
-            intersection_point = line_point + t * line_dir
+    # Check intersections with vertical boundaries (x = x_min and x = x_max)
+    for x in [x_min, x_max]:
+        t = (x - line_point[0]) / line_dir[0] if line_dir[0] != 0 else None
+        if t is not None:
+            y = line_point[1] + t * line_dir[1]
+            if y_min <= y <= y_max:  # Check if the intersection is within the y-bounds
+                intersections.append([x, y])
 
-            # Check if the intersection is within the bin bounds
-            if (bin_dimensions['bottom_left'][0] <= intersection_point[0] <= bin_dimensions['top_right'][0] and
-                bin_dimensions['bottom_left'][1] <= intersection_point[1] <= bin_dimensions['top_right'][1] and
-                bin_dimensions['bottom_left'][2] <= intersection_point[2] <= bin_dimensions['top_right'][2]):
-                intersections.append(intersection_point)
+    # Check intersections with horizontal boundaries (y = y_min and y = y_max)
+    for y in [y_min, y_max]:
+        t = (y - line_point[1]) / line_dir[1] if line_dir[1] != 0 else None
+        if t is not None:
+            x = line_point[0] + t * line_dir[0]
+            if x_min <= x <= x_max:  # Check if the intersection is within the x-bounds
+                intersections.append([x, y])
 
     return intersections
-
 def velocity_to_rotation_matrix(velocity_vector):
    """
    Construct a rotation matrix where the y-axis aligns with the given velocity vector.

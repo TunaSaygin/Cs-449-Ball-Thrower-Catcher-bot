@@ -15,7 +15,7 @@ paddle (start_area): {shape: ssBox, Q: [0.45, 0, 0.43], size: [0.25, 0.25, 0.001
 paddle_pick_point(paddle): { shape: marker, size: [0.1], Q:[-0.08, 0, 0] }
 side4_p (start_area): {shape: ssBox, Q: [0.45, 0, 0.22], size: [0.1, 0.1, 0.4, .01], color: [.6, .6, .6], joint: rigid, mass:0.1, contact: 1, friction: .1}
 
-bin (base): {shape: ssBox, Q: [1.5, 2, 0.08], size: [0.5, 0.5, 0.06, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
+bin (base): {shape: ssBox, Q: [2, 2, 0.08], size: [0.5, 0.5, 0.06, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
 side1 (bin): {shape: ssBox, Q: [0.21, 0.0, 0.08], size: [0.08, 0.5, 0.16, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
 side2 (bin): {shape: ssBox, Q: [0.0, -0.21, 0.08], size: [0.5, 0.08, 0.16, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
 side1 (bin): {shape: ssBox, Q: [-0.21, 0.0, 0.08], size: [0.08, 0.5, 0.16, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
