@@ -125,3 +125,11 @@ def rotation_matrix_to_quaternion(rotation_matrix):
 
 
    return np.array([w, x, y, z])
+def get_quat_from_velocity(velocity):
+    normalized_vel = velocity/np.linalg.norm(velocity)
+    vec_x = normalized_vel
+    vec_z = np.array([0,0,1]) #will be changed
+    vec_y = np.cross(vec_z,vec_x)
+    vec_z = np.cross(vec_x,vec_y)
+    rotation_matrix = np.column_stack((vec_x,vec_y,vec_z))
+    return rotation_matrix_to_quaternion(rotation_matrix)
