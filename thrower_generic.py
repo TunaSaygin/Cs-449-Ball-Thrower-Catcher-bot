@@ -2,19 +2,23 @@ import robotic as ry
 import numpy as np
 from my_utils import rotation_matrix_to_quaternion
 import time
-from velocity_finder import find_velocity, find_initial_point_from_release
+from velocity_finder import find_velocity, pick_last_object_if_valid
 ## this file is created to create generic bin position and get the expected results.
 
 
 def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_shape = [0.5,0.5]):
     C = ry.Config()
-
+    C.addFile("throwing_bare.g")
+    print(f"Initial bin pos:{C.getFrame('bin').getPosition()}")
     init_environment(C,bin_new_position,bin_shape)
     if isRender:
         C.view()
         time.sleep(sleep_time)
     bot = ry.BotOp(C, useRealRobot=False)
+    release_velocity = find_velocity(C)
+    initial_position = pick_last_object_if_valid(C,C.getFrame("release_frame").getPosition(),release_velocity)
     grasp_object(C,bot)
+    print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
     if isRender:
         time.sleep(sleep_time)
 def grasp_object(C:ry.Config, bot:ry.BotOp,object_name:str="cargo"):
@@ -55,7 +59,7 @@ def pre_grasp_komo(C, gripper_name, grasp_frame_name, q0, qHome):
     komo.addObjective([1., 3.], ry.FS.scalarProductYX, [gripper_name, grasp_frame_name], ry.OT.eq, [1e2], [1]) 
     komo.addObjective([1., 3.], ry.FS.scalarProductZZ, [grasp_frame_name, gripper_name], ry.OT.eq, [1e1], [1]) 
 
-    ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=4).solve()
+    ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
     print(ret)
     return komo
 def post_grasp_komo(C, gripper_name, grasp_frame_name, q0, qHome)->ry.KOMO:
@@ -66,7 +70,6 @@ def post_grasp_komo(C, gripper_name, grasp_frame_name, q0, qHome)->ry.KOMO:
     print(ret)
     return komo
 def init_environment(C:ry.Config,bin_new_position:list,bin_shape):
-    C.addFile("throwing_bare.g")
     if bin_new_position[2]<0.08:
         bin_new_position[2] = 0.08 #just to ensure that bin is not immersed to the ground.
     qHome = C.getJointState()
@@ -74,6 +77,7 @@ def init_environment(C:ry.Config,bin_new_position:list,bin_shape):
     base_position = np.array(C.getFrame("l_panda_base").getPosition())
     bin_new_position = np.array(bin_new_position)
     new_quat = rotate_bin(bin_new_position,base_position)
+    C.addFrame("throw").setPosition([0,1.8,1.2]).setShape(ry.ST.marker,[.3]).setQuaternion(new_quat)
     C.addFrame("release_frame").setPosition([0,0,0]).setShape(ry.ST.marker,[.4]).setColor([1,0,0]).setContact(0)
     if bin_new_position[2] >0.08: #create a support block to hold bin above the ground
         height = bin_new_position[2]-0.025

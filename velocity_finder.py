@@ -3,7 +3,8 @@ import numpy as np
 from scipy.optimize import minimize
 from scipy.optimize import differential_evolution
 import robotic as ry
-def find_initial_point_from_release(C:ry.Config,release_position, release_velocity, robot_base, height_threshold=0.2, distance_threshold=1.53):
+from my_utils import get_quat_from_velocity
+def find_initial_point_from_release(C:ry.Config,release_position, release_velocity, height_threshold=0.2):
     """
     Finds the initial position for the throwing motion based on the release position and velocity.
 
@@ -12,9 +13,7 @@ def find_initial_point_from_release(C:ry.Config,release_position, release_veloci
         C: Robot configuration (KOMO simulation object).
         release_position: The release point (3D coordinates).
         release_velocity: The release velocity vector.
-        robot_base: Position of the robot base.
         height_threshold: Minimum allowable height for the initial position.
-        distance_threshold: Maximum allowable distance from the robot base.
 
 
     Returns:
@@ -49,7 +48,36 @@ def find_initial_point_from_release(C:ry.Config,release_position, release_veloci
         print(f"Frame {iteration} added with position {frame.getPosition()} new vel:{velocity}")
     return initial_position  # No valid initial position found
 
+
+
+def pick_last_object_if_valid(C:ry.Config,release_position, release_velocity):
+   """
+   Simulates the robot to pick the last object if conditions are met.
+   Args:
+       C: Robot configuration (KOMO simulation object).
+       release_position: The release point (3D coordinates).
+       release_velocity: The release velocity vector.
+       robot_base: Position of the robot base.
+   """
+   # Find the initial position
+   initial_position = find_initial_point_from_release(C,release_position, release_velocity)
+
+   if initial_position is not None:
+       print(f"Initial Position Found: {initial_position}")
+       # Visualize the initial position
+    #    C.addFrame("initial_position").setPosition(initial_position).setShape(ry.ST.marker, [0.4]).setContact(0).setColor([0,1,0]).setQuaternion(rotation_matrix_to_quaternion(velocity_to_rotation_matrix(release_velocity)))
+       C.addFrame("initial_position").setPosition(initial_position).setShape(ry.ST.marker, [0.4]).setContact(0).setColor([0,1,0])
+       C.view()
+       return initial_position
+       # Simulate the robot to pick the last object
+       # Add your grasping or motion planning logic here
+   else:
+       print("No valid initial position found.")
+
+
+
 def find_velocity(C:ry.Config):
+    g = 9.81
     initial_pos = C.getFrame("throw").getPosition()
     bin_dims = C.getFrame("bin").getPosition()
 
@@ -103,7 +131,6 @@ def find_velocity(C:ry.Config):
         # Initial guess and bounds
     initial_guess = [5, np.pi / 4, np.pi / 4]  # [velocity, theta, phi]
     bounds = [(1, 20), (0, np.pi / 2), (0, 2 * np.pi)]  # Bounds for velocity and angles
-
     # Solve the optimization
     result = minimize(objective, initial_guess, constraints=[
         {'type': 'eq', 'fun': constraint_x},
@@ -119,8 +146,8 @@ def find_velocity(C:ry.Config):
     v_x = v0_opt * np.cos(theta_opt) * np.cos(phi_opt)
     v_y = v0_opt * np.cos(theta_opt) * np.sin(phi_opt)
     v_z = v0_opt * np.sin(theta_opt)
-
     velocity = [v_x, v_y, v_z]
-
     rf = C.addFrame("release_frame").setPosition(initial_pos).setShape(ry.ST.marker,[.4]).setColor([1,0,0]).setContact(0)
-    rf.setQuaternion(bin_quat)
+    new_quat = get_quat_from_velocity(velocity)
+    rf.setQuaternion(new_quat)
+    return velocity
