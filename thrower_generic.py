@@ -3,6 +3,7 @@ import numpy as np
 from my_utils import rotation_matrix_to_quaternion
 import time
 from velocity_finder import find_velocity, pick_last_object_if_valid
+from my_utils import get_quat_from_velocity
 ## this file is created to create generic bin position and get the expected results.
 
 
@@ -21,6 +22,7 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
     if isRender:
         time.sleep(sleep_time)
+    del C
 def grasp_object(C:ry.Config, bot:ry.BotOp,object_name:str="cargo"):
     q0 = qHome = C.getJointState()
     komo_pre_grasp = pre_grasp_komo(C,"l_gripper",object_name,q0,qHome)
@@ -85,7 +87,8 @@ def init_environment(C:ry.Config,bin_new_position:list,bin_shape):
             .setPosition([bin_new_position[0],bin_new_position[1],height/2]).setShape(ry.ST.ssBox,[bin_shape[0]+.001,bin_shape[1]+.001,height,0])\
             .setQuaternion(new_quat).setColor([0,0,0])
         center = np.array([bin_new_position[0],bin_new_position[1],height])
-    C.getFrame("bin").setPosition(bin_new_position).setQuaternion(new_quat)
+    C.getFrame('bin').setPosition(bin_new_position).setQuaternion(new_quat)
+    C.view()
 
 
 
@@ -107,4 +110,4 @@ def rotate_bin(bin_position:np.ndarray, base_position:np.ndarray):
 
 #for testing this module
 if __name__=="__main__":
-    throw_sample([1,1,0.8],True,sleep_time=4)
+    throw_sample([3,3,0.9],True,sleep_time=10)

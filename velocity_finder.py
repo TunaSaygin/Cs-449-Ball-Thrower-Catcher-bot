@@ -75,74 +75,62 @@ def pick_last_object_if_valid(C:ry.Config,release_position, release_velocity):
        print("No valid initial position found.")
 
 
-
-def find_velocity(C:ry.Config):
+def find_velocity(C: ry.Config):
     g = 9.81
     initial_pos = C.getFrame("throw").getPosition()
     bin_dims = C.getFrame("bin").getPosition()
-
-    # Bin and robot parameters
     x_bin, y_bin, z_bin = bin_dims[0], bin_dims[1], bin_dims[2]
     x0, y0, z0 = initial_pos[0], initial_pos[1], initial_pos[2]
 
-    # Objective function: minimize velocity magnitude
+    print(f"Initial Position: {initial_pos}")
+    print(f"Bin Position: {bin_dims}")
+
     def objective(params):
         v0, theta, phi = params
-        return v0
+        penalty_x = np.abs(constraint_x(params))
+        penalty_y = np.abs(constraint_y(params))
+        penalty_z = np.abs(constraint_z(params))
+        return v0 + 100 * (penalty_x + penalty_y + penalty_z)
 
-    # Constraints: ball lands in the bin's X position
+
     def constraint_x(params):
-        g=9.81
         v0, theta, phi = params
         vx = v0 * np.cos(theta) * np.cos(phi)
         t_land = (-v0 * np.sin(theta) + np.sqrt((v0 * np.sin(theta))**2 + 2 * g * (z0 - z_bin))) / g
-        return x0 + vx * t_land - x_bin
+        x_land = x0 + vx * t_land
+        print(f"constraint_x: x_land={x_land}, x_bin={x_bin}")
+        return x_land - x_bin
 
-    # Constraints: ball lands in the bin's Y position
     def constraint_y(params):
         v0, theta, phi = params
         vy = v0 * np.cos(theta) * np.sin(phi)
         t_land = (-v0 * np.sin(theta) + np.sqrt((v0 * np.sin(theta))**2 + 2 * g * (z0 - z_bin))) / g
-        return y0 + vy * t_land - y_bin
+        y_land = y0 + vy * t_land
+        print(f"constraint_y: y_land={y_land}, y_bin={y_bin}")
+        return y_land - y_bin
 
-    # Constraints: ball lands in the bin's Z position (height)
     def constraint_z(params):
         v0, theta, phi = params
         vz = v0 * np.sin(theta)
         t_land = (-vz + np.sqrt(vz**2 + 2 * g * (z0 - z_bin))) / g
-        return z0 + vz * t_land - 0.5 * g * t_land**2 - z_bin
+        z_land = z0 + vz * t_land - 0.5 * g * t_land**2
+        print(f"constraint_z: z_land={z_land}, z_bin={z_bin}")
+        return z_land - z_bin
 
-    # Constraint: Ball does not hit the bin's sides
-    def constraint_sides_height(params):
-        v0, theta, phi = params
-        # Time to reach maximum height
-        t_up = v0 * np.sin(theta) / g
-        # Ball's height at time t_up (maximum height)
-        z_max = z0 + (v0 * np.sin(theta))**2 / (2 * g)
-        
-        # If the bin's sides are higher than the max height, no problem
-        if z_max < z_bin:
-            return 0  # No issue, the ball won't hit the sides
-        else:
-            # If the bin's sides are lower, we need to check at different points in time
-            t_down = np.sqrt(2 * (z_max - z_bin) / g)
-            z_ball_at_t = z0 + v0 * np.sin(theta) * t_down - 0.5 * g * t_down**2
-            return z_ball_at_t - z_bin  # Ball height should not exceed bin sides
-        # Initial guess and bounds
-    initial_guess = [5, np.pi / 4, np.pi / 4]  # [velocity, theta, phi]
-    bounds = [(1, 20), (0, np.pi / 2), (0, 2 * np.pi)]  # Bounds for velocity and angles
-    # Solve the optimization
+    initial_guess = [5, np.pi / 4, np.pi / 4]
+    bounds = [(1, 50), (0, np.pi / 2), (0, 2 * np.pi)]
     result = minimize(objective, initial_guess, constraints=[
         {'type': 'eq', 'fun': constraint_x},
         {'type': 'eq', 'fun': constraint_y},
-        {'type': 'eq', 'fun': constraint_z},
-        {'type': 'ineq', 'fun': constraint_sides_height}  # Ensure ball avoids sides' height
-    ], bounds=bounds)
+        {'type': 'eq', 'fun': constraint_z}
+    ], bounds=bounds, options={'maxiter': 1000})
 
-    # Extract results
+    if not result.success:
+        print(f"Optimization failed: {result.message}")
+        return None
+    
     v0_opt, theta_opt, phi_opt = result.x
-    print(f"Optimal velocity: {v0_opt:.2f} m/s, Theta: {np.degrees(theta_opt):.2f}°, Phi: {np.degrees(phi_opt):.2f}°")
-
+    print(f"Optimal velocity: {v0_opt}, theta: {np.degrees(theta_opt)}, phi: {np.degrees(phi_opt)}")
     v_x = v0_opt * np.cos(theta_opt) * np.cos(phi_opt)
     v_y = v0_opt * np.cos(theta_opt) * np.sin(phi_opt)
     v_z = v0_opt * np.sin(theta_opt)
