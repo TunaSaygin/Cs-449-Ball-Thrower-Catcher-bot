@@ -48,7 +48,8 @@ def check_in_the_bin(C: ry.Config, bot: ry.BotOp, bin_center, binxy_length, bin_
     cargo_pos = np.array(C.getFrame("cargo").getPosition())
     
     # Wait for the cargo to stabilize or timeout
-    while not np.array_equal(prev_pos, cargo_pos) or (prev_pos[2] < cargo_height and cargo_pos[2] < cargo_height):
+    while (not np.array_equal(prev_pos,cargo_pos)) or (prev_pos[2]>=cargo_height and cargo_pos[2]>=cargo_height):
+        # print(f"prev_pos[2]<cargo_height = {prev_pos[2]}<{cargo_height} and {cargo_pos[2]} < {cargo_height}")
         prev_pos = cargo_pos
         bot.sync(C, .01)
         cargo_pos = np.array(C.getFrame("cargo").getPosition())
