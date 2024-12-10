@@ -63,14 +63,14 @@ if __name__=="__main__":
     carpet_length = 1.5
     robot_base = [0,2,0.05]
     range_limit = 2
-    num_points = 1000
+    num_points = 3
     test_points = generate_homogeneous_points(robot_base,carpet_center,carpet_length,range_limit, num_points=num_points,z_min=0.08,z_max=0.75,grid_resolution=4)
     print("Test points are generated")
     result = []
     for it, point in tqdm(enumerate(test_points),desc="Processing",dynamic_ncols=True,position=0):
-        throw_sample(point,False,sleep_time=0.01)
+        result_data = throw_sample(point,False,sleep_time=0.01)
         print(f"Test_p:{it}")
-        result.append({"point":point,"result":result})
+        result.append({"point":point,"result":result_data})
     # time.sleep(20)
     with open(f"test_res_{bin_side_len}.json","w") as f:
         json.dump(result,f,indent=4)

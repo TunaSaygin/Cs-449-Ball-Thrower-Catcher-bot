@@ -7,6 +7,22 @@ from my_utils import get_quat_from_velocity
 import json
 ## this file is created to create generic bin position and get the expected results.
 
+def simulate_throw_time(C, bot, velocity):
+    """Simulate throw timing to calculate bot's movement time."""
+    def vel_komo():
+        komo = ry.KOMO(C, 1, 1, 1, True)
+        komo.addObjective([], ry.FS.position, ["l_gripper"], ry.OT.eq, [1e-1], np.array(velocity), 1)
+        komo.addObjective([], ry.FS.positionDiff, ["l_gripper", "release_frame"], ry.OT.sos, [1e0], [0, 0, 0])
+        ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
+        return komo
+
+    komo = vel_komo()
+    path = komo.getPath()
+    bot.move(path, [1.0])
+    while bot.getTimeToEnd() > 0:
+        bot.sync(C, 0.1)
+    # Return the total time for the motion
+    return bot.getTimeToEnd()
 
 def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_shape = [0.5,0.5]):
     C = ry.Config()
@@ -27,7 +43,7 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     else:
         time_deviation = grasp_object(C,bot,isInverted)
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
-    wanted_sleep = 0.65
+    wanted_sleep = 0.75
     time_sleep = time_deviation * wanted_sleep
     throw_object(C,bot,time_sleep,release_velocity)
     cargo_height = C.getFrame("cargo").getSize()[2]

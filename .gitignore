@@ -1,4 +1,4 @@
 rai-robotModels
 z.log.global
 logger.txt
-./__pycache__
+__pycache__
