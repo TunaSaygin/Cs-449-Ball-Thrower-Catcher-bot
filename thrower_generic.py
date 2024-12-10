@@ -12,22 +12,22 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     C.addFile("throwing_bare.g")
     print(f"Initial bin pos:{C.getFrame('bin').getPosition()}")
     init_environment(C,bin_new_position,bin_shape)
-    if isRender:
-        C.view()
-        time.sleep(sleep_time)
     bot = ry.BotOp(C, useRealRobot=False)
     release_velocity = find_velocity(C)
     initial_position = pick_last_object_if_valid(C,C.getFrame("release_frame").getPosition(),release_velocity)
     grasp_object(C,bot)
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
     if isRender:
+        C.view()
         time.sleep(sleep_time)
+    # if isRender:
+    #     time.sleep(sleep_time)
     del C
 def grasp_object(C:ry.Config, bot:ry.BotOp,object_name:str="cargo"):
     q0 = qHome = C.getJointState()
     komo_pre_grasp = pre_grasp_komo(C,"l_gripper",object_name,q0,qHome)
     path_pre_grasp = komo_pre_grasp.getPath()
-    komo_post_grasp = post_grasp_komo(C,"l_gripper",object_name,q0,qHome)
+    komo_post_grasp = post_grasp_komo(C)
     path_post_grasp = komo_post_grasp.getPath()
     shape = path_pre_grasp.shape[0]*0.1
     print(path_pre_grasp.shape)
@@ -64,11 +64,11 @@ def pre_grasp_komo(C, gripper_name, grasp_frame_name, q0, qHome):
     ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
     print(ret)
     return komo
-def post_grasp_komo(C, gripper_name, grasp_frame_name, q0, qHome)->ry.KOMO:
+def post_grasp_komo(C)->ry.KOMO:
     komo = ry.KOMO(C, 1, 1, 0, True)
     komo.addObjective([], ry.FS.positionDiff, ["l_gripper","initial_position"], ry.OT.eq, [1e1], [0,0,0])
     komo.addObjective([], ry.FS.scalarProductYZ, ["l_gripper","initial_position"], ry.OT.eq, [1e1], [-1])
-    ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=4).solve()
+    ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
     print(ret)
     return komo
 def init_environment(C:ry.Config,bin_new_position:list,bin_shape):
@@ -110,4 +110,4 @@ def rotate_bin(bin_position:np.ndarray, base_position:np.ndarray):
 
 #for testing this module
 if __name__=="__main__":
-    throw_sample([3,3,0.9],True,sleep_time=10)
+    throw_sample([-1,4,0.9],True,sleep_time=10)

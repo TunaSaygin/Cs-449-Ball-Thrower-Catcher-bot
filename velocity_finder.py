@@ -27,10 +27,12 @@ def find_initial_point_from_release(C:ry.Config,release_position, release_veloci
             print("Successfully converted:", distance_xy)
         except ValueError as e:
             print("Conversion failed:", e)
-    velxy_ratio = release_velocity[1]/release_velocity[0]
+    velxy_ratio = np.abs(release_velocity[1]/release_velocity[0])
     x = distance_xy/np.sqrt(1+np.square(velxy_ratio))
     base_position = C.getFrame("l_panda_base").getPosition()
-    initial_position  = np.array([-x +base_position[0],-np.multiply(velxy_ratio,x) + base_position[1],0.3])
+    sign_velx = release_velocity[0]/np.abs(release_velocity[0])
+    sign_vely = release_velocity[1]/np.abs(release_velocity[1])
+    initial_position  = np.array([-(sign_velx)*x +base_position[0],-sign_vely*np.multiply(velxy_ratio,x) + base_position[1],0.3])
     iteration = 0
     gravity = np.array([0,0,-9.8])
     iteration = 0
@@ -117,7 +119,17 @@ def find_velocity(C: ry.Config):
         print(f"constraint_z: z_land={z_land}, z_bin={z_bin}")
         return z_land - z_bin
 
-    initial_guess = [5, np.pi / 4, np.pi / 4]
+    base_position = C.getFrame("l_panda_base").getPosition()
+    bin_rel_position = bin_dims - base_position
+    bin_rel_position[2] = 0
+    bin_rel_position_normalized = bin_rel_position/np.linalg.norm(bin_rel_position)
+    initial_rel_position = np.array([1,0,0])
+    phi_guess = np.arccos(np.dot(bin_rel_position_normalized,initial_rel_position))
+    
+    # initial_guess = [5, np.pi / 4, np.pi / 4] 
+    initial_guess = [5, np.pi / 4, phi_guess] 
+    # I made it dynamically to converge faster.
+
     bounds = [(1, 50), (0, np.pi / 2), (0, 2 * np.pi)]
     result = minimize(objective, initial_guess, constraints=[
         {'type': 'eq', 'fun': constraint_x},
