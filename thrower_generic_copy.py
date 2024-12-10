@@ -2,7 +2,7 @@ import robotic as ry
 import numpy as np
 from my_utils import rotation_matrix_to_quaternion
 import time
-from velocity_finder import find_velocity, pick_last_object_if_valid
+from velocity_finder_copy import find_velocity, pick_last_object_if_valid
 from my_utils import get_quat_from_velocity
 import json
 ## this file is created to create generic bin position and get the expected results.
@@ -14,24 +14,16 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     print(f"Initial bin pos:{C.getFrame('bin').getPosition()}")
     init_environment(C,bin_new_position,bin_shape)
     bot = ry.BotOp(C, useRealRobot=False)
-    release_velocity,isInverted = find_velocity(C)
+    release_velocity = find_velocity(C)
     initial_position = pick_last_object_if_valid(C,C.getFrame("release_frame").getPosition(),release_velocity)
     #invertion deviation calculation
-    if isInverted:
-        deviation_dist = 0.2
-        a = -release_velocity[1]/release_velocity[0]
-        dev_x = deviation_dist/np.sqrt(1+np.square(a))
-        dev_y = deviation_dist/np.sqrt(1+np.square(1/a))
-        deviation_arr = np.array([dev_x,dev_y,0])
-        time_deviation = grasp_object(C,bot,isInverted,deviation_arr)
-    else:
-        time_deviation = grasp_object(C,bot,isInverted)
+    time_deviation = grasp_object(C,bot)
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
     wanted_sleep = 0.57
     time_sleep = time_deviation * wanted_sleep
     throw_object(C,bot,time_sleep,release_velocity)
-    cargo_height = C.getFrame("cargo").getSize()[2]
-    result = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2],cargo_height)
+    
+    result = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2])
 
     print(f"Result:{result} for bin pos:{bin_new_position}")
 
@@ -41,17 +33,14 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     del C
     del bot
     return result
-def check_in_the_bin(C:ry.Config,bot:ry.BotOp,bin_center,binxy_length,bin_height,cargo_heigth):
-    start = time.time()
+def check_in_the_bin(C:ry.Config,bot:ry.BotOp,bin_center,binxy_length,bin_height):
     prev_pos = np.array(C.getFrame("cargo").getPosition())
-    bot.sync(C,.01)
+    bot.sync(C,.1)
     cargo_pos = np.array(C.getFrame("cargo").getPosition())
-    while not np.array_equal(prev_pos,cargo_pos) or (prev_pos[2]<cargo_heigth and cargo_pos[2]<cargo_heigth):
+    while not np.array_equal(prev_pos,cargo_pos):
         prev_pos = cargo_pos
-        bot.sync(C,.01)
+        bot.sync(C,.1)
         cargo_pos = np.array(C.getFrame("cargo").getPosition())
-        if time.time() - start > 8:
-            break
     print(cargo_pos)
     print(f"bin_center[0]-binxy_length <=cargo_pos[0] <= bin_center[0] + binxy_length = {bin_center[0]-binxy_length}<={cargo_pos[0]}<={bin_center[0] + binxy_length}")
     print(f"bin_center[1]-binxy_length <=cargo_pos[1] <= bin_center[1] + binxy_length = {bin_center[1]-binxy_length}<={cargo_pos[1]}<={bin_center[1] + binxy_length}")
@@ -92,11 +81,11 @@ def throw_object(C,bot,time_sleep,velocity):
     print(f"bot end time:{bot.getTimeToEnd()}")
     while bot.getTimeToEnd()>0:
         bot.sync(C,.1)
-def grasp_object(C:ry.Config, bot:ry.BotOp,isInverted:bool,deviation_arr=None,object_name:str="cargo"):
+def grasp_object(C:ry.Config, bot:ry.BotOp,object_name:str="cargo"):
     q0 = qHome = C.getJointState()
     komo_pre_grasp = pre_grasp_komo(C,"l_gripper",object_name,q0,qHome)
     path_pre_grasp = komo_pre_grasp.getPath()
-    komo_post_grasp = post_grasp_komo(C,isInverted,deviation_arr)
+    komo_post_grasp = post_grasp_komo(C)
     path_post_grasp = komo_post_grasp.getPath()
     shape = path_pre_grasp.shape[0]*0.1
     print(path_pre_grasp.shape)
@@ -135,10 +124,9 @@ def pre_grasp_komo(C, gripper_name, grasp_frame_name, q0, qHome):
     ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
     print(ret)
     return komo
-def post_grasp_komo(C,isInverted:bool,deviationarr=None)->ry.KOMO:
-
+def post_grasp_komo(C)->ry.KOMO:
     komo = ry.KOMO(C, 1, 1, 0, True)
-    komo.addObjective([], ry.FS.positionDiff, ["l_gripper","initial_position"], ry.OT.sos, [1e0], [0,0,0] if not isInverted else deviationarr)
+    komo.addObjective([], ry.FS.positionDiff, ["l_gripper","initial_position"], ry.OT.sos, [1e0], [0,0,0])
     komo.addObjective([], ry.FS.scalarProductYZ, ["l_gripper","base"], ry.OT.eq, [1e1], [-1])
     ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
     print(ret)
@@ -237,5 +225,20 @@ def generate_homogeneous_points(
 
 #for testing this module
 if __name__=="__main__":
-    
-    throw_sample([-1,0.5,0.3],True,sleep_time=10)
+    """ bin_side_len = "50cm"
+    carpet_center = [0.2,2,0.03]
+    carpet_length = 1.5
+    robot_base = [0,2,0.05]
+    range_limit = 2
+    num_points = 1000
+    test_points = generate_homogeneous_points(robot_base,carpet_center,carpet_length,range_limit, num_points=num_points,z_min=0.08,z_max=0.75,grid_resolution=4)
+    print("Test points are generated")
+    result = []
+    for it, point in enumerate(test_points):
+        print(f"Test_p:{it}")
+        throw_sample(point,False,sleep_time=0.01)
+        result.append({"point":point,"result":result})
+    # time.sleep(20)
+    with open(f"test_res_{bin_side_len}.json","w") as f:
+        json.dump(result,f,indent=4) """
+    throw_sample([-2.5,1,0.3],True,sleep_time=10)
