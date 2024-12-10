@@ -13,21 +13,67 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     print(f"Initial bin pos:{C.getFrame('bin').getPosition()}")
     init_environment(C,bin_new_position,bin_shape)
     bot = ry.BotOp(C, useRealRobot=False)
-    release_velocity = find_velocity(C)
+    release_velocity,isInverted = find_velocity(C)
     initial_position = pick_last_object_if_valid(C,C.getFrame("release_frame").getPosition(),release_velocity)
-    grasp_object(C,bot)
+    #invertion deviation calculation
+    if isInverted:
+        deviation_dist = 0.2
+        a = -release_velocity[1]/release_velocity[0]
+        dev_x = deviation_dist/np.sqrt(1+np.square(a))
+        dev_y = deviation_dist/np.sqrt(1+np.square(1/a))
+        deviation_arr = np.array([dev_x,dev_y,0])
+        time_deviation = grasp_object(C,bot,isInverted,deviation_arr)
+    else:
+        time_deviation = grasp_object(C,bot,isInverted)
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
+    wanted_sleep = 0.57
+    time_sleep = time_deviation * wanted_sleep
+    throw_object(C,bot,time_sleep,release_velocity)
+
+
+
+
     if isRender:
         C.view()
         time.sleep(sleep_time)
-    # if isRender:
-    #     time.sleep(sleep_time)
     del C
-def grasp_object(C:ry.Config, bot:ry.BotOp,object_name:str="cargo"):
+
+def throw_object(C,bot,time_sleep,velocity):
+    print(f"velocity is !!!: {velocity}")
+    # new throw point calculation. Because in case of inversion the robot deviates a little
+    def vel_komo():
+        q0 = C.getJointState()
+        komo = ry.KOMO(C, 1, 1, 1, True)
+        # komo.addObjective([], ry.FS.position, ["l_gripper"], ry.OT.eq, [1e-1], [4.2,-3.5,4],1)
+        komo.addObjective([], ry.FS.position, ["l_gripper"], ry.OT.eq, [1e-1], np.array(velocity),1)
+        komo.addObjective([],ry.FS.positionDiff,["l_gripper","release_frame"],ry.OT.sos,[1e0],[0,0,0])
+        ret2 = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
+        #komo.addObjective([1.],ry.FS.scalarProductXZ,["base","l_gripper"],ry.OT.eq,[1e1],[-1],0)
+        #print(komo.report())
+        print(f"ret!!!: {ret2}")
+        return komo
+    komo = vel_komo()
+    gripper_frame = C.getFrame("l_gripper")
+    # bot = ry.BotOp(C,False)
+    # time.sleep(5)
+    path = komo.getPath()
+    print(f"path size: {path.size}")
+    bot.move(path,[1.])
+    print(f"bot initial end time:{bot.getTimeToEnd()}")
+    time.sleep(time_sleep)
+    bot.sync(C,0.001)
+    print(f"bot end time:{bot.getTimeToEnd()}")
+    bot.gripperMove(ry._left,width=1)
+    C.addFrame("actual_release").setPosition(gripper_frame.getPosition()).setShape(ry.ST.marker,[.2]).setColor([1,1,0])
+
+    print(f"bot end time:{bot.getTimeToEnd()}")
+    while bot.getTimeToEnd()>0:
+        bot.sync(C,.1)
+def grasp_object(C:ry.Config, bot:ry.BotOp,isInverted:bool,deviation_arr,object_name:str="cargo"):
     q0 = qHome = C.getJointState()
     komo_pre_grasp = pre_grasp_komo(C,"l_gripper",object_name,q0,qHome)
     path_pre_grasp = komo_pre_grasp.getPath()
-    komo_post_grasp = post_grasp_komo(C)
+    komo_post_grasp = post_grasp_komo(C,isInverted,deviation_arr)
     path_post_grasp = komo_post_grasp.getPath()
     shape = path_pre_grasp.shape[0]*0.1
     print(path_pre_grasp.shape)
@@ -44,6 +90,8 @@ def grasp_object(C:ry.Config, bot:ry.BotOp,object_name:str="cargo"):
     while bot.getTimeToEnd() > 0:
         bot.sync(C, .1)
     C.attach('l_gripper', 'cargo')
+    time_deviation = shape/(start-end)
+    return time_deviation
 def pre_grasp_komo(C, gripper_name, grasp_frame_name, q0, qHome):
     komo = ry.KOMO(C, 3, 1, 0, True)
     # Suppose at some point you know positions:
@@ -64,10 +112,11 @@ def pre_grasp_komo(C, gripper_name, grasp_frame_name, q0, qHome):
     ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
     print(ret)
     return komo
-def post_grasp_komo(C)->ry.KOMO:
+def post_grasp_komo(C,isInverted:bool,deviationarr=None)->ry.KOMO:
+
     komo = ry.KOMO(C, 1, 1, 0, True)
-    komo.addObjective([], ry.FS.positionDiff, ["l_gripper","initial_position"], ry.OT.eq, [1e1], [0,0,0])
-    komo.addObjective([], ry.FS.scalarProductYZ, ["l_gripper","initial_position"], ry.OT.eq, [1e1], [-1])
+    komo.addObjective([], ry.FS.positionDiff, ["l_gripper","initial_position"], ry.OT.sos, [1e0], [0,0,0] if not isInverted else deviationarr)
+    komo.addObjective([], ry.FS.scalarProductYZ, ["l_gripper","base"], ry.OT.eq, [1e1], [-1])
     ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
     print(ret)
     return komo
@@ -92,7 +141,6 @@ def init_environment(C:ry.Config,bin_new_position:list,bin_shape):
 
 
 
-
 def rotate_bin(bin_position:np.ndarray, base_position:np.ndarray):
     vector_base_bin = bin_position-base_position
     xy_distance = np.sqrt(np.square(vector_base_bin[0])+np.square(vector_base_bin[1]))
@@ -108,6 +156,73 @@ def rotate_bin(bin_position:np.ndarray, base_position:np.ndarray):
     return new_quaternion
 
 
+
+
+def generate_homogeneous_points(
+        robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, grid_resolution=10
+    ):
+        points = []
+        x_min = robo_base[0] - range_limit
+        x_max = robo_base[0] + range_limit
+        y_min = robo_base[1] - range_limit
+        y_max = robo_base[1] + range_limit
+
+        # Generate grid boundaries
+        x_bins = np.linspace(x_min, x_max, grid_resolution)
+        y_bins = np.linspace(y_min, y_max, grid_resolution)
+
+        # Calculate the number of points per grid cell
+        points_per_cell = num_points // ((grid_resolution - 1) ** 2)
+
+        for i in range(len(x_bins) - 1):
+            for j in range(len(y_bins) - 1):
+                cell_points = 0
+                while cell_points < points_per_cell:
+                    # Sample random x, y, and z within the current grid cell
+                    x = np.random.uniform(x_bins[i], x_bins[i + 1])
+                    y = np.random.uniform(y_bins[j], y_bins[j + 1])
+                    z = np.random.uniform(z_min, z_max)
+
+                    # Apply constraints
+                    if (
+                        (x <= carpet_center[0] - carpet_len / 2 or x >= carpet_center[0] + carpet_len / 2)
+                        and (y <= carpet_center[1] - carpet_len / 2 or y >= carpet_center[1] + carpet_len / 2)
+                    ):
+                        points.append((x, y, z))
+                        cell_points += 1
+
+        # Fill any remaining points due to rounding
+        while len(points) < num_points:
+            x = np.random.uniform(x_min, x_max)
+            y = np.random.uniform(y_min, y_max)
+            z = np.random.uniform(z_min, z_max)
+            if (
+                (x <= carpet_center[0] - carpet_len / 2 or x >= carpet_center[0] + carpet_len / 2)
+                and (y <= carpet_center[1] - carpet_len / 2 or y >= carpet_center[1] + carpet_len / 2)
+            ):
+                points.append((x, y, z))
+
+        return points
+
+    # Define the parameters
+    robo_base = [0, 0]         # Replace with your robot's base coordinates (x, y)
+    carpet_center = [2, 2]     # Replace with your carpet's center coordinates (x, y)
+    carpet_len = 1.5           # Length of the carpet
+    range_limit = 2            # Range limit for the robot
+    z_min = 0.08               # Minimum z value
+    z_max = 0.8                # Maximum z value
+    num_points = 1000          # Number of points to generate
+    grid_resolution = 10       # Number of divisions in each axis
+
+    # Call the function to generate points
+    points = generate_homogeneous_points(
+        robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, grid_resolution
+    )
+
+    # Print a few points to verify
+    for i in range(5):
+        print(points[i])
+
 #for testing this module
 if __name__=="__main__":
-    throw_sample([-1,4,0.9],True,sleep_time=10)
+    throw_sample([-1,0.5,0.3],True,sleep_time=10)

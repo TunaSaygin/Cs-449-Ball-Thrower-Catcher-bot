@@ -38,7 +38,7 @@ def find_initial_point_from_release(C:ry.Config,release_position, release_veloci
     iteration = 0
     #resetting the velocity and position after calculating initial position
     velocity = np.array(release_velocity)
-    time_step = .1
+    time_step = .06
     position = np.array(release_position)
     while position[2] > height_threshold:
         position += velocity * time_step
@@ -81,6 +81,12 @@ def find_velocity(C: ry.Config):
     g = 9.81
     initial_pos = C.getFrame("throw").getPosition()
     bin_dims = C.getFrame("bin").getPosition()
+    #currently the constraint cannot optimize the left of the robot. Hence
+    isInverted = False
+    if bin_dims[1] < initial_pos[1]:
+        y_distance = initial_pos[1] - bin_dims[1]
+        bin_dims[1] += 2*y_distance
+        isInverted = True
     x_bin, y_bin, z_bin = bin_dims[0], bin_dims[1], bin_dims[2]
     x0, y0, z0 = initial_pos[0], initial_pos[1], initial_pos[2]
 
@@ -146,8 +152,8 @@ def find_velocity(C: ry.Config):
     v_x = v0_opt * np.cos(theta_opt) * np.cos(phi_opt)
     v_y = v0_opt * np.cos(theta_opt) * np.sin(phi_opt)
     v_z = v0_opt * np.sin(theta_opt)
-    velocity = [v_x, v_y, v_z]
+    velocity = [v_x, v_y if not isInverted else -v_y, v_z]
     rf = C.addFrame("release_frame").setPosition(initial_pos).setShape(ry.ST.marker,[.4]).setColor([1,0,0]).setContact(0)
     new_quat = get_quat_from_velocity(velocity)
     rf.setQuaternion(new_quat)
-    return velocity
+    return velocity, isInverted
