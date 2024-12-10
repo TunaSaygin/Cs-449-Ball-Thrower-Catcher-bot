@@ -4,6 +4,7 @@ from my_utils import rotation_matrix_to_quaternion
 import time
 from velocity_finder import find_velocity, pick_last_object_if_valid
 from my_utils import get_quat_from_velocity
+import json
 ## this file is created to create generic bin position and get the expected results.
 
 
@@ -29,14 +30,33 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     wanted_sleep = 0.57
     time_sleep = time_deviation * wanted_sleep
     throw_object(C,bot,time_sleep,release_velocity)
+    
+    result = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2])
 
-
-
+    print(f"Result:{result} for bin pos:{bin_new_position}")
 
     if isRender:
         C.view()
         time.sleep(sleep_time)
     del C
+    del bot
+    return result
+def check_in_the_bin(C:ry.Config,bot:ry.BotOp,bin_center,binxy_length,bin_height):
+    prev_pos = np.array(C.getFrame("cargo").getPosition())
+    bot.sync(C,.1)
+    cargo_pos = np.array(C.getFrame("cargo").getPosition())
+    while not np.array_equal(prev_pos,cargo_pos):
+        prev_pos = cargo_pos
+        bot.sync(C,.1)
+        cargo_pos = np.array(C.getFrame("cargo").getPosition())
+    print(cargo_pos)
+    print(f"bin_center[0]-binxy_length <=cargo_pos[0] <= bin_center[0] + binxy_length = {bin_center[0]-binxy_length}<={cargo_pos[0]}<={bin_center[0] + binxy_length}")
+    print(f"bin_center[1]-binxy_length <=cargo_pos[1] <= bin_center[1] + binxy_length = {bin_center[1]-binxy_length}<={cargo_pos[1]}<={bin_center[1] + binxy_length}")
+    print(f"bin_center[2]<=cargo_pos[2]<=bin_height = {bin_center[2]}<={cargo_pos[2]}<={bin_height}")
+    if bin_center[0]-binxy_length <=cargo_pos[0] <= bin_center[0] + binxy_length and bin_center[1]-binxy_length <=cargo_pos[1] <= bin_center[1] + binxy_length\
+        and bin_center[2]<=cargo_pos[2]<=bin_center[2] + bin_height:
+        return True
+    return False
 
 def throw_object(C,bot,time_sleep,velocity):
     print(f"velocity is !!!: {velocity}")
@@ -159,70 +179,75 @@ def rotate_bin(bin_position:np.ndarray, base_position:np.ndarray):
 
 
 def generate_homogeneous_points(
-        robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, grid_resolution=10
-    ):
-        points = []
-        x_min = robo_base[0] - range_limit
-        x_max = robo_base[0] + range_limit
-        y_min = robo_base[1] - range_limit
-        y_max = robo_base[1] + range_limit
+    robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, grid_resolution=10
+):
+    points = []
+    x_min = robo_base[0] - range_limit
+    x_max = robo_base[0] + range_limit
+    y_min = robo_base[1] - range_limit
+    y_max = robo_base[1] + range_limit
 
-        # Generate grid boundaries
-        x_bins = np.linspace(x_min, x_max, grid_resolution)
-        y_bins = np.linspace(y_min, y_max, grid_resolution)
+    # Generate grid boundaries
+    x_bins = np.linspace(x_min, x_max, grid_resolution)
+    y_bins = np.linspace(y_min, y_max, grid_resolution)
 
-        # Calculate the number of points per grid cell
-        points_per_cell = num_points // ((grid_resolution - 1) ** 2)
+    # Calculate the number of points per grid cell
+    total_cells = (grid_resolution - 1) ** 2
+    points_per_cell = num_points // total_cells
 
-        for i in range(len(x_bins) - 1):
-            for j in range(len(y_bins) - 1):
-                cell_points = 0
-                while cell_points < points_per_cell:
-                    # Sample random x, y, and z within the current grid cell
-                    x = np.random.uniform(x_bins[i], x_bins[i + 1])
-                    y = np.random.uniform(y_bins[j], y_bins[j + 1])
-                    z = np.random.uniform(z_min, z_max)
+    for i in range(len(x_bins) - 1):
+        for j in range(len(y_bins) - 1):
+            cell_points = 0
+            max_attempts = 1000  # Limit attempts to prevent infinite loop
+            attempts = 0
 
-                    # Apply constraints
-                    if (
-                        (x <= carpet_center[0] - carpet_len / 2 or x >= carpet_center[0] + carpet_len / 2)
-                        and (y <= carpet_center[1] - carpet_len / 2 or y >= carpet_center[1] + carpet_len / 2)
-                    ):
-                        points.append((x, y, z))
-                        cell_points += 1
+            while cell_points < points_per_cell and attempts < max_attempts:
+                attempts += 1
+                # Sample random x, y, and z within the current grid cell
+                x = np.random.uniform(x_bins[i], x_bins[i + 1])
+                y = np.random.uniform(y_bins[j], y_bins[j + 1])
+                z = np.random.uniform(z_min, z_max)
 
-        # Fill any remaining points due to rounding
-        while len(points) < num_points:
-            x = np.random.uniform(x_min, x_max)
-            y = np.random.uniform(y_min, y_max)
-            z = np.random.uniform(z_min, z_max)
-            if (
-                (x <= carpet_center[0] - carpet_len / 2 or x >= carpet_center[0] + carpet_len / 2)
-                and (y <= carpet_center[1] - carpet_len / 2 or y >= carpet_center[1] + carpet_len / 2)
-            ):
-                points.append((x, y, z))
+                # Check if point is outside the blue carpet area
+                if (
+                    (x < carpet_center[0] - carpet_len / 2 or x > carpet_center[0] + carpet_len / 2)
+                    or (y < carpet_center[1] - carpet_len / 2 or y > carpet_center[1] + carpet_len / 2)
+                ):
+                    points.append((x, y, z))
+                    cell_points += 1
 
-        return points
+            if attempts == max_attempts:
+                print(f"Warning: Could not generate enough points in cell ({i}, {j})")
 
-    # Define the parameters
-    robo_base = [0, 0]         # Replace with your robot's base coordinates (x, y)
-    carpet_center = [2, 2]     # Replace with your carpet's center coordinates (x, y)
-    carpet_len = 1.5           # Length of the carpet
-    range_limit = 2            # Range limit for the robot
-    z_min = 0.08               # Minimum z value
-    z_max = 0.8                # Maximum z value
-    num_points = 1000          # Number of points to generate
-    grid_resolution = 10       # Number of divisions in each axis
+    # Fill any remaining points due to rounding
+    while len(points) < num_points:
+        x = np.random.uniform(x_min, x_max)
+        y = np.random.uniform(y_min, y_max)
+        z = np.random.uniform(z_min, z_max)
+        if (
+            (x < carpet_center[0] - carpet_len / 2 or x > carpet_center[0] + carpet_len / 2)
+            or (y < carpet_center[1] - carpet_len / 2 or y > carpet_center[1] + carpet_len / 2)
+        ):
+            points.append((x, y, z))
 
-    # Call the function to generate points
-    points = generate_homogeneous_points(
-        robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, grid_resolution
-    )
-
-    # Print a few points to verify
-    for i in range(5):
-        print(points[i])
+    return points
 
 #for testing this module
 if __name__=="__main__":
-    throw_sample([-1,0.5,0.3],True,sleep_time=10)
+    bin_side_len = "50cm"
+    carpet_center = [0.2,2,0.03]
+    carpet_length = 1.5
+    robot_base = [0,2,0.05]
+    range_limit = 2
+    num_points = 1000
+    test_points = generate_homogeneous_points(robot_base,carpet_center,carpet_length,range_limit, num_points=num_points,z_min=0.08,z_max=0.75,grid_resolution=4)
+    print("Test points are generated")
+    result = []
+    for it, point in enumerate(test_points):
+        print(f"Test_p:{it}")
+        throw_sample(point,False,sleep_time=0.01)
+        result.append({"point":point,"result":result})
+    # time.sleep(20)
+    with open(f"test_res_{bin_side_len}.json","w") as f:
+        json.dump(result,f,indent=4)
+    # throw_sample([-1,0.5,0.3],True,sleep_time=10)
