@@ -30,8 +30,8 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     wanted_sleep = 0.57
     time_sleep = time_deviation * wanted_sleep
     throw_object(C,bot,time_sleep,release_velocity)
-    
-    result = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2])
+    cargo_height = C.getFrame("cargo").getSize()[2]
+    result = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2],cargo_height)
 
     print(f"Result:{result} for bin pos:{bin_new_position}")
 
@@ -41,14 +41,17 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     del C
     del bot
     return result
-def check_in_the_bin(C:ry.Config,bot:ry.BotOp,bin_center,binxy_length,bin_height):
+def check_in_the_bin(C:ry.Config,bot:ry.BotOp,bin_center,binxy_length,bin_height,cargo_heigth):
+    start = time.time()
     prev_pos = np.array(C.getFrame("cargo").getPosition())
-    bot.sync(C,.1)
+    bot.sync(C,.01)
     cargo_pos = np.array(C.getFrame("cargo").getPosition())
-    while not np.array_equal(prev_pos,cargo_pos):
+    while not np.array_equal(prev_pos,cargo_pos) or (prev_pos[2]<cargo_heigth and cargo_pos[2]<cargo_heigth):
         prev_pos = cargo_pos
-        bot.sync(C,.1)
+        bot.sync(C,.01)
         cargo_pos = np.array(C.getFrame("cargo").getPosition())
+        if time.time() - start > 8:
+            break
     print(cargo_pos)
     print(f"bin_center[0]-binxy_length <=cargo_pos[0] <= bin_center[0] + binxy_length = {bin_center[0]-binxy_length}<={cargo_pos[0]}<={bin_center[0] + binxy_length}")
     print(f"bin_center[1]-binxy_length <=cargo_pos[1] <= bin_center[1] + binxy_length = {bin_center[1]-binxy_length}<={cargo_pos[1]}<={bin_center[1] + binxy_length}")
@@ -234,20 +237,5 @@ def generate_homogeneous_points(
 
 #for testing this module
 if __name__=="__main__":
-    bin_side_len = "50cm"
-    carpet_center = [0.2,2,0.03]
-    carpet_length = 1.5
-    robot_base = [0,2,0.05]
-    range_limit = 2
-    num_points = 1000
-    test_points = generate_homogeneous_points(robot_base,carpet_center,carpet_length,range_limit, num_points=num_points,z_min=0.08,z_max=0.75,grid_resolution=4)
-    print("Test points are generated")
-    result = []
-    for it, point in enumerate(test_points):
-        print(f"Test_p:{it}")
-        throw_sample(point,False,sleep_time=0.01)
-        result.append({"point":point,"result":result})
-    # time.sleep(20)
-    with open(f"test_res_{bin_side_len}.json","w") as f:
-        json.dump(result,f,indent=4)
-    # throw_sample([-1,0.5,0.3],True,sleep_time=10)
+    
+    throw_sample([-1,0.5,0.3],True,sleep_time=10)
