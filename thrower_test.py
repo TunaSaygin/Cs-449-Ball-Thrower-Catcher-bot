@@ -63,7 +63,7 @@ if __name__=="__main__":
     carpet_length = 1.5
     robot_base = [0,2,0.05]
     range_limit = 2
-    num_points = 3
+    num_points = 100
     test_points = generate_homogeneous_points(robot_base,carpet_center,carpet_length,range_limit, num_points=num_points,z_min=0.08,z_max=0.75,grid_resolution=4)
     print("Test points are generated")
     result = []
