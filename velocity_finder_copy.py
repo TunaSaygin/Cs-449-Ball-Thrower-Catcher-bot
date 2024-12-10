@@ -94,7 +94,6 @@ def find_velocity(C: ry.Config):
         penalty_z = np.abs(constraint_z(params))
         return v0 + 100 * (penalty_x + penalty_y + penalty_z)
 
-
     def constraint_x(params):
         v0, theta, phi = params
         vx = v0 * np.cos(theta) * np.cos(phi)

@@ -241,4 +241,4 @@ if __name__=="__main__":
     # time.sleep(20)
     with open(f"test_res_{bin_side_len}.json","w") as f:
         json.dump(result,f,indent=4) """
-    throw_sample([-2.5,1,0.3],True,sleep_time=10)
+    throw_sample([-2,2,0.3],True,sleep_time=10)

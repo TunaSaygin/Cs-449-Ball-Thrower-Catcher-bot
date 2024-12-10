@@ -2,6 +2,8 @@ from thrower_generic import throw_sample
 from tqdm import tqdm
 import numpy as np
 import json
+import matplotlib.pyplot as plt
+
 def generate_homogeneous_points(
 robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, grid_resolution=10
 ):
@@ -58,7 +60,7 @@ robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, gri
 
 #for testing this module
 if __name__=="__main__":
-    bin_side_len = "50cm"
+    bin_side_len = "50cm(withDev)"
     carpet_center = [0.2,2,0.03]
     carpet_length = 1.5
     robot_base = [0,2,0.05]
@@ -66,12 +68,12 @@ if __name__=="__main__":
     num_points = 100
     test_points = generate_homogeneous_points(robot_base,carpet_center,carpet_length,range_limit, num_points=num_points,z_min=0.08,z_max=0.75,grid_resolution=4)
     print("Test points are generated")
-    result = []
+    results = []
     for it, point in tqdm(enumerate(test_points),desc="Processing",dynamic_ncols=True,position=0):
-        result_data = throw_sample(point,False,sleep_time=0.01)
+        result_data, deviation = throw_sample(point,False,sleep_time=0.01)
         print(f"Test_p:{it}")
-        result.append({"point":point,"result":result_data})
+        results.append({"point":point,"result":result_data, "deviation":deviation})
     # time.sleep(20)
     with open(f"test_res_{bin_side_len}.json","w") as f:
-        json.dump(result,f,indent=4)
+        json.dump(results,f,indent=4)
     # throw_sample([-1,0.5,0.3],True,sleep_time=10)

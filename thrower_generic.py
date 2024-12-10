@@ -27,11 +27,11 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     else:
         time_deviation = grasp_object(C,bot,isInverted)
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
-    wanted_sleep = 0.65
+    wanted_sleep = 0.55
     time_sleep = time_deviation * wanted_sleep
     throw_object(C,bot,time_sleep,release_velocity)
     cargo_height = C.getFrame("cargo").getSize()[2]
-    result = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2],cargo_height)
+    result, deviation = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2],cargo_height)
 
     print(f"Result:{result} for bin pos:{bin_new_position}")
 
@@ -40,26 +40,37 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
         time.sleep(sleep_time)
     del C
     del bot
-    return result
-def check_in_the_bin(C:ry.Config,bot:ry.BotOp,bin_center,binxy_length,bin_height,cargo_heigth):
+    return result, deviation
+def check_in_the_bin(C: ry.Config, bot: ry.BotOp, bin_center, binxy_length, bin_height, cargo_height):
     start = time.time()
     prev_pos = np.array(C.getFrame("cargo").getPosition())
-    bot.sync(C,.01)
+    bot.sync(C, .01)
     cargo_pos = np.array(C.getFrame("cargo").getPosition())
-    while not np.array_equal(prev_pos,cargo_pos) or (prev_pos[2]<cargo_heigth and cargo_pos[2]<cargo_heigth):
+    
+    # Wait for the cargo to stabilize or timeout
+    while not np.array_equal(prev_pos, cargo_pos) or (prev_pos[2] < cargo_height and cargo_pos[2] < cargo_height):
         prev_pos = cargo_pos
-        bot.sync(C,.01)
+        bot.sync(C, .01)
         cargo_pos = np.array(C.getFrame("cargo").getPosition())
         if time.time() - start > 8:
             break
-    print(cargo_pos)
-    print(f"bin_center[0]-binxy_length <=cargo_pos[0] <= bin_center[0] + binxy_length = {bin_center[0]-binxy_length}<={cargo_pos[0]}<={bin_center[0] + binxy_length}")
-    print(f"bin_center[1]-binxy_length <=cargo_pos[1] <= bin_center[1] + binxy_length = {bin_center[1]-binxy_length}<={cargo_pos[1]}<={bin_center[1] + binxy_length}")
-    print(f"bin_center[2]<=cargo_pos[2]<=bin_height = {bin_center[2]}<={cargo_pos[2]}<={bin_height}")
+    
+    print(f"Final cargo position: {cargo_pos}")
+    print(f"bin_center[0]-binxy_length <= cargo_pos[0] <= bin_center[0] + binxy_length = "
+          f"{bin_center[0]-binxy_length} <= {cargo_pos[0]} <= {bin_center[0] + binxy_length}")
+    print(f"bin_center[1]-binxy_length <= cargo_pos[1] <= bin_center[1] + binxy_length = "
+          f"{bin_center[1]-binxy_length} <= {cargo_pos[1]} <= {bin_center[1] + binxy_length}")
+    print(f"bin_center[2] <= cargo_pos[2] <= bin_height = {bin_center[2]} <= {cargo_pos[2]} <= {bin_center[2] + bin_height}")
+    
+    # Calculate deviation
+    deviation = np.linalg.norm(cargo_pos - np.array(bin_center))
+    print(f"Deviation from target position: {deviation:.4f} meters")
+
     if bin_center[0]-binxy_length <=cargo_pos[0] <= bin_center[0] + binxy_length and bin_center[1]-binxy_length <=cargo_pos[1] <= bin_center[1] + binxy_length\
         and bin_center[2]<=cargo_pos[2]<=bin_center[2] + bin_height:
-        return True
-    return False
+        return True, deviation
+    return False, deviation
+
 
 def throw_object(C,bot,time_sleep,velocity):
     print(f"velocity is !!!: {velocity}")
