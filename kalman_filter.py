@@ -47,6 +47,9 @@ class KalmanFilter:
             measurement (array-like): Observed position [x, y, z].
         """
         z = np.array(measurement)
+        if z.shape[0] != self.dim:
+            raise ValueError(f"Expected {self.dim}-dimensional measurement, got {z.shape[0]} dimensions.")
+        
         y = z - self.H @ self.x  # Measurement residual
         S = self.H @ self.P @ self.H.T + self.R  # Residual covariance
         K = self.P @ self.H.T @ np.linalg.inv(S)  # Kalman gain
@@ -54,6 +57,7 @@ class KalmanFilter:
         # Update state estimate and covariance matrix
         self.x = self.x + K @ y
         self.P = (self.I - K @ self.H) @ self.P
+
 
     def predict(self):
         """

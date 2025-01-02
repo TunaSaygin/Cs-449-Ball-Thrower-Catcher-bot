@@ -1,9 +1,10 @@
 import numpy as np
 import robotic as ry
+from sklearn.cluster import DBSCAN
 from kalman_filter import KalmanFilter  # Custom Kalman filter implementation
 
 class VisionCatcherRobot:
-    def __init__(self, C, dt=0.01):
+    def __init__(self, C, bot, dt=0.001):
         """
         Initialize the catcher robot.
 
@@ -12,6 +13,7 @@ class VisionCatcherRobot:
             dt (float): Time step for updates.
         """
         self.C = C
+        self.bot = bot
         self.dt = dt
         self.kalman_filter = KalmanFilter(dim=3)  # Assuming 3D state
         self.ball_positions = []
@@ -22,21 +24,29 @@ class VisionCatcherRobot:
         Detect the ball position from the point cloud.
 
         Args:
-            point_cloud (o3d.geometry.PointCloud): Input point cloud.
+            point_cloud (np.array): Input point cloud as a numpy array of shape (N, 3).
 
         Returns:
-            np.array: Ball position as [x, y, z].
+            np.array: Ball position as [x, y, z] or None if no ball detected.
         """
-        # Example: Segment the ball using clustering or predefined ball color
-        labels = np.array(point_cloud.cluster_dbscan(eps=0.05, min_points=10))
-        unique_labels = np.unique(labels)
-        ball_label = unique_labels[1] if len(unique_labels) > 1 else None  # Assuming the ball is the second cluster
+        # Apply DBSCAN clustering
+        clustering = DBSCAN(eps=0.05, min_samples=10).fit(point_cloud)
+        labels = clustering.labels_
 
-        if ball_label is not None:
-            ball_points = np.asarray(point_cloud.points)[labels == ball_label]
-            ball_position = np.mean(ball_points, axis=0)
-            return ball_position
-        return None
+        # Find the largest cluster (excluding noise points, label = -1)
+        unique_labels, counts = np.unique(labels[labels != -1], return_counts=True)
+        if len(unique_labels) == 0:
+            print("No clusters found in point cloud.")
+            return None
+
+        # Assume the ball is the largest cluster
+        largest_cluster_label = unique_labels[np.argmax(counts)]
+        ball_points = point_cloud[labels == largest_cluster_label]
+
+        # Return the centroid of the ball cluster
+        ball_position = np.mean(ball_points, axis=0)
+        print(f'Ball position: {ball_position}')
+        return ball_position
 
     def estimate_trajectory(self, ball_position):
         """
@@ -52,13 +62,12 @@ class VisionCatcherRobot:
         """
         Start the catcher robot.
         """
-        bot = ry.BotOp(self.C, useRealRobot=False)
-        camera = self.C.getFrame("camera")
+        ball = self.C.getFrame("cargo")
         time_step = self.dt
-
-        while True:
+        x = 3
+        while x > 0:
             # Simulate camera capturing a point cloud
-            point_cloud = self.capture_point_cloud(camera)
+            point_cloud = self.capture_point_cloud(ball)
 
             # Extract ball position
             ball_position = self.extract_ball_position(point_cloud)
@@ -68,9 +77,10 @@ class VisionCatcherRobot:
 
             # Move the gripper to the predicted landing position
             if self.predicted_landing is not None:
-                self.move_gripper_to_position(bot, self.predicted_landing)
+                self.move_gripper_to_position(self.bot, self.predicted_landing)
 
-            bot.sync(self.C, time_step)
+            self.bot.sync(self.C, time_step)
+            x = x - 1
 
     def capture_point_cloud(self, obj: ry.Frame):
         """
@@ -134,7 +144,7 @@ class VisionCatcherRobot:
         obj_pcl = merged_pcl_world[obj_mask]
 
         # Create a frame for the object point cloud and display it
-        f = self.C.addFrame('obj_pcl', 'world')  # Can use any camera here for visualization
+        f = self.C.addFrame('obj_pcl', 'base')  # Can use any camera here for visualization
         f.setPointCloud(obj_pcl, [0, 255, 0])  # Display the point cloud in red
 
         self.C.view()  # View the scene with the object point cloud
@@ -150,6 +160,11 @@ class VisionCatcherRobot:
             position (np.array): Target position [x, y, z].
         """
         komo = ry.KOMO(self.C, 1, 1, 0, True)
-        komo.addObjective([], ry.FS.position, ["r_gripper"], ry.OT.eq, [1e1], position)
-        komo.solve()
+        komo.addObjective([], ry.FS.position, ["bin"], ry.OT.eq, [1e1], position)
+        komo.addObjective([], ry.FS.scalarProductXY, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductXZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductYX, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductYZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
+        print(ret) 
         bot.move(komo.getPath(), [1.])

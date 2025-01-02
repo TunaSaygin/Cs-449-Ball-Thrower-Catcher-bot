@@ -5,25 +5,10 @@ import numpy as np
 from thrower_generic import find_velocity, pick_last_object_if_valid, grasp_object, throw_object, check_in_the_bin
 from catcher_robot import VisionCatcherRobot
 
-render_simulation = True       # Whether to render the simulation
-
-# Shared configuration object for both robots
-config = ry.Config()
-config.addFile("catching.g")
-
-def throw_catch(isRender:bool,sleep_time:float = 20):
-    C = ry.Config()
-    C.addFile("catching.g")
+def throw_catch(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 20):
     print(f"Initial bin pos:{C.getFrame('bin').getPosition()}")
     bin_new_position = C.getFrame('bin').getPosition()
 
-    qHome = C.getJointState()
-    C.getFrame('cargo').unLink() # to remove a bug
-    C.addFrame("throw").setPosition([0,1.8,1.2]).setShape(ry.ST.marker,[.3])
-    C.addFrame("release_frame").setPosition([0,0,0]).setShape(ry.ST.marker,[.4]).setColor([1,0,0]).setContact(0)
-    C.view()
-
-    bot = ry.BotOp(C, useRealRobot=False)
     release_velocity,isInverted = find_velocity(C)
     initial_position = pick_last_object_if_valid(C,C.getFrame("release_frame").getPosition(),release_velocity)
     #invertion deviation calculation
@@ -57,29 +42,37 @@ def run_thrower():
     Function to operate the thrower robot.
     """
     print("Thrower started...")
-    throw_result, deviation = throw_catch(render_simulation, sleep_time=0.01)
+    throw_result, deviation = throw_catch(C, bot, render_simulation, sleep_time=0.01)
     print(f"Throw completed. Result: {throw_result}, Deviation: {deviation}")
 
 def run_catcher():
     """
     Function to operate the catcher robot.
     """
-    catcher = VisionCatcherRobot(config)
+    catcher = VisionCatcherRobot(C, bot)
     print("Catcher started...")
-
-    # Start tracking the ball
-    while True:
-        catcher.process_frame()
-        time.sleep(0.01)
+    catcher.start()
 
 # Main Function
 if __name__ == "__main__":
+    render_simulation = True       # Whether to render the simulation
+
+    # Shared configuration object for both robots
+    C = ry.Config()
+    C.addFile("catching.g")
+    qHome = C.getJointState()
+    C.getFrame('cargo').unLink()
+    C.addFrame("throw").setPosition([0,1.8,1.2]).setShape(ry.ST.marker,[.3])
+    C.addFrame("release_frame").setPosition([0,0,0]).setShape(ry.ST.marker,[.4]).setColor([1,0,0]).setContact(0)
+    C.view()
+    bot = ry.BotOp(C, useRealRobot=False)
     # Create threads for thrower and catcher
     thrower_thread = threading.Thread(target=run_thrower)
     catcher_thread = threading.Thread(target=run_catcher)
 
     # Start both threads
     thrower_thread.start()
+    time.sleep(1)
     catcher_thread.start()
 
     # Wait for the threads to complete
