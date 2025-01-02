@@ -73,7 +73,7 @@ def check_in_the_bin(C: ry.Config, bot: ry.BotOp, bin_center, binxy_length, bin_
     return False, deviation
 
 
-def throw_object(C,bot,time_sleep,velocity):
+def throw_object(C,bot,time_sleep,velocity,stub_function=None, time_interval=0.1):
     print(f"velocity is !!!: {velocity}")
     # new throw point calculation. Because in case of inversion the robot deviates a little
     def vel_komo():
@@ -96,14 +96,16 @@ def throw_object(C,bot,time_sleep,velocity):
     bot.move(path,[1.])
     print(f"bot initial end time:{bot.getTimeToEnd()}")
     time.sleep(time_sleep)
-    bot.sync(C,0.001)
-    print(f"bot end time:{bot.getTimeToEnd()}")
     bot.gripperMove(ry._left,width=1)
+    bot.sync(C,0.001)
+    if stub_function:
+        stub_function()
     C.addFrame("actual_release").setPosition(gripper_frame.getPosition()).setShape(ry.ST.marker,[.2]).setColor([1,1,0])
-
     print(f"bot end time:{bot.getTimeToEnd()}")
     while bot.getTimeToEnd()>0:
-        bot.sync(C,.1)
+        if stub_function:
+            stub_function()
+        bot.sync(C,time_interval)
 def grasp_object(C:ry.Config, bot:ry.BotOp,isInverted:bool,deviation_arr=None,object_name:str="cargo"):
     q0 = qHome = C.getJointState()
     komo_pre_grasp = pre_grasp_komo(C,"l_gripper",object_name,q0,qHome)

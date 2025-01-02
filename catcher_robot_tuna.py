@@ -81,6 +81,43 @@ class VisionCatcherRobot:
 
             self.bot.sync(self.C, time_step)
             x = x - 1
+    def find_optimum_catching_point(self, trajectory):
+        """
+        Find the optimum catching point for the gripper from the predicted trajectory.
+
+        Args:
+            trajectory (list of np.array): List of predicted positions along the trajectory.
+
+        Returns:
+            np.array: Optimum catching position [x, y, z].
+        """
+        if len(trajectory) == 0:
+            raise ValueError("Trajectory is empty, cannot find an optimum point.")
+
+        # Get the current gripper position
+        gripper_position = self.C.getFrame("l_gripper").getPosition()
+
+        # Calculate the Euclidean distance from the gripper to each point in the trajectory
+        distances = [np.linalg.norm(point - gripper_position) for point in trajectory]
+
+        # Find the trajectory point with the smallest distance to the gripper
+        optimum_point = trajectory[np.argmin(distances)]
+
+        print(f"Optimum catching point: {optimum_point}")
+        return optimum_point
+    def update_catcher_position(self):
+        """
+        Update the catcher's position using Kalman filter predictions.
+        """
+        # Predict the next position of the ball using the Kalman filter
+        predicted_position = self.kalman_filter.predict()
+
+        # Move the gripper to the predicted position
+        if predicted_position is not None:
+            print(f"Updating catcher position to: {predicted_position}")
+            self.move_gripper_to_position(self.bot, predicted_position)
+        else:
+            print("Kalman filter has no prediction. Cannot update catcher position.")
 
     def capture_point_cloud(self, obj: ry.Frame):
         """
@@ -144,13 +181,13 @@ class VisionCatcherRobot:
         obj_pcl = merged_pcl_world[obj_mask]
 
         # Create a frame for the object point cloud and display it
-        f = self.C.addFrame('obj_pcl', 'base')  # Can use any camera here for visualization
-        f.setPointCloud(obj_pcl, [0, 255, 0])  # Display the point cloud in red
+        # f = self.C.addFrame('obj_pcl', 'base')  # Can use any camera here for visualization
+        # f.setPointCloud(obj_pcl, [0, 255, 0])  # Display the point cloud in red
 
         self.C.view()  # View the scene with the object point cloud
         return obj_pcl
 
-    
+
     def move_gripper_to_position(self, bot, position):
         """
         Move the robot gripper to the predicted landing position.

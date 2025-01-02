@@ -3,9 +3,14 @@ import time
 import robotic as ry
 import numpy as np
 from thrower_generic import find_velocity, pick_last_object_if_valid, grasp_object, throw_object, check_in_the_bin
-from catcher_robot import VisionCatcherRobot
+from catcher_robot_tuna import VisionCatcherRobot
 
 def throw_catch(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 20):
+    catcher = VisionCatcherRobot(C,bot)
+    cargo_frame = C.getFrame("cargo")
+    def stub_function():
+        catcher.capture_point_cloud(cargo_frame)
+        catcher.update_catcher_position()
     print(f"Initial bin pos:{C.getFrame('bin').getPosition()}")
     bin_new_position = C.getFrame('bin').getPosition()
 
@@ -24,7 +29,7 @@ def throw_catch(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 20
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
     wanted_sleep = 0.57
     time_sleep = time_deviation * wanted_sleep
-    throw_object(C,bot,time_sleep,release_velocity)
+    throw_object(C,bot,time_sleep,release_velocity,stub_function,0.01)
     cargo_height = C.getFrame("cargo").getSize()[2]
     result, deviation = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2],cargo_height)
 
@@ -37,7 +42,7 @@ def throw_catch(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 20
     del bot
     return result, deviation
 
-def run_thrower():
+def run_thrower(C, bot):
     """
     Function to operate the thrower robot.
     """
@@ -66,16 +71,5 @@ if __name__ == "__main__":
     C.addFrame("release_frame").setPosition([0,0,0]).setShape(ry.ST.marker,[.4]).setColor([1,0,0]).setContact(0)
     C.view()
     bot = ry.BotOp(C, useRealRobot=False)
-    # Create threads for thrower and catcher
-    thrower_thread = threading.Thread(target=run_thrower)
-    catcher_thread = threading.Thread(target=run_catcher)
-
-    # Start both threads
-    thrower_thread.start()
-    time.sleep(0.3)
-    catcher_thread.start()
-
-    # Wait for the threads to complete
-    thrower_thread.join()
-    catcher_thread.join()
+    run_thrower(C, bot)
     time.sleep(25)
