@@ -22,7 +22,7 @@ def throw_catch(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 20
     else:
         time_deviation = grasp_object(C,bot,isInverted)
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
-    wanted_sleep = 0.5
+    wanted_sleep = 0.3
     time_sleep = time_deviation * wanted_sleep
     throw_object(C,bot,time_sleep,release_velocity)
     cargo_height = C.getFrame("cargo").getSize()[2]
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     # Start both threads
     thrower_thread.start()
-    time.sleep(1)
+    time.sleep(0.3)
     catcher_thread.start()
 
     # Wait for the threads to complete

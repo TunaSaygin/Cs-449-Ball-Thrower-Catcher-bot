@@ -68,7 +68,8 @@ def pick_last_object_if_valid(C:ry.Config,release_position, release_velocity):
        print(f"Initial Position Found: {initial_position}")
        # Visualize the initial position
     #    C.addFrame("initial_position").setPosition(initial_position).setShape(ry.ST.marker, [0.4]).setContact(0).setColor([0,1,0]).setQuaternion(rotation_matrix_to_quaternion(velocity_to_rotation_matrix(release_velocity)))
-       C.addFrame("initial_position").setPosition(initial_position).setShape(ry.ST.marker, [0.4]).setContact(0).setColor([0,1,0])
+       new_quat = get_quat_from_velocity(release_velocity)
+       C.addFrame("initial_position").setPosition(initial_position).setShape(ry.ST.marker, [0.4]).setContact(0).setColor([0,1,0]).setQuaternion(new_quat)
        C.view()
        return initial_position
        # Simulate the robot to pick the last object
@@ -99,7 +100,7 @@ def find_velocity(C: ry.Config):
         vx = v0 * np.cos(theta) * np.cos(phi)
         t_land = (-v0 * np.sin(theta) + np.sqrt((v0 * np.sin(theta))**2 + 2 * g * (z0 - z_bin))) / g
         x_land = x0 + vx * t_land
-        print(f"constraint_x: x_land={x_land}, x_bin={x_bin}")
+        # print(f"constraint_x: x_land={x_land}, x_bin={x_bin}")
         return x_land - x_bin
 
     def constraint_y(params):
@@ -107,7 +108,7 @@ def find_velocity(C: ry.Config):
         vy = v0 * np.cos(theta) * np.sin(phi)
         t_land = (-v0 * np.sin(theta) + np.sqrt((v0 * np.sin(theta))**2 + 2 * g * (z0 - z_bin))) / g
         y_land = y0 + vy * t_land
-        print(f"constraint_y: y_land={y_land}, y_bin={y_bin}")
+        # print(f"constraint_y: y_land={y_land}, y_bin={y_bin}")
         return y_land - y_bin
 
     def constraint_z(params):
@@ -115,7 +116,7 @@ def find_velocity(C: ry.Config):
         vz = v0 * np.sin(theta)
         t_land = (-vz + np.sqrt(vz**2 + 2 * g * (z0 - z_bin))) / g
         z_land = z0 + vz * t_land - 0.5 * g * t_land**2
-        print(f"constraint_z: z_land={z_land}, z_bin={z_bin}")
+        # print(f"constraint_z: z_land={z_land}, z_bin={z_bin}")
         return z_land - z_bin
 
     base_position = C.getFrame("l_panda_base").getPosition()

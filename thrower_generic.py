@@ -250,4 +250,4 @@ def generate_homogeneous_points(
 #for testing this module
 if __name__=="__main__":
     
-    throw_sample([-1,0.5,0.3],True,sleep_time=10)
+    throw_sample([0,0.7,0.3],True,sleep_time=10)

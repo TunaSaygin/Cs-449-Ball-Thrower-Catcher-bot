@@ -4,7 +4,7 @@ from scipy.optimize import minimize
 from scipy.optimize import differential_evolution
 import robotic as ry
 from my_utils import get_quat_from_velocity
-def find_initial_point_from_release(C:ry.Config,release_position, release_velocity, height_threshold=0.2):
+def find_initial_point_from_release(C:ry.Config,release_position, release_velocity, height_threshold=0.2, trajectory_array:list = None):
     """
     Finds the initial position for the throwing motion based on the release position and velocity.
 
@@ -38,21 +38,27 @@ def find_initial_point_from_release(C:ry.Config,release_position, release_veloci
     iteration = 0
     #resetting the velocity and position after calculating initial position
     velocity = np.array(release_velocity)
-    time_step = .06
+    time_step = .02
     position = np.array(release_position)
     while position[2] > height_threshold:
         position += velocity * time_step
         velocity += gravity * time_step
         iteration += 1
         frame_quat = get_quat_from_velocity(velocity)
-        frame = C.addFrame(f"trajectory-{iteration}").setShape(ry.ST.marker,[.2]).setColor([0,0,1]).setPosition(position).setQuaternion(frame_quat)
+        frame = C.addFrame(f"trajectory-{iteration}").setShape(ry.ST.marker,[.1]).setColor([0,0,1]).setPosition(position).setQuaternion(frame_quat)
         C.view()
-        print(f"Frame {iteration} added with position {frame.getPosition()} new vel:{velocity}")
+        if trajectory_array is not None:
+            # print(f"Position:{position}")
+            position_copy = position.copy()
+            # print("Entered trajectory array")
+            trajectory_array.append(position_copy)
+        # print(f"Frame {iteration} added with position {frame.getPosition()} new vel:{velocity}")
+    # print(f"--------****------trajectory array:{trajectory_array} trajectory_array is not None? {trajectory_array is not None}")
     return initial_position  # No valid initial position found
 
 
 
-def pick_last_object_if_valid(C:ry.Config,release_position, release_velocity):
+def pick_last_object_if_valid(C:ry.Config,release_position, release_velocity, trajectory_array=None):
    """
    Simulates the robot to pick the last object if conditions are met.
    Args:
@@ -62,13 +68,14 @@ def pick_last_object_if_valid(C:ry.Config,release_position, release_velocity):
        robot_base: Position of the robot base.
    """
    # Find the initial position
-   initial_position = find_initial_point_from_release(C,release_position, release_velocity)
+   initial_position = find_initial_point_from_release(C,release_position, release_velocity, trajectory_array=trajectory_array)
 
    if initial_position is not None:
        print(f"Initial Position Found: {initial_position}")
        # Visualize the initial position
     #    C.addFrame("initial_position").setPosition(initial_position).setShape(ry.ST.marker, [0.4]).setContact(0).setColor([0,1,0]).setQuaternion(rotation_matrix_to_quaternion(velocity_to_rotation_matrix(release_velocity)))
-       C.addFrame("initial_position").setPosition(initial_position).setShape(ry.ST.marker, [0.4]).setContact(0).setColor([0,1,0])
+       new_quat = get_quat_from_velocity(release_velocity)
+       C.addFrame("initial_position").setPosition(initial_position).setShape(ry.ST.marker, [0.4]).setContact(0).setColor([0,1,0]).setQuaternion(new_quat)
        C.view()
        return initial_position
        # Simulate the robot to pick the last object
@@ -106,7 +113,7 @@ def find_velocity(C: ry.Config):
         vx = v0 * np.cos(theta) * np.cos(phi)
         t_land = (-v0 * np.sin(theta) + np.sqrt((v0 * np.sin(theta))**2 + 2 * g * (z0 - z_bin))) / g
         x_land = x0 + vx * t_land
-        print(f"constraint_x: x_land={x_land}, x_bin={x_bin}")
+        # print(f"constraint_x: x_land={x_land}, x_bin={x_bin}")
         return x_land - x_bin
 
     def constraint_y(params):
@@ -114,7 +121,7 @@ def find_velocity(C: ry.Config):
         vy = v0 * np.cos(theta) * np.sin(phi)
         t_land = (-v0 * np.sin(theta) + np.sqrt((v0 * np.sin(theta))**2 + 2 * g * (z0 - z_bin))) / g
         y_land = y0 + vy * t_land
-        print(f"constraint_y: y_land={y_land}, y_bin={y_bin}")
+        # print(f"constraint_y: y_land={y_land}, y_bin={y_bin}")
         return y_land - y_bin
 
     def constraint_z(params):
@@ -122,7 +129,7 @@ def find_velocity(C: ry.Config):
         vz = v0 * np.sin(theta)
         t_land = (-vz + np.sqrt(vz**2 + 2 * g * (z0 - z_bin))) / g
         z_land = z0 + vz * t_land - 0.5 * g * t_land**2
-        print(f"constraint_z: z_land={z_land}, z_bin={z_bin}")
+        # print(f"constraint_z: z_land={z_land}, z_bin={z_bin}")
         return z_land - z_bin
 
     base_position = C.getFrame("l_panda_base").getPosition()

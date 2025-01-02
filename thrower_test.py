@@ -1,9 +1,11 @@
 from thrower_generic_copy_joint_state import throw_sample
+import robotic as ry
 from tqdm import tqdm
 import numpy as np
 import json
 import matplotlib.pyplot as plt
 import os
+import time
 def generate_homogeneous_points(
 robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, grid_resolution=10
 ):
@@ -57,28 +59,72 @@ robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, gri
             points.append((x, y, z))
 
     return points
+def generate_homogeneous_points_cylindrical(
+    robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, grid_resolution=10
+):
+    points = []
+    # Define the center of the cylindrical area
+    center_x, center_y = robo_base[0], robo_base[1]
+    
+    # Loop to generate points
+    while len(points) < num_points:
+        # Sample random radial distance and angle
+        radius = np.random.uniform(0, range_limit)  # Random distance within the range limit
+        angle = np.random.uniform(0, 2 * np.pi)    # Random angle in radians
+        
+        # Convert polar coordinates to Cartesian
+        x = center_x + radius * np.cos(angle)
+        y = center_y + radius * np.sin(angle)
+        z = np.random.uniform(z_min, z_max)       # Random height within the range
+        
+        # Check if the point is outside the carpet area
+        if (
+            (x < carpet_center[0] - carpet_len / 2 or x > carpet_center[0] + carpet_len / 2)
+            or (y < carpet_center[1] - carpet_len / 2 or y > carpet_center[1] + carpet_len / 2)
+        ):
+            points.append((x, y, z))
+    
+    return points
 
 #for testing this module
 if __name__=="__main__":
-    bin_side_len = "50cm(withImprovedThrowPos)"
+    bin_side_len = "50cm(cylindiricaimproved)"
+    failure_point_name = "optimization_failed.json"
     carpet_center = [0.2,2,0.03]
-    carpet_length = 1.5
+    carpet_length = 1
     robot_base = [0,2,0.05]
     range_limit = 2
     output_file = f"test_res_{bin_side_len}.json"
     num_points = 100
-    test_points = generate_homogeneous_points(robot_base,carpet_center,carpet_length,range_limit, num_points=num_points,z_min=0.08,z_max=0.75,grid_resolution=4)
+    test_points = generate_homogeneous_points_cylindrical(robot_base,carpet_center,carpet_length,range_limit, num_points=num_points,z_min=0.08,z_max=0.75,grid_resolution=4)
+    # C = ry.Config()
+    # C.addFile("throwing_bare.g")
+    # for it,point in enumerate(test_points):
+    #     C.addFrame(f"point-{it}").setShape(ry.ST.marker,[.1]).setPosition(point)
+    # C.view()
+    # time.sleep(30)
     print("Test points are generated")
     if os.path.exists(output_file):
         with open(output_file,"r") as f:
             results = json.load(f)
     else:
         results = []
+    if os.path.exists(failure_point_name):
+        with open(failure_point_name,"r") as f:
+            failures = json.load(f)
+    else:
+        failures = []
     for it, point in tqdm(enumerate(test_points),desc="Processing",dynamic_ncols=True,position=0):
-        result_data, deviation = throw_sample(point,False,sleep_time=0.01)
-        print(f"Test_p:{it}")
-        results.append({"point":point,"result":result_data, "deviation":deviation})
-        with open(output_file,"w") as f:
-            json.dump(results,f,indent=4)    
+        try:
+            result_data, deviation, trajectory_deviation = throw_sample(point,False,sleep_time=0.01)
+            print(f"Test_p:{it}")
+            results.append({"point":point,"result":result_data, "deviation":deviation, "trajectory_deviation":trajectory_deviation})
+            with open(output_file,"w") as f:
+                json.dump(results,f,indent=4)    
+        except:
+            print("Failed To optimize!")
+            failures.append(point)
+            with open(failure_point_name,"w") as f:
+                json.dump(failures,f,indent=4)    
     # time.sleep(20)
     # throw_sample([-1,0.5,0.3],True,sleep_time=10)
