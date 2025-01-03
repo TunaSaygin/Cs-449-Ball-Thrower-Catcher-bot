@@ -1,10 +1,10 @@
 frame base:{ }
 
 Prefix: "l_" 
-Include: </home/vboxuser/Desktop/CS449/Migi/Cs-449-Ball-Thrower-Catcher-bot/rai_venv/lib64/python3.8/site-packages/rai-robotModels/panda/panda.g>
+Include: <./rai-robotModels/panda/panda.g>
 
 Prefix: "l2_"
-Include: </home/vboxuser/Desktop/CS449/Migi/Cs-449-Ball-Thrower-Catcher-bot/rai_venv/lib64/python3.8/site-packages/rai-robotModels/panda/panda.g>
+Include: <./rai-robotModels/panda/panda.g>
 
 Prefix: False
 
