@@ -11,46 +11,65 @@ class CatcherRobot:
         self.ball_initial_position = None
         self.ball_initial_velocity = None
         self.predicted_landing = None
+        """ komo = ry.KOMO(self.C, 1, 1, 0, True)
+        komo.addObjective([], ry.FS.scalarProductXY, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductXZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductYX, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductYZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
+        print(ret) 
+        bot.move(komo.getPath(), [1.])
+        time.sleep(1)
+        q0 = C.getJointState()
+        C.setJointState(q0) """
 
     def start(self, position, velocity):
         self.ball_initial_position = np.array(position)
         self.ball_initial_velocity = np.array(velocity)
-        self.predict_landing_position()
+        self.predict_catch_position()
         self.move_gripper_to_position(self.bot)
         while self.bot.getTimeToEnd() > 0:
             self.bot.sync(self.C, self.dt)
         print("Gripper moved to the predicted landing position.")
         time.sleep(3)
 
-    def predict_landing_position(self):
+    def predict_catch_position(self):
         if self.ball_initial_position is None or self.ball_initial_velocity is None:
-            raise ValueError("Initial position and velocity must be set before predicting the landing position.")
+            raise ValueError("Initial position and velocity must be set before predicting the catch position.")
 
         x0, y0, z0 = self.ball_initial_position
         vx, vy, vz = self.ball_initial_velocity
+        robot_pos = self.C.getFrame("l2_gripper").getPosition()
+        max_reach = 1.0  # Define the catcher's maximum reach (example: 1 meter)
 
-        # Solve for time to hit the ground using projectile motion formula
-        # z = z0 + vz * t - 0.5 * g * t^2
-        # When the ball hits the ground, z = 0:
-        # 0 = z0 + vz * t - 0.5 * g * t^2
-        # 0.5 * g * t^2 - vz * t - z0 = 0
-        a = 0.5 * self.g
-        b = -vz
-        c = -z0
+        # Time resolution for checking positions
+        dt = 0.01
+        t = 0
+        while True:
+            # Ball's position at time t
+            x_t = x0 + vx * t
+            y_t = y0 + vy * t
+            z_t = z0 + vz * t - 0.5 * self.g * t**2
 
-        # Quadratic formula: t = (-b ± sqrt(b^2 - 4ac)) / 2a
-        discriminant = b**2 - 4 * a * c
-        if discriminant < 0:
-            raise ValueError("The ball does not appear to reach the ground.")
+            # Stop if the ball hits the ground
+            if z_t <= 0:
+                break
 
-        t_ground = (-b + np.sqrt(discriminant)) / (2 * a)  # Use positive root for time
+            # Check if the ball is within the catcher's reachable zone
+            ball_pos = np.array([x_t, y_t, z_t])
+            distance_to_robot = np.linalg.norm(ball_pos - robot_pos)
+            if distance_to_robot <= max_reach:
+                self.predicted_landing = ball_pos
+                self.predicted_time = t
+                print(f"Predicted Catch Position: {self.predicted_landing}, Time: {t:.2f} s")
+                return ball_pos, t
 
-        # Calculate landing position
-        x_land = x0 + vx * t_ground
-        y_land = y0 + vy * t_ground
-        self.predicted_landing = np.array([x_land, y_land, 0])
-        print(f"Predicted Landing Position: {self.predicted_landing}")
+            # Increment time
+            t += dt
 
+        # If no catch position is found
+        print("No suitable catch position found.")
+        return None, None
 
     def move_gripper_to_position(self, bot):
         if self.predicted_landing is None:
