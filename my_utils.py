@@ -133,3 +133,9 @@ def get_quat_from_velocity(velocity):
     vec_z = np.cross(vec_x,vec_y)
     rotation_matrix = np.column_stack((vec_x,vec_y,vec_z))
     return rotation_matrix_to_quaternion(rotation_matrix)
+
+# TODO(Shayan): Remove this printer
+def my_printer(msg="Here"):
+    print("\n\n\n\n\n\n\n")
+    print("*****", msg, "*****")
+    print("\n\n\n\n\n\n\n")

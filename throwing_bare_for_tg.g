@@ -1,0 +1,25 @@
+frame base:{ }
+
+Prefix: "l_" 
+Include: <./rai-robotModels/panda/panda.g>
+
+Prefix: False
+
+thrower_base (base): {
+ joint: transXYPhi, limits: [-10,10,-10,10,-4,4],
+ shape: ssCylinder, size: [.001, .001, .001], contact: 0
+}
+
+Edit l_panda_base: { X: "t(-5 2 .05)"}
+start_area(base): { shape: box, size: [1, 1, 0.01], color: [0, 0, 1], Q: [0.2, 2, 0.03, 1, 0, 0, 0]}
+cargo(start_area): { Q: "t(0.45 0 0.03)", shape: ssBox, size: [.06, .06, .06, 0.01 ], color: [0, 1, 0], mass: .1, contact: 1 , friction: .1}
+
+#vis1(l_gripper): { shape: marker, size: [.75]}
+#vis2(l_panda_coll3): { shape: marker, size: [.75]}
+#vis3(l_panda_coll5): { shape: marker, size: [.75]}
+
+bin (base): {shape: ssBox, Q: [2, 1.6, 0.08], size: [0.5, 0.5, 0.06, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
+side1 (bin): {shape: ssBox, Q: [0.21, 0.0, 0.15], size: [0.08, 0.5, 0.3, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
+side2 (bin): {shape: ssBox, Q: [0.0, -0.21, 0.08], size: [0.5, 0.08, 0.16, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
+side1 (bin): {shape: ssBox, Q: [-0.21, 0.0, 0.08], size: [0.08, 0.5, 0.16, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
+side4 (bin): {shape: ssBox, Q: [0.0, 0.21, 0.08], size: [0.5, 0.08, 0.16, .02], color: [.6, .6, .6], joint: rigid, friction: .1}
