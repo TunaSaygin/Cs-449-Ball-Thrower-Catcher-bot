@@ -7,12 +7,9 @@ from my_utils import get_quat_from_velocity
 import json
 ## this file is created to create generic bin position and get the expected results.
 
-def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_shape = [0.5,0.5]):
-    C = ry.Config()
-    C.addFile("throwing_bare.g")
+def throw_sample(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 20, catch_callback=None):
     print(f"Initial bin pos:{C.getFrame('bin').getPosition()}")
-    init_environment(C,bin_new_position,bin_shape)
-    bot = ry.BotOp(C, useRealRobot=False)
+    bin_new_position = C.getFrame('bin').getPosition()
     release_velocity,isInverted = find_velocity(C)
     initial_position = pick_last_object_if_valid(C,C.getFrame("release_frame").getPosition(),release_velocity)
     #invertion deviation calculation
@@ -28,7 +25,7 @@ def throw_sample(bin_new_position:list,isRender:bool,sleep_time:float = 20, bin_
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
     wanted_sleep = 0.55
     time_sleep = time_deviation * wanted_sleep
-    throw_object(C,bot,time_sleep,release_velocity)
+    throw_object(C,bot,time_sleep,release_velocity, catch_callback)
     cargo_height = C.getFrame("cargo").getSize()[2]
     result, deviation = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2],cargo_height)
 
@@ -72,39 +69,38 @@ def check_in_the_bin(C: ry.Config, bot: ry.BotOp, bin_center, binxy_length, bin_
     return False, deviation
 
 
-def throw_object(C,bot,time_sleep,velocity,stub_function=None, time_interval=0.1):
+def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, time_interval=0.1):
     print(f"velocity is !!!: {velocity}")
-    # new throw point calculation. Because in case of inversion the robot deviates a little
     def vel_komo():
         q0 = C.getJointState()
         komo = ry.KOMO(C, 1, 1, 1, True)
-        # komo.addObjective([], ry.FS.position, ["l_gripper"], ry.OT.eq, [1e-1], [4.2,-3.5,4],1)
-        komo.addObjective([], ry.FS.position, ["l_gripper"], ry.OT.eq, [1e-1], np.array(velocity),1)
-        komo.addObjective([],ry.FS.positionDiff,["l_gripper","release_frame"],ry.OT.sos,[1e0],[0,0,0])
+        komo.addObjective([], ry.FS.position, ["l_gripper"], ry.OT.eq, [1e-1], np.array(velocity), 1)
+        komo.addObjective([], ry.FS.positionDiff, ["l_gripper", "release_frame"], ry.OT.sos, [1e0], [0, 0, 0])
         ret2 = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
-        #komo.addObjective([1.],ry.FS.scalarProductXZ,["base","l_gripper"],ry.OT.eq,[1e1],[-1],0)
-        #print(komo.report())
         print(f"ret!!!: {ret2}")
         return komo
+
     komo = vel_komo()
     gripper_frame = C.getFrame("l_gripper")
-    # bot = ry.BotOp(C,False)
-    # time.sleep(5)
     path = komo.getPath()
     print(f"path size: {path.size}")
-    bot.move(path,[1.])
+    bot.move(path, [1.])
     print(f"bot initial end time:{bot.getTimeToEnd()}")
     time.sleep(time_sleep)
-    bot.gripperMove(ry._left,width=1)
-    bot.sync(C,0.001)
-    if stub_function:
-        stub_function()
-    C.addFrame("actual_release").setPosition(gripper_frame.getPosition()).setShape(ry.ST.marker,[.2]).setColor([1,1,0])
+    bot.gripperMove(ry._left, width=1)
+    bot.sync(C, 0.001)
+
+    # Pass initial conditions to the callback (e.g., catcher robot)
+    if initial_position_callback:
+        initial_position = gripper_frame.getPosition()
+        initial_position_callback(initial_position, velocity)
+
+    C.addFrame("actual_release").setPosition(gripper_frame.getPosition()).setShape(ry.ST.marker, [.2]).setColor([1, 1, 0])
     print(f"bot end time:{bot.getTimeToEnd()}")
-    while bot.getTimeToEnd()>0:
-        if stub_function:
-            stub_function()
-        bot.sync(C,time_interval)
+    while bot.getTimeToEnd() > 0:
+        bot.sync(C, time_interval)
+
+
 def grasp_object(C:ry.Config, bot:ry.BotOp,isInverted:bool,deviation_arr=None,object_name:str="cargo"):
     q0 = qHome = C.getJointState()
     komo_pre_grasp = pre_grasp_komo(C,"l_gripper",object_name,q0,qHome)
@@ -247,8 +243,3 @@ def generate_homogeneous_points(
             points.append((x, y, z))
 
     return points
-
-#for testing this module
-if __name__=="__main__":
-    
-    throw_sample([0,0.7,0.3],True,sleep_time=10)
