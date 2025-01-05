@@ -84,7 +84,7 @@ def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, t
 
     if initial_position_callback:
         initial_position_callback() 
-        
+
     komo = vel_komo()
     gripper_frame = C.getFrame("l_gripper")
     path = komo.getPath()

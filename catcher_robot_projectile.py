@@ -48,6 +48,24 @@ class CatcherRobot:
         """
         robot_pos = self.C.getFrame("l2_gripper").getPosition()
         print("Tracking ball...")
+
+        # Start a thread for predictions
+        prediction_thread = threading.Thread(target=self.update_predictions, args=(robot_pos,))
+        prediction_thread.start()
+
+        while self.running.is_set():
+            # Move the robot toward the latest prediction
+            if self.predicted_landing is not None:
+                self.move_gripper_to_position(self.bot)
+
+            # Sync the bot for smoother movements
+            self.bot.sync(self.C, self.dt)
+
+        # Wait for prediction thread to exit
+        prediction_thread.join()
+        print("Tracking thread exited.")
+
+    def update_predictions(self, robot_pos):
         while self.running.is_set():
             with self.lock:
                 ball_frame = self.C.getFrame("cargo")
@@ -62,15 +80,8 @@ class CatcherRobot:
                 if len(self.ball_positions) >= 2:
                     velocity = self.estimate_velocity()
                     self.predicted_landing = self.predict_catch_position(ball_pos, velocity, robot_pos)
+            #time.sleep(self.dt)  # Allow other threads to run
 
-                # Move to the predicted landing position
-                if self.predicted_landing is not None:
-                    self.move_gripper_to_position(self.bot)
-
-                self.bot.sync(self.C, self.dt)
-
-            time.sleep(self.dt)
-        print("Tracking thread exited.")
 
     def predict_catch_position(self, position, velocity, robot_pos):
         """
@@ -127,7 +138,7 @@ class CatcherRobot:
         velocity = (pos2 - pos1) / self.dt
         return velocity
     
-    def move_gripper_to_position(self, bot):
+    def move_gripper_to_position(self, bot, incremental=False):
         if self.predicted_landing is None:
             raise ValueError("Predicted landing position not calculated.")
 
@@ -139,5 +150,14 @@ class CatcherRobot:
         komo.addObjective([], ry.FS.scalarProductYZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
         ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
         print(ret) 
+        """ if incremental:
+            path = komo.getPath()
+            if path.shape[0] > 2:
+                path = path[:2]  # Move only partially toward the goal
+            bot.move(path, [0.5])
+            bot.sync(self.C, 0.001)
+        else:
+            bot.move(komo.getPath(), [1.0])
+            bot.sync(self.C, 0.001) """
         bot.move(komo.getPath(), [1.])
 
