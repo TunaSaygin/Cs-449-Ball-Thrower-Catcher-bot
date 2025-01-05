@@ -61,4 +61,5 @@ Integrates the thrower and catcher robots, simulating their interaction in a sha
 - `throwing_bare.g`: Simulation configuration for the thrower robot.
 
 
- 
+### Documentation 
+- To see the documentation open branch doc and initialize index.html.
