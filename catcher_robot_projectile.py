@@ -5,7 +5,7 @@ import numpy as np
 
 
 class CatcherRobot:
-    def __init__(self, C, bot, dt=0.01, g=9.81):
+    def __init__(self, C:ry.Config, bot, dt=0.01, g=9.81):
         self.C = C
         self.bot = bot
         self.dt = dt
@@ -82,7 +82,7 @@ class CatcherRobot:
                     velocity = self.estimate_velocity()
                     self.predicted_landing = self.predict_catch_position(ball_pos, velocity, robot_pos)
 
-            time.sleep(self.dt)  # Allow other threads to run
+            # time.sleep(self.dt)  # Allow other threads to run
 
         print("Prediction thread exited.")
 
@@ -95,7 +95,7 @@ class CatcherRobot:
                 #if self.predicted_landing is not None:
                 self.move_gripper_to_position(self.bot, incremental=True)
 
-            self.bot.sync(self.C, self.dt)
+            self.bot.sync(self.C, 0.001)
 
         print("Movement thread exited.")
 
@@ -113,7 +113,7 @@ class CatcherRobot:
         """
         x0, y0, z0 = position
         vx, vy, vz = velocity
-        t = 0.3
+        t = 0.15
 
         while True:
             # Ball's position at time t
@@ -171,7 +171,7 @@ class CatcherRobot:
             bot.move(komo.getPath(), [1.0])
             print("self predicted is none!!!") """
             return
-
+        self.predicted_landings.append(self.predicted_landing)
         komo = ry.KOMO(self.C, 1, 1, 0, True)
         komo.addObjective([], ry.FS.position, ["bin"], ry.OT.eq, [1e1], self.predicted_landing)
         komo.addObjective([], ry.FS.scalarProductXY, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
@@ -188,3 +188,12 @@ class CatcherRobot:
             bot.move(path, [0.1])
         else:
             bot.move(komo.getPath(), [1.0])
+    
+    def render_sample_points(self):
+        print("Points are rendering for debugging purpose....")
+        for it,position in enumerate(self.ball_positions):
+            self.C.addFrame(f"catching-point-{it}").setShape(ry.ST.marker,[.2]).setPosition(position).setColor([1,1,0])
+            self.C.view()
+        for it,position in enumerate(self.predicted_landings):
+            self.C.addFrame(f"landing-{it}").setShape(ry.ST.marker,[.4]).setPosition(position).setColor([0.3,0.5,0.3])
+            self.C.view()
