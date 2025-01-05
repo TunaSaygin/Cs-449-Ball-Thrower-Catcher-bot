@@ -7,7 +7,7 @@ from my_utils import get_quat_from_velocity
 import json
 ## this file is created to create generic bin position and get the expected results.
 
-def throw_sample(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 20, catch_callback=None):
+def throw_sample(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 20, catch_callback1=None, catch_callback2=None):
     print(f"Initial bin pos:{C.getFrame('bin').getPosition()}")
     bin_new_position = C.getFrame('bin').getPosition()
     release_velocity,isInverted = find_velocity(C)
@@ -25,7 +25,7 @@ def throw_sample(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 2
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
     wanted_sleep = 0.55
     time_sleep = time_deviation * wanted_sleep
-    throw_object(C,bot,time_sleep,release_velocity, catch_callback)
+    throw_object(C,bot,time_sleep,release_velocity, catch_callback1)
     cargo_height = C.getFrame("cargo").getSize()[2]
     result, deviation = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2],cargo_height)
 
@@ -34,6 +34,7 @@ def throw_sample(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 2
     if isRender:
         C.view()
         time.sleep(sleep_time)
+    catch_callback2()
     del C
     del bot
     return result, deviation
@@ -76,24 +77,25 @@ def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, t
         komo = ry.KOMO(C, 1, 1, 1, True)
         komo.addObjective([], ry.FS.position, ["l_gripper"], ry.OT.eq, [1e-1], np.array(velocity), 1)
         komo.addObjective([], ry.FS.positionDiff, ["l_gripper", "release_frame"], ry.OT.sos, [1e0], [0, 0, 0])
+        komo.addObjective([], ry.FS.jointState, [], ry.OT.sos, [1e-1], q0)
         ret2 = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
         print(f"ret!!!: {ret2}")
         return komo
 
+    if initial_position_callback:
+        initial_position_callback() 
+        
     komo = vel_komo()
     gripper_frame = C.getFrame("l_gripper")
     path = komo.getPath()
     print(f"path size: {path.size}")
     bot.move(path, [1.])
-    print(f"bot initial end time:{bot.getTimeToEnd()}")
     time.sleep(time_sleep)
     bot.gripperMove(ry._left, width=1)
     bot.sync(C, 0.001)
 
     # Pass initial conditions to the callback (e.g., catcher robot)
-    if initial_position_callback:
-        initial_position = gripper_frame.getPosition()
-        initial_position_callback(initial_position, velocity)
+    print(f"bot initial end time:{bot.getTimeToEnd()}")
 
     C.addFrame("actual_release").setPosition(gripper_frame.getPosition()).setShape(ry.ST.marker, [.2]).setColor([1, 1, 0])
     print(f"bot end time:{bot.getTimeToEnd()}")
