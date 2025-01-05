@@ -70,7 +70,7 @@ def check_in_the_bin(C: ry.Config, bot: ry.BotOp, bin_center, binxy_length, bin_
     return False, deviation
 
 
-def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, time_interval=0.1):
+def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, time_interval=0.001):
     print(f"velocity is !!!: {velocity}")
     def vel_komo():
         q0 = C.getJointState()
