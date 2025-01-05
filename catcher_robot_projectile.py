@@ -5,7 +5,7 @@ import numpy as np
 
 
 class CatcherRobot:
-    def __init__(self, C, bot, dt=0.4, g=9.81):
+    def __init__(self, C, bot, dt=0.01, g=9.81):
         self.C = C
         self.bot = bot
         self.dt = dt
@@ -17,6 +17,7 @@ class CatcherRobot:
         self.lock = threading.Lock()  # Protect shared data
         self.prediction_thread = None
         self.movement_thread = None
+        self.timestamp = []
         """ komo = ry.KOMO(self.C, 1, 1, 0, True)
         komo.addObjective([], ry.FS.scalarProductXY, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
         komo.addObjective([], ry.FS.scalarProductXZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
@@ -73,6 +74,7 @@ class CatcherRobot:
                     continue
 
                 self.ball_positions.append(ball_pos)
+                self.timestamp.append(time.time())
 
                 # Estimate velocity and predict landing position
                 if len(self.ball_positions) >= 2:
@@ -110,7 +112,7 @@ class CatcherRobot:
         """
         x0, y0, z0 = position
         vx, vy, vz = velocity
-        t = 0
+        t = 0.2
 
         while True:
             # Ball's position at time t
@@ -129,7 +131,7 @@ class CatcherRobot:
                 return ball_pos
 
             t += self.dt
-
+        print(f"position: {position} and velocity: {velocity}")
         print("No suitable catch position found.")
         return None
 
@@ -145,6 +147,7 @@ class CatcherRobot:
 
         pos1 = np.array(self.ball_positions[-2])
         pos2 = np.array(self.ball_positions[-1])
+        self.dt = self.timestamp[-1] - self.timestamp[-2]
         velocity = (pos2 - pos1) / self.dt
         return velocity
 
@@ -170,10 +173,10 @@ class CatcherRobot:
 
         komo = ry.KOMO(self.C, 1, 1, 0, True)
         komo.addObjective([], ry.FS.position, ["bin"], ry.OT.eq, [1e1], self.predicted_landing)
-        #komo.addObjective([], ry.FS.scalarProductXY, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-        #komo.addObjective([], ry.FS.scalarProductXZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-        #komo.addObjective([], ry.FS.scalarProductYX, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-        #komo.addObjective([], ry.FS.scalarProductYZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductXY, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductXZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductYX, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
+        komo.addObjective([], ry.FS.scalarProductYZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
         ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
         print(ret)
 

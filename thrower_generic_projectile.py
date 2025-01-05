@@ -28,13 +28,13 @@ def throw_sample(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 2
     throw_object(C,bot,time_sleep,release_velocity, catch_callback1)
     cargo_height = C.getFrame("cargo").getSize()[2]
     result, deviation = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2],cargo_height)
-
+    catch_callback2()
     print(f"Result:{result} for bin pos:{bin_new_position}")
 
     if isRender:
         C.view()
         time.sleep(sleep_time)
-    catch_callback2()
+    
     del C
     del bot
     return result, deviation
