@@ -25,7 +25,7 @@ def throw_sample(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 2
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
     wanted_sleep = 0.55
     time_sleep = time_deviation * wanted_sleep
-    throw_object(C,bot,time_sleep,release_velocity, catch_callback1)
+    throw_object(C,bot,time_sleep,release_velocity, catch_callback1,catch_callback2,time_interval=0.01)
     cargo_height = C.getFrame("cargo").getSize()[2]
     result, deviation = check_in_the_bin(C,bot,bin_new_position,C.getFrame("side2").getSize()[0]/2,C.getFrame("side2").getSize()[2],cargo_height)
 
@@ -34,7 +34,7 @@ def throw_sample(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 2
     if isRender:
         C.view()
         time.sleep(sleep_time)
-    catch_callback2()
+    # catch_callback2()
     del C
     del bot
     return result, deviation
@@ -70,7 +70,7 @@ def check_in_the_bin(C: ry.Config, bot: ry.BotOp, bin_center, binxy_length, bin_
     return False, deviation
 
 
-def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, time_interval=0.1):
+def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, second_callback=None,time_interval=0.1):
     print(f"velocity is !!!: {velocity}")
     def vel_komo():
         q0 = C.getJointState()
@@ -92,6 +92,8 @@ def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, t
     bot.move(path, [1.])
     time.sleep(time_sleep)
     bot.gripperMove(ry._left, width=1)
+    if second_callback:
+        second_callback()
     bot.sync(C, 0.001)
 
     # Pass initial conditions to the callback (e.g., catcher robot)
@@ -100,6 +102,8 @@ def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, t
     C.addFrame("actual_release").setPosition(gripper_frame.getPosition()).setShape(ry.ST.marker, [.2]).setColor([1, 1, 0])
     print(f"bot end time:{bot.getTimeToEnd()}")
     while bot.getTimeToEnd() > 0:
+        # if initial_position_callback:
+        #     initial_position_callback()
         bot.sync(C, time_interval)
 
 

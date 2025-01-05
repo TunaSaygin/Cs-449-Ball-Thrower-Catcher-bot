@@ -32,5 +32,6 @@ if __name__ == "__main__":
 
     # Start the thrower robot
     bin_position = [0, 0.7, 0.3]
-    throw_sample(C, bot, isRender=True, sleep_time=10, catch_callback1=on_ball_release, catch_callback2=after_ball_release)
-
+    throw_sample(C, bot, isRender=True, sleep_time=5, catch_callback1=on_ball_release, catch_callback2=after_ball_release)
+    catcher_robot.render_sample_points()
+    time.sleep(20)
