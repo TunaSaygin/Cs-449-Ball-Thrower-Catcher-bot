@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project involves the development of a ball-throwing and catching robotic system. The system utilizes the Robotic library (`ry`) for simulation and control, and includes a thrower robot that calculates optimal trajectories and velocities to throw a ball, and a catcher robot that dynamically adjusts its position to catch the thrown ball.
+This project involves the development of a ball-throwing and catching robotic system. The system utilizes the Robotic library (`ry`) (version 0.1.10) for simulation and control, and includes a thrower robot that calculates optimal trajectories and velocities to throw a ball, and a catcher robot that dynamically adjusts its position to catch the thrown ball.
 
 The project demonstrates advanced robotics concepts such as:
 - Trajectory optimization
