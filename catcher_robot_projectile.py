@@ -18,6 +18,7 @@ class CatcherRobot:
         self.prediction_thread = None
         self.movement_thread = None
         self.timestamp = []
+        self.predicted_landings = []
         """ komo = ry.KOMO(self.C, 1, 1, 0, True)
         komo.addObjective([], ry.FS.scalarProductXY, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
         komo.addObjective([], ry.FS.scalarProductXZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
@@ -112,7 +113,7 @@ class CatcherRobot:
         """
         x0, y0, z0 = position
         vx, vy, vz = velocity
-        t = 0.2
+        t = 0.3
 
         while True:
             # Ball's position at time t

@@ -13,17 +13,9 @@ def throw_sample(C: ry.Config, bot: ry.BotOp, isRender:bool,sleep_time:float = 2
     release_velocity,isInverted = find_velocity(C)
     initial_position = pick_last_object_if_valid(C,C.getFrame("release_frame").getPosition(),release_velocity)
     #invertion deviation calculation
-    if isInverted:
-        deviation_dist = 0.2
-        a = -release_velocity[1]/release_velocity[0]
-        dev_x = deviation_dist/np.sqrt(1+np.square(a))
-        dev_y = deviation_dist/np.sqrt(1+np.square(1/a))
-        deviation_arr = np.array([dev_x,dev_y,0])
-        time_deviation = grasp_object(C,bot,isInverted,deviation_arr)
-    else:
-        time_deviation = grasp_object(C,bot,isInverted)
+    time_deviation = grasp_object(C,bot)
     print(f"Final bin pos:{C.getFrame('bin').getPosition()}")
-    wanted_sleep = 0.55
+    wanted_sleep = 0.50
     time_sleep = time_deviation * wanted_sleep
     throw_object(C,bot,time_sleep,release_velocity, catch_callback1)
     cargo_height = C.getFrame("cargo").getSize()[2]
@@ -103,11 +95,11 @@ def throw_object(C, bot, time_sleep, velocity, initial_position_callback=None, t
         bot.sync(C, time_interval)
 
 
-def grasp_object(C:ry.Config, bot:ry.BotOp,isInverted:bool,deviation_arr=None,object_name:str="cargo"):
+def grasp_object(C:ry.Config, bot:ry.BotOp,object_name:str="cargo"):
     q0 = qHome = C.getJointState()
     komo_pre_grasp = pre_grasp_komo(C,"l_gripper",object_name,q0,qHome)
     path_pre_grasp = komo_pre_grasp.getPath()
-    komo_post_grasp = post_grasp_komo(C,isInverted,deviation_arr)
+    komo_post_grasp = post_grasp_komo(C,qHome)
     path_post_grasp = komo_post_grasp.getPath()
     shape = path_pre_grasp.shape[0]*0.1
     print(path_pre_grasp.shape)
@@ -146,11 +138,24 @@ def pre_grasp_komo(C, gripper_name, grasp_frame_name, q0, qHome):
     ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
     print(ret)
     return komo
-def post_grasp_komo(C,isInverted:bool,deviationarr=None)->ry.KOMO:
-
+def post_grasp_komo(C:ry.Config, home)->ry.KOMO:
+    # I assume that robot is facing 1 0 0 direction
+    z_vector= np.array([0,0,1])
+    robot_base = np.array(C.getFrame("l_panda_base").getPosition())
+    initial_position  = np.array(C.getFrame("initial_position").getPosition())
+    initial_position = initial_position-robot_base
+    # initial_position = initial_position-robot_base
+    C.addFrame("marker_coll3","l_panda_coll3").setShape(ry.ST.marker,[.3]).setColor([1,0,0])
+    C.addFrame("marker_coll5","l_panda_coll5").setShape(ry.ST.marker,[.3]).setColor([0,1,0])
+    C.addFrame("marker_coll7","l_panda_coll7").setShape(ry.ST.marker,[.4]).setColor([0,0,1])
+    # orthogonal = np.cross(np.array([initial_position[0],initial_position[1],0]),z_vector)
     komo = ry.KOMO(C, 1, 1, 0, True)
-    komo.addObjective([], ry.FS.positionDiff, ["l_gripper","initial_position"], ry.OT.sos, [1e0], [0,0,0] if not isInverted else deviationarr)
-    komo.addObjective([], ry.FS.scalarProductYZ, ["l_gripper","base"], ry.OT.eq, [1e1], [-1])
+    komo.addObjective([],ry.FS.vectorX,["l_panda_coll3"],ry.OT.eq,[initial_position[0],initial_position[1],0])
+    komo.addObjective([],ry.FS.vectorX,["l_panda_coll5"],ry.OT.eq,[initial_position[0],initial_position[1],0])
+    komo.addObjective([], ry.FS.scalarProductXZ, ["initial_position","l_panda_coll5"], ry.OT.eq, [1e1], [-1])
+    komo.addObjective([], ry.FS.scalarProductXZ, ["initial_position","l_panda_coll3"], ry.OT.eq, [1e1], [-1])
+    komo.addObjective([], ry.FS.scalarProductXX, ["initial_position","l_panda_coll7"], ry.OT.eq, [1e1], [1])
+    # komo.addObjective([], ry.FS.scalarProductXX, ["initial_position","l_gripper"], ry.OT.eq, [1e1], [-1])
     ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
     print(ret)
     return komo
@@ -188,9 +193,6 @@ def rotate_bin(bin_position:np.ndarray, base_position:np.ndarray):
     rotation_matrix = np.column_stack((bin_x_vector, bin_y_vector, bin_z_vector)) # what it does is that it transposes each array and makes new matrix from these row vectors
     new_quaternion = rotation_matrix_to_quaternion(rotation_matrix)
     return new_quaternion
-
-
-
 
 def generate_homogeneous_points(
     robo_base, carpet_center, carpet_len, range_limit, z_min, z_max, num_points, grid_resolution=10
