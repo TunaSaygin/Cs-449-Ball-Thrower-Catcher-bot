@@ -1,0 +1,116 @@
+\hypertarget{namespacethrower__generic__calculate__time}{}\doxysection{thrower\+\_\+generic\+\_\+calculate\+\_\+time Namespace Reference}
+\label{namespacethrower__generic__calculate__time}\index{thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacethrower__generic__calculate__time_a3424eb1b2ed7667a4fd6a9325b729792}{simulate\+\_\+throw\+\_\+time}} (C, bot, velocity)
+\begin{DoxyCompactList}\small\item\em Simulate throw timing to calculate the robot\textquotesingle{}s movement time. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__calculate__time_a5721e72c3f10dba2c22e5aa848a7625c}{throw\+\_\+sample}} (bin\+\_\+new\+\_\+position, is\+Render, \mbox{\hyperlink{namespacethrower__generic__calculate__time_a48b9e4bc9d136e0b283ef208fec3b3d3}{sleep\+\_\+time}}=20, bin\+\_\+shape=\mbox{[}0.\+5, 0.\+5\mbox{]})
+\begin{DoxyCompactList}\small\item\em Perform a throwing simulation and validate if the object lands in the bin. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__calculate__time_aaf9b93d8230c3724f4d27f8115eacb78}{check\+\_\+in\+\_\+the\+\_\+bin}} (C, bot, bin\+\_\+center, binxy\+\_\+length, bin\+\_\+height, cargo\+\_\+height)
+\begin{DoxyCompactList}\small\item\em Validate if the object lands within the bin. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacethrower__generic__calculate__time_a588a9ebbc43c2f56479908169b7d3ba8}{True}}
+\item 
+\mbox{\hyperlink{namespacethrower__generic__calculate__time_a48b9e4bc9d136e0b283ef208fec3b3d3}{sleep\+\_\+time}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacethrower__generic__calculate__time_aaf9b93d8230c3724f4d27f8115eacb78}\label{namespacethrower__generic__calculate__time_aaf9b93d8230c3724f4d27f8115eacb78}} 
+\index{thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}!check\_in\_the\_bin@{check\_in\_the\_bin}}
+\index{check\_in\_the\_bin@{check\_in\_the\_bin}!thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}}
+\doxysubsubsection{\texorpdfstring{check\_in\_the\_bin()}{check\_in\_the\_bin()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic\+\_\+calculate\+\_\+time.\+check\+\_\+in\+\_\+the\+\_\+bin (\begin{DoxyParamCaption}\item[{}]{C,  }\item[{}]{bot,  }\item[{}]{bin\+\_\+center,  }\item[{}]{binxy\+\_\+length,  }\item[{}]{bin\+\_\+height,  }\item[{}]{cargo\+\_\+height }\end{DoxyParamCaption})}
+
+
+
+Validate if the object lands within the bin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The robotic configuration. \\
+\hline
+{\em bot} & Robot operation interface. \\
+\hline
+{\em bin\+\_\+center} & Center position of the bin \mbox{[}x, y, z\mbox{]}. \\
+\hline
+{\em binxy\+\_\+length} & Half-\/length of the bin in x and y directions. \\
+\hline
+{\em bin\+\_\+height} & Height of the bin. \\
+\hline
+{\em cargo\+\_\+height} & Height of the cargo.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+bool True if the cargo is in the bin, False otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacethrower__generic__calculate__time_a3424eb1b2ed7667a4fd6a9325b729792}\label{namespacethrower__generic__calculate__time_a3424eb1b2ed7667a4fd6a9325b729792}} 
+\index{thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}!simulate\_throw\_time@{simulate\_throw\_time}}
+\index{simulate\_throw\_time@{simulate\_throw\_time}!thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}}
+\doxysubsubsection{\texorpdfstring{simulate\_throw\_time()}{simulate\_throw\_time()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic\+\_\+calculate\+\_\+time.\+simulate\+\_\+throw\+\_\+time (\begin{DoxyParamCaption}\item[{}]{C,  }\item[{}]{bot,  }\item[{}]{velocity }\end{DoxyParamCaption})}
+
+
+
+Simulate throw timing to calculate the robot\textquotesingle{}s movement time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The robotic configuration. \\
+\hline
+{\em bot} & Robot operation interface. \\
+\hline
+{\em velocity} & Velocity vector for the throw.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+float Total time for the motion. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacethrower__generic__calculate__time_a5721e72c3f10dba2c22e5aa848a7625c}\label{namespacethrower__generic__calculate__time_a5721e72c3f10dba2c22e5aa848a7625c}} 
+\index{thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}!throw\_sample@{throw\_sample}}
+\index{throw\_sample@{throw\_sample}!thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}}
+\doxysubsubsection{\texorpdfstring{throw\_sample()}{throw\_sample()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic\+\_\+calculate\+\_\+time.\+throw\+\_\+sample (\begin{DoxyParamCaption}\item[{}]{bin\+\_\+new\+\_\+position,  }\item[{}]{is\+Render,  }\item[{}]{sleep\+\_\+time = {\ttfamily 20},  }\item[{}]{bin\+\_\+shape = {\ttfamily \mbox{[}0.5,~0.5\mbox{]}} }\end{DoxyParamCaption})}
+
+
+
+Perform a throwing simulation and validate if the object lands in the bin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bin\+\_\+new\+\_\+position} & The new position of the bin \mbox{[}x, y, z\mbox{]}. \\
+\hline
+{\em is\+Render} & Whether to render the simulation. \\
+\hline
+{\em sleep\+\_\+time} & Time to wait before ending the simulation (default\+: 20 seconds). \\
+\hline
+{\em bin\+\_\+shape} & Dimensions of the bin \mbox{[}length, width\mbox{]}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+bool True if the object lands in the bin, False otherwise. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacethrower__generic__calculate__time_a48b9e4bc9d136e0b283ef208fec3b3d3}\label{namespacethrower__generic__calculate__time_a48b9e4bc9d136e0b283ef208fec3b3d3}} 
+\index{thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}!sleep\_time@{sleep\_time}}
+\index{sleep\_time@{sleep\_time}!thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}}
+\doxysubsubsection{\texorpdfstring{sleep\_time}{sleep\_time}}
+{\footnotesize\ttfamily thrower\+\_\+generic\+\_\+calculate\+\_\+time.\+sleep\+\_\+time}
+
+\mbox{\Hypertarget{namespacethrower__generic__calculate__time_a588a9ebbc43c2f56479908169b7d3ba8}\label{namespacethrower__generic__calculate__time_a588a9ebbc43c2f56479908169b7d3ba8}} 
+\index{thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}!True@{True}}
+\index{True@{True}!thrower\_generic\_calculate\_time@{thrower\_generic\_calculate\_time}}
+\doxysubsubsection{\texorpdfstring{True}{True}}
+{\footnotesize\ttfamily thrower\+\_\+generic\+\_\+calculate\+\_\+time.\+True}
+

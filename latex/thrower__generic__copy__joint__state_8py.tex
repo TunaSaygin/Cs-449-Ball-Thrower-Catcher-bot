@@ -1,0 +1,32 @@
+\hypertarget{thrower__generic__copy__joint__state_8py}{}\doxysection{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+py File Reference}
+\label{thrower__generic__copy__joint__state_8py}\index{thrower\_generic\_copy\_joint\_state.py@{thrower\_generic\_copy\_joint\_state.py}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacethrower__generic__copy__joint__state}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_ab77f15203791cf8b3612125243b278af}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+throw\+\_\+sample}} (list bin\+\_\+new\+\_\+position, bool is\+Render, float sleep\+\_\+time=20, bin\+\_\+shape=\mbox{[}0.\+5, 0.\+5\mbox{]})
+\begin{DoxyCompactList}\small\item\em Simulates the process of throwing an object into a bin and evaluates the results. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_aba9b34cc53e981ba13a3bbd56086caef}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+render\+\_\+actual\+\_\+trajectory}} (ry.\+Config C, int id, list trajectory, list color=\mbox{[}0.\+6, 0.\+2, 0.\+3\mbox{]})
+\begin{DoxyCompactList}\small\item\em Renders the trajectory of the ball in the simulation. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_a2370bfb8e3f2168e74e0fcf8e8578823}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+calculate\+\_\+deviation}} (position\+\_\+red, position\+\_\+blue, height\+\_\+threshold)
+\begin{DoxyCompactList}\small\item\em Calculates the deviation between actual and estimated trajectories. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_a5b7a2e11871541479db0fe816c309c2c}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+check\+\_\+in\+\_\+the\+\_\+bin}} (ry.\+Config C, ry.\+Bot\+Op bot, bin\+\_\+center, binxy\+\_\+length, bin\+\_\+height, cargo\+\_\+height, trajectory)
+\begin{DoxyCompactList}\small\item\em Checks whether the object lands in the bin. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_aa6d73881c42079c42e22862580a29386}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+throw\+\_\+object}} (C, bot, time\+\_\+sleep, velocity, trajectory)
+\begin{DoxyCompactList}\small\item\em Executes the throw operation. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_a1fcab2c8d6294ecdbafb87885bb53b1f}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+grasp\+\_\+object}} (ry.\+Config C, ry.\+Bot\+Op bot, str object\+\_\+name=\char`\"{}cargo\char`\"{})
+\begin{DoxyCompactList}\small\item\em Executes the grasping operation for the specified object. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_a60521e0918f70a2da9c0c10a225b73d1}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+pre\+\_\+grasp\+\_\+komo}} (C, gripper\+\_\+name, grasp\+\_\+frame\+\_\+name, q0, q\+Home)
+\begin{DoxyCompactList}\small\item\em Configures the pre-\/grasp trajectory for the robot. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_a293873f28673dbe66e70ffe2431793f9}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+post\+\_\+grasp\+\_\+komo}} (ry.\+Config C, home)
+\begin{DoxyCompactList}\small\item\em Configures the post-\/grasp trajectory for the robot. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_a18275df37713d858ef488fd4dd621b9c}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+init\+\_\+environment}} (ry.\+Config C, list bin\+\_\+new\+\_\+position, bin\+\_\+shape)
+\begin{DoxyCompactList}\small\item\em Initializes the simulation environment with the specified bin position and shape. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_a56d888f8ff07009219bbb286bbc7f7b9}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+rotate\+\_\+bin}} (np.\+ndarray bin\+\_\+position, np.\+ndarray base\+\_\+position)
+\begin{DoxyCompactList}\small\item\em Calculates the rotation quaternion for aligning the bin to the base. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__copy__joint__state_a9f5fe565a8b5988630280dc3647148e0}{thrower\+\_\+generic\+\_\+copy\+\_\+joint\+\_\+state.\+generate\+\_\+homogeneous\+\_\+points}} (robo\+\_\+base, carpet\+\_\+center, carpet\+\_\+len, range\+\_\+limit, z\+\_\+min, z\+\_\+max, num\+\_\+points, grid\+\_\+resolution=10)
+\begin{DoxyCompactList}\small\item\em Generates a grid of random 3D points within a specified range. \end{DoxyCompactList}\end{DoxyCompactItemize}

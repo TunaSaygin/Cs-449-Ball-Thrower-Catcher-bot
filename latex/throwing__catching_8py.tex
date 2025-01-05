@@ -1,0 +1,31 @@
+\hypertarget{throwing__catching_8py}{}\doxysection{throwing\+\_\+catching.\+py File Reference}
+\label{throwing__catching_8py}\index{throwing\_catching.py@{throwing\_catching.py}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacethrowing__catching}{throwing\+\_\+catching}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacethrowing__catching_a2197ff4aba456a27596c7dc22fd4efc0}{throwing\+\_\+catching.\+throw\+\_\+catch}} (ry.\+Config C, ry.\+Bot\+Op bot, bool is\+Render, float sleep\+\_\+time=20)
+\begin{DoxyCompactList}\small\item\em Coordinates the thrower robot\textquotesingle{}s operations and checks the result. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrowing__catching_a3d5ff12dd015797a7a6ce6c70e797c9c}{throwing\+\_\+catching.\+run\+\_\+thrower}} ()
+\begin{DoxyCompactList}\small\item\em Function to operate the thrower robot. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrowing__catching_a4860cc4dcc8700cdc45f2024141f5b8b}{throwing\+\_\+catching.\+run\+\_\+catcher}} ()
+\begin{DoxyCompactList}\small\item\em Function to operate the catcher robot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacethrowing__catching_a509ccf63cf1ad65ba38e515ad34f46f2}{throwing\+\_\+catching.\+render\+\_\+simulation}} = True
+\begin{DoxyCompactList}\small\item\em Main function for initializing and running both the thrower and catcher robots. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacethrowing__catching_ac19770ba192813c9df3a0b5becc791ef}{throwing\+\_\+catching.\+C}} = ry.\+Config()
+\item 
+\mbox{\hyperlink{namespacethrowing__catching_a7b3abdb611cbac32d5e849620a34ffce}{throwing\+\_\+catching.\+q\+Home}} = C.\+get\+Joint\+State()
+\item 
+\mbox{\hyperlink{namespacethrowing__catching_a1b31c19aa1baf712f3d6d94e221aa273}{throwing\+\_\+catching.\+bot}} = ry.\+Bot\+Op(C, use\+Real\+Robot=False)
+\item 
+\mbox{\hyperlink{namespacethrowing__catching_ac115156668f5c5eda24d4319c852248f}{throwing\+\_\+catching.\+thrower\+\_\+thread}} = threading.\+Thread(target=run\+\_\+thrower)
+\item 
+\mbox{\hyperlink{namespacethrowing__catching_a7c8a8a2f5629fc35829f403126aa37e8}{throwing\+\_\+catching.\+catcher\+\_\+thread}} = threading.\+Thread(target=run\+\_\+catcher)
+\end{DoxyCompactItemize}

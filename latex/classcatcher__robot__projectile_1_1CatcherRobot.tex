@@ -1,0 +1,309 @@
+\hypertarget{classcatcher__robot__projectile_1_1CatcherRobot}{}\doxysection{catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot Class Reference}
+\label{classcatcher__robot__projectile_1_1CatcherRobot}\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+
+
+A class representing a robot capable of catching a ball in motion.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a9c90401a2126b85e87b265cbdfae1b9a}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a989017477bb4efd1f0ea8062b0182ddf}{C}}, \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_aceed4b3c74d26067adf4da29d4986e9c}{bot}}, \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_ac2ed5c0ddd96e3fdfd1dbabe633330a9}{dt}}=0.\+001, \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_ab05e1bdf45e2bea2119b76b87a886e1c}{g}}=9.\+81)
+\begin{DoxyCompactList}\small\item\em Initialize the \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot}{Catcher\+Robot}}. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a06a134e4d267ef34d40514f5ccf3f2d3}{start}} (self)
+\begin{DoxyCompactList}\small\item\em Start tracking the ball\textquotesingle{}s trajectory in separate threads. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a0ab2d6b676d77f3a24b50e9c6ce991f5}{stop}} (self)
+\begin{DoxyCompactList}\small\item\em Stop the catcher robot and wait for threads to finish. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_acae63969ba3cf272904da89f0ac4b4d1}{update\+\_\+predictions}} (self)
+\begin{DoxyCompactList}\small\item\em Continuously update the predicted landing position based on ball positions. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_acfdbecda591815f5fb19bd869d2936e6}{execute\+\_\+movement}} (self)
+\begin{DoxyCompactList}\small\item\em Continuously move the gripper toward the latest predicted landing position. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_af267597bc8754a6ab17b56e56d071814}{predict\+\_\+catch\+\_\+position}} (self, position, velocity, robot\+\_\+pos)
+\begin{DoxyCompactList}\small\item\em Predict the position where the ball will be catchable. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a6119bd1e3b9c2244ae5d7178f3eb2976}{estimate\+\_\+velocity}} (self)
+\begin{DoxyCompactList}\small\item\em Estimate the ball\textquotesingle{}s velocity based on its observed positions. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a350de3f4fc9724a837b4fb2f81f68840}{move\+\_\+gripper\+\_\+to\+\_\+position}} (self, \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_aceed4b3c74d26067adf4da29d4986e9c}{bot}}, incremental=False)
+\begin{DoxyCompactList}\small\item\em Move the gripper toward the predicted landing position. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a989017477bb4efd1f0ea8062b0182ddf}{C}}
+\begin{DoxyCompactList}\small\item\em The configuration of the robotic setup. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_aceed4b3c74d26067adf4da29d4986e9c}{bot}}
+\begin{DoxyCompactList}\small\item\em The robotic operation interface. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_ac2ed5c0ddd96e3fdfd1dbabe633330a9}{dt}}
+\begin{DoxyCompactList}\small\item\em Time step for updates in seconds. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_ab05e1bdf45e2bea2119b76b87a886e1c}{g}}
+\begin{DoxyCompactList}\small\item\em Gravitational acceleration (default is 9.\+81 m/s$^\wedge$2). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_ad5ec18f7fa23a8ab044ec15c8cea1de1}{running}}
+\begin{DoxyCompactList}\small\item\em A flag to control thread execution. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a5af5414ada45a2e2f53eecd5b0b13818}{predicted\+\_\+landing}}
+\begin{DoxyCompactList}\small\item\em The predicted position where the ball can be caught. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a66e1ba48b6201ab6bd8b032fdc7f49ea}{ball\+\_\+positions}}
+\begin{DoxyCompactList}\small\item\em A list of observed ball positions. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_ac46c18e4f97fd8304d67cd391677c1dd}{max\+\_\+reach}}
+\begin{DoxyCompactList}\small\item\em Maximum reachable distance for the robot\textquotesingle{}s gripper. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_aad105ff6a9026df7d15f78fe4cf9ce3a}{lock}}
+\begin{DoxyCompactList}\small\item\em A lock to protect shared data across threads. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a9a4050c5c427fbcd33fe4cc1f5ebe311}{prediction\+\_\+thread}}
+\begin{DoxyCompactList}\small\item\em Thread for trajectory prediction. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a4ce675dbe0ac2bd0e2aab78e999a1145}{movement\+\_\+thread}}
+\begin{DoxyCompactList}\small\item\em Thread for executing robot movements. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot_a54bd687ba4acdb1c9c9be44ac52df4cd}{timestamp}}
+\begin{DoxyCompactList}\small\item\em Timestamps of ball observations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class representing a robot capable of catching a ball in motion. 
+
+It uses multi-\/threading for prediction and movement. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a9c90401a2126b85e87b265cbdfae1b9a}\label{classcatcher__robot__projectile_1_1CatcherRobot_a9c90401a2126b85e87b265cbdfae1b9a}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{C,  }\item[{}]{bot,  }\item[{}]{dt = {\ttfamily 0.001},  }\item[{}]{g = {\ttfamily 9.81} }\end{DoxyParamCaption})}
+
+
+
+Initialize the \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot}{Catcher\+Robot}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The robotic configuration object. \\
+\hline
+{\em bot} & The robot operation object. \\
+\hline
+{\em dt} & Time step for updates (default\+: 0.\+001). \\
+\hline
+{\em g} & Gravitational acceleration (default\+: 9.\+81 m/s$^\wedge$2). \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a6119bd1e3b9c2244ae5d7178f3eb2976}\label{classcatcher__robot__projectile_1_1CatcherRobot_a6119bd1e3b9c2244ae5d7178f3eb2976}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!estimate\_velocity@{estimate\_velocity}}
+\index{estimate\_velocity@{estimate\_velocity}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{estimate\_velocity()}{estimate\_velocity()}}
+{\footnotesize\ttfamily def catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+estimate\+\_\+velocity (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Estimate the ball\textquotesingle{}s velocity based on its observed positions. 
+
+\begin{DoxyReturn}{Returns}
+
+
+np Estimated velocity \mbox{[}vx, vy, vz\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_acfdbecda591815f5fb19bd869d2936e6}\label{classcatcher__robot__projectile_1_1CatcherRobot_acfdbecda591815f5fb19bd869d2936e6}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!execute\_movement@{execute\_movement}}
+\index{execute\_movement@{execute\_movement}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{execute\_movement()}{execute\_movement()}}
+{\footnotesize\ttfamily def catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+execute\+\_\+movement (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Continuously move the gripper toward the latest predicted landing position. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a350de3f4fc9724a837b4fb2f81f68840}\label{classcatcher__robot__projectile_1_1CatcherRobot_a350de3f4fc9724a837b4fb2f81f68840}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!move\_gripper\_to\_position@{move\_gripper\_to\_position}}
+\index{move\_gripper\_to\_position@{move\_gripper\_to\_position}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{move\_gripper\_to\_position()}{move\_gripper\_to\_position()}}
+{\footnotesize\ttfamily def catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+move\+\_\+gripper\+\_\+to\+\_\+position (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{bot,  }\item[{}]{incremental = {\ttfamily False} }\end{DoxyParamCaption})}
+
+
+
+Move the gripper toward the predicted landing position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bot} & Robot operation object. \\
+\hline
+{\em incremental} & Whether to move incrementally toward the goal. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_af267597bc8754a6ab17b56e56d071814}\label{classcatcher__robot__projectile_1_1CatcherRobot_af267597bc8754a6ab17b56e56d071814}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!predict\_catch\_position@{predict\_catch\_position}}
+\index{predict\_catch\_position@{predict\_catch\_position}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{predict\_catch\_position()}{predict\_catch\_position()}}
+{\footnotesize\ttfamily def catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+predict\+\_\+catch\+\_\+position (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{position,  }\item[{}]{velocity,  }\item[{}]{robot\+\_\+pos }\end{DoxyParamCaption})}
+
+
+
+Predict the position where the ball will be catchable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & Current position of the ball \mbox{[}x, y, z\mbox{]}. \\
+\hline
+{\em velocity} & Current velocity of the ball \mbox{[}vx, vy, vz\mbox{]}. \\
+\hline
+{\em robot\+\_\+pos} & Position of the robot\textquotesingle{}s gripper \mbox{[}x, y, z\mbox{]}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+np Predicted catch position \mbox{[}x, y, z\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a06a134e4d267ef34d40514f5ccf3f2d3}\label{classcatcher__robot__projectile_1_1CatcherRobot_a06a134e4d267ef34d40514f5ccf3f2d3}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!start@{start}}
+\index{start@{start}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily def catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+start (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Start tracking the ball\textquotesingle{}s trajectory in separate threads. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a0ab2d6b676d77f3a24b50e9c6ce991f5}\label{classcatcher__robot__projectile_1_1CatcherRobot_a0ab2d6b676d77f3a24b50e9c6ce991f5}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!stop@{stop}}
+\index{stop@{stop}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily def catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+stop (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Stop the catcher robot and wait for threads to finish. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_acae63969ba3cf272904da89f0ac4b4d1}\label{classcatcher__robot__projectile_1_1CatcherRobot_acae63969ba3cf272904da89f0ac4b4d1}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!update\_predictions@{update\_predictions}}
+\index{update\_predictions@{update\_predictions}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{update\_predictions()}{update\_predictions()}}
+{\footnotesize\ttfamily def catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+update\+\_\+predictions (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Continuously update the predicted landing position based on ball positions. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a66e1ba48b6201ab6bd8b032fdc7f49ea}\label{classcatcher__robot__projectile_1_1CatcherRobot_a66e1ba48b6201ab6bd8b032fdc7f49ea}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!ball\_positions@{ball\_positions}}
+\index{ball\_positions@{ball\_positions}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{ball\_positions}{ball\_positions}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+ball\+\_\+positions}
+
+
+
+A list of observed ball positions. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_aceed4b3c74d26067adf4da29d4986e9c}\label{classcatcher__robot__projectile_1_1CatcherRobot_aceed4b3c74d26067adf4da29d4986e9c}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!bot@{bot}}
+\index{bot@{bot}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{bot}{bot}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+bot}
+
+
+
+The robotic operation interface. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a989017477bb4efd1f0ea8062b0182ddf}\label{classcatcher__robot__projectile_1_1CatcherRobot_a989017477bb4efd1f0ea8062b0182ddf}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!C@{C}}
+\index{C@{C}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{C}{C}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+C}
+
+
+
+The configuration of the robotic setup. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_ac2ed5c0ddd96e3fdfd1dbabe633330a9}\label{classcatcher__robot__projectile_1_1CatcherRobot_ac2ed5c0ddd96e3fdfd1dbabe633330a9}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!dt@{dt}}
+\index{dt@{dt}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{dt}{dt}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+dt}
+
+
+
+Time step for updates in seconds. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_ab05e1bdf45e2bea2119b76b87a886e1c}\label{classcatcher__robot__projectile_1_1CatcherRobot_ab05e1bdf45e2bea2119b76b87a886e1c}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!g@{g}}
+\index{g@{g}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{g}{g}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+g}
+
+
+
+Gravitational acceleration (default is 9.\+81 m/s$^\wedge$2). 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_aad105ff6a9026df7d15f78fe4cf9ce3a}\label{classcatcher__robot__projectile_1_1CatcherRobot_aad105ff6a9026df7d15f78fe4cf9ce3a}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!lock@{lock}}
+\index{lock@{lock}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{lock}{lock}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+lock}
+
+
+
+A lock to protect shared data across threads. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_ac46c18e4f97fd8304d67cd391677c1dd}\label{classcatcher__robot__projectile_1_1CatcherRobot_ac46c18e4f97fd8304d67cd391677c1dd}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!max\_reach@{max\_reach}}
+\index{max\_reach@{max\_reach}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{max\_reach}{max\_reach}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+max\+\_\+reach}
+
+
+
+Maximum reachable distance for the robot\textquotesingle{}s gripper. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a4ce675dbe0ac2bd0e2aab78e999a1145}\label{classcatcher__robot__projectile_1_1CatcherRobot_a4ce675dbe0ac2bd0e2aab78e999a1145}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!movement\_thread@{movement\_thread}}
+\index{movement\_thread@{movement\_thread}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{movement\_thread}{movement\_thread}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+movement\+\_\+thread}
+
+
+
+Thread for executing robot movements. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a5af5414ada45a2e2f53eecd5b0b13818}\label{classcatcher__robot__projectile_1_1CatcherRobot_a5af5414ada45a2e2f53eecd5b0b13818}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!predicted\_landing@{predicted\_landing}}
+\index{predicted\_landing@{predicted\_landing}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{predicted\_landing}{predicted\_landing}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+predicted\+\_\+landing}
+
+
+
+The predicted position where the ball can be caught. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a9a4050c5c427fbcd33fe4cc1f5ebe311}\label{classcatcher__robot__projectile_1_1CatcherRobot_a9a4050c5c427fbcd33fe4cc1f5ebe311}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!prediction\_thread@{prediction\_thread}}
+\index{prediction\_thread@{prediction\_thread}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{prediction\_thread}{prediction\_thread}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+prediction\+\_\+thread}
+
+
+
+Thread for trajectory prediction. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_ad5ec18f7fa23a8ab044ec15c8cea1de1}\label{classcatcher__robot__projectile_1_1CatcherRobot_ad5ec18f7fa23a8ab044ec15c8cea1de1}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!running@{running}}
+\index{running@{running}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{running}{running}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+running}
+
+
+
+A flag to control thread execution. 
+
+\mbox{\Hypertarget{classcatcher__robot__projectile_1_1CatcherRobot_a54bd687ba4acdb1c9c9be44ac52df4cd}\label{classcatcher__robot__projectile_1_1CatcherRobot_a54bd687ba4acdb1c9c9be44ac52df4cd}} 
+\index{catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}!timestamp@{timestamp}}
+\index{timestamp@{timestamp}!catcher\_robot\_projectile.CatcherRobot@{catcher\_robot\_projectile.CatcherRobot}}
+\doxysubsubsection{\texorpdfstring{timestamp}{timestamp}}
+{\footnotesize\ttfamily catcher\+\_\+robot\+\_\+projectile.\+Catcher\+Robot.\+timestamp}
+
+
+
+Timestamps of ball observations. 
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{catcher__robot__projectile_8py}{catcher\+\_\+robot\+\_\+projectile.\+py}}\end{DoxyCompactItemize}

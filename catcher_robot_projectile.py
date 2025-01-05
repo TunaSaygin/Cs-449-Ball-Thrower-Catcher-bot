@@ -5,7 +5,35 @@ import numpy as np
 
 
 class CatcherRobot:
-    def __init__(self, C, bot, dt=0.01, g=9.81):
+    """
+    A class representing a robot capable of catching a ball in motion.
+    It uses multi-threading for prediction and movement.
+
+    Attributes:
+        C (ry.Config): The configuration of the robotic setup.
+        bot (ry.BotOp): The robotic operation interface.
+        dt (float): Time step for updates in seconds.
+        g (float): Gravitational acceleration (default is 9.81 m/s^2).
+        running (threading.Event): A flag to control thread execution.
+        predicted_landing (np.array): The predicted position where the ball can be caught.
+        ball_positions (list): A list of observed ball positions.
+        max_reach (float): Maximum reachable distance for the robot's gripper.
+        lock (threading.Lock): A lock to protect shared data across threads.
+        prediction_thread (threading.Thread): Thread for trajectory prediction.
+        movement_thread (threading.Thread): Thread for executing robot movements.
+        timestamp (list): Timestamps of ball observations.
+    """
+
+    def __init__(self, C, bot, dt=0.001, g=9.81):
+        """
+        Initialize the CatcherRobot.
+
+        Args:
+            C (ry.Config): The robotic configuration object.
+            bot (ry.BotOp): The robot operation object.
+            dt (float): Time step for updates (default: 0.001).
+            g (float): Gravitational acceleration (default: 9.81 m/s^2).
+        """
         self.C = C
         self.bot = bot
         self.dt = dt
@@ -13,22 +41,11 @@ class CatcherRobot:
         self.running = threading.Event()  # Use threading.Event for better control
         self.predicted_landing = None
         self.ball_positions = []
-        self.max_reach = 1.0  # Maximum reach of the gripper
+        self.max_reach = 1.5  # Maximum reach of the gripper
         self.lock = threading.Lock()  # Protect shared data
         self.prediction_thread = None
         self.movement_thread = None
         self.timestamp = []
-        """ komo = ry.KOMO(self.C, 1, 1, 0, True)
-        komo.addObjective([], ry.FS.scalarProductXY, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-        komo.addObjective([], ry.FS.scalarProductXZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-        komo.addObjective([], ry.FS.scalarProductYX, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-        komo.addObjective([], ry.FS.scalarProductYZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-        ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
-        print(ret) 
-        bot.move(komo.getPath(), [1.])
-        time.sleep(1)
-        q0 = C.getJointState()
-        C.setJointState(q0) """
 
     def start(self):
         """
@@ -91,10 +108,9 @@ class CatcherRobot:
         """
         while self.running.is_set():
             with self.lock:
-                #if self.predicted_landing is not None:
                 self.move_gripper_to_position(self.bot, incremental=True)
 
-            self.bot.sync(self.C, self.dt)
+            self.bot.sync(self.C, 0.001)
 
         print("Movement thread exited.")
 
@@ -112,7 +128,7 @@ class CatcherRobot:
         """
         x0, y0, z0 = position
         vx, vy, vz = velocity
-        t = 0.2
+        t = 0.1
 
         while True:
             # Ball's position at time t
@@ -160,15 +176,6 @@ class CatcherRobot:
             incremental (bool): Whether to move incrementally toward the goal.
         """
         if self.predicted_landing is None:
-            """ komo = ry.KOMO(self.C, 1, 1, 0, True)
-            komo.addObjective([], ry.FS.scalarProductXY, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-            komo.addObjective([], ry.FS.scalarProductXZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-            komo.addObjective([], ry.FS.scalarProductYX, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-            komo.addObjective([], ry.FS.scalarProductYZ, ["l2_gripper", "l2_panda_base"], ry.OT.eq, [1e1], [0])
-            ret = ry.NLP_Solver(komo.nlp()).setOptions(stopTolerance=1e-2, verbose=0).solve()
-            print(ret)
-            bot.move(komo.getPath(), [1.0])
-            print("self predicted is none!!!") """
             return
 
         komo = ry.KOMO(self.C, 1, 1, 0, True)

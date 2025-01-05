@@ -1,0 +1,95 @@
+\hypertarget{namespacethrower__generic__projectile}{}\doxysection{thrower\+\_\+generic\+\_\+projectile Namespace Reference}
+\label{namespacethrower__generic__projectile}\index{thrower\_generic\_projectile@{thrower\_generic\_projectile}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacethrower__generic__projectile_a8dc0943c404e195d098d9aff3a6a812c}{throw\+\_\+sample}} (ry.\+Config C, ry.\+Bot\+Op bot, bool is\+Render, float sleep\+\_\+time=20, catch\+\_\+callback1=None, catch\+\_\+callback2=None)
+\begin{DoxyCompactList}\small\item\em Executes the main simulation of throwing an object using the robotic arm. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__projectile_a528bd12d0b460209e617f92d6c230a24}{check\+\_\+in\+\_\+the\+\_\+bin}} (ry.\+Config C, ry.\+Bot\+Op bot, bin\+\_\+center, binxy\+\_\+length, bin\+\_\+height, cargo\+\_\+height)
+\begin{DoxyCompactList}\small\item\em Checks whether the thrown object successfully lands in the designated bin. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic__projectile_abc209e2056248bbb6ffa96303dd0b3af}{throw\+\_\+object}} (C, bot, time\+\_\+sleep, velocity, initial\+\_\+position\+\_\+callback=None, time\+\_\+interval=0.\+001)
+\begin{DoxyCompactList}\small\item\em Executes the throwing operation using the robotic arm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacethrower__generic__projectile_a528bd12d0b460209e617f92d6c230a24}\label{namespacethrower__generic__projectile_a528bd12d0b460209e617f92d6c230a24}} 
+\index{thrower\_generic\_projectile@{thrower\_generic\_projectile}!check\_in\_the\_bin@{check\_in\_the\_bin}}
+\index{check\_in\_the\_bin@{check\_in\_the\_bin}!thrower\_generic\_projectile@{thrower\_generic\_projectile}}
+\doxysubsubsection{\texorpdfstring{check\_in\_the\_bin()}{check\_in\_the\_bin()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic\+\_\+projectile.\+check\+\_\+in\+\_\+the\+\_\+bin (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C,  }\item[{ry.\+Bot\+Op}]{bot,  }\item[{}]{bin\+\_\+center,  }\item[{}]{binxy\+\_\+length,  }\item[{}]{bin\+\_\+height,  }\item[{}]{cargo\+\_\+height }\end{DoxyParamCaption})}
+
+
+
+Checks whether the thrown object successfully lands in the designated bin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The configuration object for the simulation. \\
+\hline
+{\em bot} & The robot operation object. \\
+\hline
+{\em bin\+\_\+center} & The center position of the bin. \\
+\hline
+{\em binxy\+\_\+length} & Half the length of the bin in the XY-\/plane. \\
+\hline
+{\em bin\+\_\+height} & The height of the bin. \\
+\hline
+{\em cargo\+\_\+height} & The height of the cargo. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A tuple containing a boolean indicating success and the deviation. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacethrower__generic__projectile_abc209e2056248bbb6ffa96303dd0b3af}\label{namespacethrower__generic__projectile_abc209e2056248bbb6ffa96303dd0b3af}} 
+\index{thrower\_generic\_projectile@{thrower\_generic\_projectile}!throw\_object@{throw\_object}}
+\index{throw\_object@{throw\_object}!thrower\_generic\_projectile@{thrower\_generic\_projectile}}
+\doxysubsubsection{\texorpdfstring{throw\_object()}{throw\_object()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic\+\_\+projectile.\+throw\+\_\+object (\begin{DoxyParamCaption}\item[{}]{C,  }\item[{}]{bot,  }\item[{}]{time\+\_\+sleep,  }\item[{}]{velocity,  }\item[{}]{initial\+\_\+position\+\_\+callback = {\ttfamily None},  }\item[{}]{time\+\_\+interval = {\ttfamily 0.001} }\end{DoxyParamCaption})}
+
+
+
+Executes the throwing operation using the robotic arm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The configuration object for the simulation. \\
+\hline
+{\em bot} & The robot operation object. \\
+\hline
+{\em time\+\_\+sleep} & Time to wait before releasing the object. \\
+\hline
+{\em velocity} & The velocity vector for the throw. \\
+\hline
+{\em initial\+\_\+position\+\_\+callback} & Callback triggered before the throwing motion. \\
+\hline
+{\em time\+\_\+interval} & Synchronization interval for the robot. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacethrower__generic__projectile_a8dc0943c404e195d098d9aff3a6a812c}\label{namespacethrower__generic__projectile_a8dc0943c404e195d098d9aff3a6a812c}} 
+\index{thrower\_generic\_projectile@{thrower\_generic\_projectile}!throw\_sample@{throw\_sample}}
+\index{throw\_sample@{throw\_sample}!thrower\_generic\_projectile@{thrower\_generic\_projectile}}
+\doxysubsubsection{\texorpdfstring{throw\_sample()}{throw\_sample()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic\+\_\+projectile.\+throw\+\_\+sample (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C,  }\item[{ry.\+Bot\+Op}]{bot,  }\item[{bool}]{is\+Render,  }\item[{float }]{sleep\+\_\+time = {\ttfamily 20},  }\item[{}]{catch\+\_\+callback1 = {\ttfamily None},  }\item[{}]{catch\+\_\+callback2 = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Executes the main simulation of throwing an object using the robotic arm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The configuration object for the simulation. \\
+\hline
+{\em bot} & The robot operation object. \\
+\hline
+{\em is\+Render} & Whether to render the simulation environment. \\
+\hline
+{\em sleep\+\_\+time} & Time in seconds to keep the simulation running for observation. \\
+\hline
+{\em catch\+\_\+callback1} & Callback triggered when the object is released. \\
+\hline
+{\em catch\+\_\+callback2} & Callback triggered after the throwing process completes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A tuple containing the result (boolean) of whether the throw was successful and the deviation. 
+\end{DoxyReturn}

@@ -1,0 +1,248 @@
+\hypertarget{namespacethrower__generic}{}\doxysection{thrower\+\_\+generic Namespace Reference}
+\label{namespacethrower__generic}\index{thrower\_generic@{thrower\_generic}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacethrower__generic_a1f48048db1642f6e074389d87caa14dd}{throw\+\_\+sample}} (list bin\+\_\+new\+\_\+position, bool is\+Render, float sleep\+\_\+time=20, bin\+\_\+shape=\mbox{[}0.\+5, 0.\+5\mbox{]})
+\begin{DoxyCompactList}\small\item\em Simulates the throwing of an object into a bin. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_aeee820b4488db473a128f2ca52f9ab0e}{check\+\_\+in\+\_\+the\+\_\+bin}} (ry.\+Config C, ry.\+Bot\+Op bot, bin\+\_\+center, binxy\+\_\+length, bin\+\_\+height, cargo\+\_\+height)
+\begin{DoxyCompactList}\small\item\em Checks if the cargo has successfully landed inside the bin. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_aba3214248a8456a29f5211bd547e81ee}{throw\+\_\+object}} (C, bot, time\+\_\+sleep, velocity, stub\+\_\+function=None, time\+\_\+interval=0.\+1)
+\begin{DoxyCompactList}\small\item\em Simulates the throwing action of the robot. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a27945626f47d09a56eee1ef801972ba3}{grasp\+\_\+object}} (ry.\+Config C, ry.\+Bot\+Op bot, bool is\+Inverted, deviation\+\_\+arr=None, str object\+\_\+name=\char`\"{}cargo\char`\"{})
+\begin{DoxyCompactList}\small\item\em Grasps an object using the robot\textquotesingle{}s gripper. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a78fad44eedc732842a161a883b30ba38}{pre\+\_\+grasp\+\_\+komo}} (C, gripper\+\_\+name, grasp\+\_\+frame\+\_\+name, q0, q\+Home)
+\begin{DoxyCompactList}\small\item\em Plans the pre-\/grasp motion using KOMO. \end{DoxyCompactList}\item 
+ry.\+KOMO \mbox{\hyperlink{namespacethrower__generic_a5d1abb0ed06b2622a289525af83aa21a}{post\+\_\+grasp\+\_\+komo}} (C, bool is\+Inverted, deviationarr=None)
+\begin{DoxyCompactList}\small\item\em Plans the post-\/grasp motion using KOMO. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a81a6d672f08b46d3f54b9aafa23df6e6}{init\+\_\+environment}} (ry.\+Config C, list bin\+\_\+new\+\_\+position, bin\+\_\+shape)
+\begin{DoxyCompactList}\small\item\em Initializes the environment with the bin and object positions. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a86d937fb0e404c36b2e5a288ae36456c}{rotate\+\_\+bin}} (np.\+ndarray bin\+\_\+position, np.\+ndarray base\+\_\+position)
+\begin{DoxyCompactList}\small\item\em Rotates the bin to align with the robot base. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a44ead4514900e5f23f879f4c624ac287}{generate\+\_\+homogeneous\+\_\+points}} (robo\+\_\+base, carpet\+\_\+center, carpet\+\_\+len, range\+\_\+limit, z\+\_\+min, z\+\_\+max, num\+\_\+points, grid\+\_\+resolution=10)
+\begin{DoxyCompactList}\small\item\em Generates homogeneous points outside the carpet area. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacethrower__generic_aeee820b4488db473a128f2ca52f9ab0e}\label{namespacethrower__generic_aeee820b4488db473a128f2ca52f9ab0e}} 
+\index{thrower\_generic@{thrower\_generic}!check\_in\_the\_bin@{check\_in\_the\_bin}}
+\index{check\_in\_the\_bin@{check\_in\_the\_bin}!thrower\_generic@{thrower\_generic}}
+\doxysubsubsection{\texorpdfstring{check\_in\_the\_bin()}{check\_in\_the\_bin()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic.\+check\+\_\+in\+\_\+the\+\_\+bin (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C,  }\item[{ry.\+Bot\+Op}]{bot,  }\item[{}]{bin\+\_\+center,  }\item[{}]{binxy\+\_\+length,  }\item[{}]{bin\+\_\+height,  }\item[{}]{cargo\+\_\+height }\end{DoxyParamCaption})}
+
+
+
+Checks if the cargo has successfully landed inside the bin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The robotic configuration object. \\
+\hline
+{\em bot} & The robotic operation object. \\
+\hline
+{\em bin\+\_\+center} & The bin\textquotesingle{}s center position \mbox{[}x, y, z\mbox{]}. \\
+\hline
+{\em binxy\+\_\+length} & Half the bin\textquotesingle{}s length and width. \\
+\hline
+{\em bin\+\_\+height} & Height of the bin. \\
+\hline
+{\em cargo\+\_\+height} & Height of the cargo. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A tuple (is\+\_\+success, deviation), where is\+\_\+success is True if successful, False otherwise, and deviation is the error distance. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacethrower__generic_a44ead4514900e5f23f879f4c624ac287}\label{namespacethrower__generic_a44ead4514900e5f23f879f4c624ac287}} 
+\index{thrower\_generic@{thrower\_generic}!generate\_homogeneous\_points@{generate\_homogeneous\_points}}
+\index{generate\_homogeneous\_points@{generate\_homogeneous\_points}!thrower\_generic@{thrower\_generic}}
+\doxysubsubsection{\texorpdfstring{generate\_homogeneous\_points()}{generate\_homogeneous\_points()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic.\+generate\+\_\+homogeneous\+\_\+points (\begin{DoxyParamCaption}\item[{}]{robo\+\_\+base,  }\item[{}]{carpet\+\_\+center,  }\item[{}]{carpet\+\_\+len,  }\item[{}]{range\+\_\+limit,  }\item[{}]{z\+\_\+min,  }\item[{}]{z\+\_\+max,  }\item[{}]{num\+\_\+points,  }\item[{}]{grid\+\_\+resolution = {\ttfamily 10} }\end{DoxyParamCaption})}
+
+
+
+Generates homogeneous points outside the carpet area. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em robo\+\_\+base} & The robot base position. \\
+\hline
+{\em carpet\+\_\+center} & The center of the carpet area. \\
+\hline
+{\em carpet\+\_\+len} & Length of the carpet area. \\
+\hline
+{\em range\+\_\+limit} & Range limit around the robot base. \\
+\hline
+{\em z\+\_\+min} & Minimum height for points. \\
+\hline
+{\em z\+\_\+max} & Maximum height for points. \\
+\hline
+{\em num\+\_\+points} & Number of points to generate. \\
+\hline
+{\em grid\+\_\+resolution} & Resolution of the grid for points. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A list of points outside the carpet area. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacethrower__generic_a27945626f47d09a56eee1ef801972ba3}\label{namespacethrower__generic_a27945626f47d09a56eee1ef801972ba3}} 
+\index{thrower\_generic@{thrower\_generic}!grasp\_object@{grasp\_object}}
+\index{grasp\_object@{grasp\_object}!thrower\_generic@{thrower\_generic}}
+\doxysubsubsection{\texorpdfstring{grasp\_object()}{grasp\_object()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic.\+grasp\+\_\+object (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C,  }\item[{ry.\+Bot\+Op}]{bot,  }\item[{bool}]{is\+Inverted,  }\item[{}]{deviation\+\_\+arr = {\ttfamily None},  }\item[{str }]{object\+\_\+name = {\ttfamily \char`\"{}cargo\char`\"{}} }\end{DoxyParamCaption})}
+
+
+
+Grasps an object using the robot\textquotesingle{}s gripper. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The robotic configuration object. \\
+\hline
+{\em bot} & The robotic operation object. \\
+\hline
+{\em is\+Inverted} & Boolean indicating if inversion adjustments are required. \\
+\hline
+{\em deviation\+\_\+arr} & Optional deviation array for position adjustments. \\
+\hline
+{\em object\+\_\+name} & Name of the object to grasp (default\+: \char`\"{}cargo\char`\"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The time deviation caused by the grasping motion. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacethrower__generic_a81a6d672f08b46d3f54b9aafa23df6e6}\label{namespacethrower__generic_a81a6d672f08b46d3f54b9aafa23df6e6}} 
+\index{thrower\_generic@{thrower\_generic}!init\_environment@{init\_environment}}
+\index{init\_environment@{init\_environment}!thrower\_generic@{thrower\_generic}}
+\doxysubsubsection{\texorpdfstring{init\_environment()}{init\_environment()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic.\+init\+\_\+environment (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C,  }\item[{list}]{bin\+\_\+new\+\_\+position,  }\item[{}]{bin\+\_\+shape }\end{DoxyParamCaption})}
+
+
+
+Initializes the environment with the bin and object positions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The robotic configuration object. \\
+\hline
+{\em bin\+\_\+new\+\_\+position} & The position of the bin \mbox{[}x, y, z\mbox{]}. \\
+\hline
+{\em bin\+\_\+shape} & Shape of the bin \mbox{[}length, width\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacethrower__generic_a5d1abb0ed06b2622a289525af83aa21a}\label{namespacethrower__generic_a5d1abb0ed06b2622a289525af83aa21a}} 
+\index{thrower\_generic@{thrower\_generic}!post\_grasp\_komo@{post\_grasp\_komo}}
+\index{post\_grasp\_komo@{post\_grasp\_komo}!thrower\_generic@{thrower\_generic}}
+\doxysubsubsection{\texorpdfstring{post\_grasp\_komo()}{post\_grasp\_komo()}}
+{\footnotesize\ttfamily  ry.\+KOMO thrower\+\_\+generic.\+post\+\_\+grasp\+\_\+komo (\begin{DoxyParamCaption}\item[{}]{C,  }\item[{bool}]{is\+Inverted,  }\item[{}]{deviationarr = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Plans the post-\/grasp motion using KOMO. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The robotic configuration object. \\
+\hline
+{\em is\+Inverted} & Boolean indicating if adjustments are needed. \\
+\hline
+{\em deviationarr} & Optional deviation array for adjustment. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The KOMO object for post-\/grasp planning. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacethrower__generic_a78fad44eedc732842a161a883b30ba38}\label{namespacethrower__generic_a78fad44eedc732842a161a883b30ba38}} 
+\index{thrower\_generic@{thrower\_generic}!pre\_grasp\_komo@{pre\_grasp\_komo}}
+\index{pre\_grasp\_komo@{pre\_grasp\_komo}!thrower\_generic@{thrower\_generic}}
+\doxysubsubsection{\texorpdfstring{pre\_grasp\_komo()}{pre\_grasp\_komo()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic.\+pre\+\_\+grasp\+\_\+komo (\begin{DoxyParamCaption}\item[{}]{C,  }\item[{}]{gripper\+\_\+name,  }\item[{}]{grasp\+\_\+frame\+\_\+name,  }\item[{}]{q0,  }\item[{}]{q\+Home }\end{DoxyParamCaption})}
+
+
+
+Plans the pre-\/grasp motion using KOMO. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The robotic configuration object. \\
+\hline
+{\em gripper\+\_\+name} & Name of the gripper frame. \\
+\hline
+{\em grasp\+\_\+frame\+\_\+name} & Name of the target frame for grasping. \\
+\hline
+{\em q0} & The initial joint state. \\
+\hline
+{\em q\+Home} & The home joint state. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The KOMO object for pre-\/grasp planning. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacethrower__generic_a86d937fb0e404c36b2e5a288ae36456c}\label{namespacethrower__generic_a86d937fb0e404c36b2e5a288ae36456c}} 
+\index{thrower\_generic@{thrower\_generic}!rotate\_bin@{rotate\_bin}}
+\index{rotate\_bin@{rotate\_bin}!thrower\_generic@{thrower\_generic}}
+\doxysubsubsection{\texorpdfstring{rotate\_bin()}{rotate\_bin()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic.\+rotate\+\_\+bin (\begin{DoxyParamCaption}\item[{np.\+ndarray}]{bin\+\_\+position,  }\item[{np.\+ndarray}]{base\+\_\+position }\end{DoxyParamCaption})}
+
+
+
+Rotates the bin to align with the robot base. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bin\+\_\+position} & The position of the bin \mbox{[}x, y, z\mbox{]}. \\
+\hline
+{\em base\+\_\+position} & The position of the robot base \mbox{[}x, y, z\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A quaternion representing the bin\textquotesingle{}s rotation. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacethrower__generic_aba3214248a8456a29f5211bd547e81ee}\label{namespacethrower__generic_aba3214248a8456a29f5211bd547e81ee}} 
+\index{thrower\_generic@{thrower\_generic}!throw\_object@{throw\_object}}
+\index{throw\_object@{throw\_object}!thrower\_generic@{thrower\_generic}}
+\doxysubsubsection{\texorpdfstring{throw\_object()}{throw\_object()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic.\+throw\+\_\+object (\begin{DoxyParamCaption}\item[{}]{C,  }\item[{}]{bot,  }\item[{}]{time\+\_\+sleep,  }\item[{}]{velocity,  }\item[{}]{stub\+\_\+function = {\ttfamily None},  }\item[{}]{time\+\_\+interval = {\ttfamily 0.1} }\end{DoxyParamCaption})}
+
+
+
+Simulates the throwing action of the robot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The robotic configuration object. \\
+\hline
+{\em bot} & The robotic operation object. \\
+\hline
+{\em time\+\_\+sleep} & Time to sleep before releasing the object. \\
+\hline
+{\em velocity} & The release velocity for the object. \\
+\hline
+{\em stub\+\_\+function} & Optional function for additional processing during motion. \\
+\hline
+{\em time\+\_\+interval} & Synchronization interval for the robot. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacethrower__generic_a1f48048db1642f6e074389d87caa14dd}\label{namespacethrower__generic_a1f48048db1642f6e074389d87caa14dd}} 
+\index{thrower\_generic@{thrower\_generic}!throw\_sample@{throw\_sample}}
+\index{throw\_sample@{throw\_sample}!thrower\_generic@{thrower\_generic}}
+\doxysubsubsection{\texorpdfstring{throw\_sample()}{throw\_sample()}}
+{\footnotesize\ttfamily def thrower\+\_\+generic.\+throw\+\_\+sample (\begin{DoxyParamCaption}\item[{list}]{bin\+\_\+new\+\_\+position,  }\item[{bool}]{is\+Render,  }\item[{float }]{sleep\+\_\+time = {\ttfamily 20},  }\item[{}]{bin\+\_\+shape = {\ttfamily \mbox{[}0.5,~0.5\mbox{]}} }\end{DoxyParamCaption})}
+
+
+
+Simulates the throwing of an object into a bin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bin\+\_\+new\+\_\+position} & List specifying the new bin position \mbox{[}x, y, z\mbox{]}. \\
+\hline
+{\em is\+Render} & Boolean to decide if rendering is enabled. \\
+\hline
+{\em sleep\+\_\+time} & Time to sleep after rendering, in seconds. \\
+\hline
+{\em bin\+\_\+shape} & Shape of the bin as \mbox{[}length, width\mbox{]}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A tuple of (result, deviation) where result is True if successful, False otherwise, and deviation is the error distance. 
+\end{DoxyReturn}

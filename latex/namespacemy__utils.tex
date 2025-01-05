@@ -1,0 +1,123 @@
+\hypertarget{namespacemy__utils}{}\doxysection{my\+\_\+utils Namespace Reference}
+\label{namespacemy__utils}\index{my\_utils@{my\_utils}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacemy__utils_a6ce48dce0a33fa2ef25d12fe6d2eb323}{find\+\_\+line\+\_\+intersections\+\_\+2d}} (bin\+\_\+pos, initial\+\_\+position, bin\+\_\+dimensions)
+\begin{DoxyCompactList}\small\item\em Finds the intersection points of a line with the boundaries of a rectangular bin in the x-\/y plane. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacemy__utils_a26663b27286e6bad94a733f677ad023c}{velocity\+\_\+to\+\_\+rotation\+\_\+matrix}} (velocity\+\_\+vector)
+\begin{DoxyCompactList}\small\item\em Constructs a rotation matrix where the y-\/axis aligns with the given velocity vector. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacemy__utils_af4dee9b526238ae4a71185930a4d181b}{rotation\+\_\+matrix\+\_\+to\+\_\+quaternion}} (rotation\+\_\+matrix)
+\begin{DoxyCompactList}\small\item\em Converts a 3x3 rotation matrix to a quaternion. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacemy__utils_ad3affb24ac1c0361ffe2205952deb68e}{get\+\_\+quat\+\_\+from\+\_\+velocity}} (velocity)
+\begin{DoxyCompactList}\small\item\em Generates a quaternion representing orientation from a velocity vector. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacemy__utils_a610d8551a54b0f90234fb9fc52d082ab}{my\+\_\+printer}} (msg=\char`\"{}Here\char`\"{})
+\begin{DoxyCompactList}\small\item\em A simple debug printer function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacemy__utils_a6ce48dce0a33fa2ef25d12fe6d2eb323}\label{namespacemy__utils_a6ce48dce0a33fa2ef25d12fe6d2eb323}} 
+\index{my\_utils@{my\_utils}!find\_line\_intersections\_2d@{find\_line\_intersections\_2d}}
+\index{find\_line\_intersections\_2d@{find\_line\_intersections\_2d}!my\_utils@{my\_utils}}
+\doxysubsubsection{\texorpdfstring{find\_line\_intersections\_2d()}{find\_line\_intersections\_2d()}}
+{\footnotesize\ttfamily def my\+\_\+utils.\+find\+\_\+line\+\_\+intersections\+\_\+2d (\begin{DoxyParamCaption}\item[{}]{bin\+\_\+pos,  }\item[{}]{initial\+\_\+position,  }\item[{}]{bin\+\_\+dimensions }\end{DoxyParamCaption})}
+
+
+
+Finds the intersection points of a line with the boundaries of a rectangular bin in the x-\/y plane. 
+
+The line is defined by its start position (initial\+\_\+position) and a target position (bin\+\_\+pos). The bin boundaries are defined by a dictionary containing the bottom-\/left and top-\/right coordinates.
+
+
+\begin{DoxyParams}{Parameters}
+{\em bin\+\_\+pos} & Position of the bin center \mbox{[}x, y\mbox{]}. \\
+\hline
+{\em initial\+\_\+position} & Initial position of the line \mbox{[}x, y\mbox{]}. \\
+\hline
+{\em bin\+\_\+dimensions} & Dictionary with bin dimensions\+:
+\begin{DoxyItemize}
+\item \textquotesingle{}bottom\+\_\+left\textquotesingle{}\+: \mbox{[}x\+\_\+min, y\+\_\+min\mbox{]}
+\item \textquotesingle{}top\+\_\+right\textquotesingle{}\+: \mbox{[}x\+\_\+max, y\+\_\+max\mbox{]}.
+\end{DoxyItemize}\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+list A list of intersection points \mbox{[}x, y\mbox{]} with the bin boundaries. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacemy__utils_ad3affb24ac1c0361ffe2205952deb68e}\label{namespacemy__utils_ad3affb24ac1c0361ffe2205952deb68e}} 
+\index{my\_utils@{my\_utils}!get\_quat\_from\_velocity@{get\_quat\_from\_velocity}}
+\index{get\_quat\_from\_velocity@{get\_quat\_from\_velocity}!my\_utils@{my\_utils}}
+\doxysubsubsection{\texorpdfstring{get\_quat\_from\_velocity()}{get\_quat\_from\_velocity()}}
+{\footnotesize\ttfamily def my\+\_\+utils.\+get\+\_\+quat\+\_\+from\+\_\+velocity (\begin{DoxyParamCaption}\item[{}]{velocity }\end{DoxyParamCaption})}
+
+
+
+Generates a quaternion representing orientation from a velocity vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em velocity} & A velocity vector in the world frame.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+np Quaternion \mbox{[}w, x, y, z\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacemy__utils_a610d8551a54b0f90234fb9fc52d082ab}\label{namespacemy__utils_a610d8551a54b0f90234fb9fc52d082ab}} 
+\index{my\_utils@{my\_utils}!my\_printer@{my\_printer}}
+\index{my\_printer@{my\_printer}!my\_utils@{my\_utils}}
+\doxysubsubsection{\texorpdfstring{my\_printer()}{my\_printer()}}
+{\footnotesize\ttfamily def my\+\_\+utils.\+my\+\_\+printer (\begin{DoxyParamCaption}\item[{}]{msg = {\ttfamily \char`\"{}Here\char`\"{}} }\end{DoxyParamCaption})}
+
+
+
+A simple debug printer function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msg} & Message to print. Defaults to \char`\"{}\+Here\char`\"{}. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacemy__utils_af4dee9b526238ae4a71185930a4d181b}\label{namespacemy__utils_af4dee9b526238ae4a71185930a4d181b}} 
+\index{my\_utils@{my\_utils}!rotation\_matrix\_to\_quaternion@{rotation\_matrix\_to\_quaternion}}
+\index{rotation\_matrix\_to\_quaternion@{rotation\_matrix\_to\_quaternion}!my\_utils@{my\_utils}}
+\doxysubsubsection{\texorpdfstring{rotation\_matrix\_to\_quaternion()}{rotation\_matrix\_to\_quaternion()}}
+{\footnotesize\ttfamily def my\+\_\+utils.\+rotation\+\_\+matrix\+\_\+to\+\_\+quaternion (\begin{DoxyParamCaption}\item[{}]{rotation\+\_\+matrix }\end{DoxyParamCaption})}
+
+
+
+Converts a 3x3 rotation matrix to a quaternion. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rotation\+\_\+matrix} & 3x3 rotation matrix.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+numpy Quaternion \mbox{[}w, x, y, z\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacemy__utils_a26663b27286e6bad94a733f677ad023c}\label{namespacemy__utils_a26663b27286e6bad94a733f677ad023c}} 
+\index{my\_utils@{my\_utils}!velocity\_to\_rotation\_matrix@{velocity\_to\_rotation\_matrix}}
+\index{velocity\_to\_rotation\_matrix@{velocity\_to\_rotation\_matrix}!my\_utils@{my\_utils}}
+\doxysubsubsection{\texorpdfstring{velocity\_to\_rotation\_matrix()}{velocity\_to\_rotation\_matrix()}}
+{\footnotesize\ttfamily def my\+\_\+utils.\+velocity\+\_\+to\+\_\+rotation\+\_\+matrix (\begin{DoxyParamCaption}\item[{}]{velocity\+\_\+vector }\end{DoxyParamCaption})}
+
+
+
+Constructs a rotation matrix where the y-\/axis aligns with the given velocity vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em velocity\+\_\+vector} & Velocity vector in world frame.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+np 3x3 rotation matrix aligning the y-\/axis with the velocity vector. 
+\end{DoxyReturn}

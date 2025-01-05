@@ -1,0 +1,28 @@
+\hypertarget{thrower__generic_8py}{}\doxysection{thrower\+\_\+generic.\+py File Reference}
+\label{thrower__generic_8py}\index{thrower\_generic.py@{thrower\_generic.py}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacethrower__generic}{thrower\+\_\+generic}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacethrower__generic_a1f48048db1642f6e074389d87caa14dd}{thrower\+\_\+generic.\+throw\+\_\+sample}} (list bin\+\_\+new\+\_\+position, bool is\+Render, float sleep\+\_\+time=20, bin\+\_\+shape=\mbox{[}0.\+5, 0.\+5\mbox{]})
+\begin{DoxyCompactList}\small\item\em Simulates the throwing of an object into a bin. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_aeee820b4488db473a128f2ca52f9ab0e}{thrower\+\_\+generic.\+check\+\_\+in\+\_\+the\+\_\+bin}} (ry.\+Config C, ry.\+Bot\+Op bot, bin\+\_\+center, binxy\+\_\+length, bin\+\_\+height, cargo\+\_\+height)
+\begin{DoxyCompactList}\small\item\em Checks if the cargo has successfully landed inside the bin. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_aba3214248a8456a29f5211bd547e81ee}{thrower\+\_\+generic.\+throw\+\_\+object}} (C, bot, time\+\_\+sleep, velocity, stub\+\_\+function=None, time\+\_\+interval=0.\+1)
+\begin{DoxyCompactList}\small\item\em Simulates the throwing action of the robot. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a27945626f47d09a56eee1ef801972ba3}{thrower\+\_\+generic.\+grasp\+\_\+object}} (ry.\+Config C, ry.\+Bot\+Op bot, bool is\+Inverted, deviation\+\_\+arr=None, str object\+\_\+name=\char`\"{}cargo\char`\"{})
+\begin{DoxyCompactList}\small\item\em Grasps an object using the robot\textquotesingle{}s gripper. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a78fad44eedc732842a161a883b30ba38}{thrower\+\_\+generic.\+pre\+\_\+grasp\+\_\+komo}} (C, gripper\+\_\+name, grasp\+\_\+frame\+\_\+name, q0, q\+Home)
+\begin{DoxyCompactList}\small\item\em Plans the pre-\/grasp motion using KOMO. \end{DoxyCompactList}\item 
+ry.\+KOMO \mbox{\hyperlink{namespacethrower__generic_a5d1abb0ed06b2622a289525af83aa21a}{thrower\+\_\+generic.\+post\+\_\+grasp\+\_\+komo}} (C, bool is\+Inverted, deviationarr=None)
+\begin{DoxyCompactList}\small\item\em Plans the post-\/grasp motion using KOMO. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a81a6d672f08b46d3f54b9aafa23df6e6}{thrower\+\_\+generic.\+init\+\_\+environment}} (ry.\+Config C, list bin\+\_\+new\+\_\+position, bin\+\_\+shape)
+\begin{DoxyCompactList}\small\item\em Initializes the environment with the bin and object positions. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a86d937fb0e404c36b2e5a288ae36456c}{thrower\+\_\+generic.\+rotate\+\_\+bin}} (np.\+ndarray bin\+\_\+position, np.\+ndarray base\+\_\+position)
+\begin{DoxyCompactList}\small\item\em Rotates the bin to align with the robot base. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__generic_a44ead4514900e5f23f879f4c624ac287}{thrower\+\_\+generic.\+generate\+\_\+homogeneous\+\_\+points}} (robo\+\_\+base, carpet\+\_\+center, carpet\+\_\+len, range\+\_\+limit, z\+\_\+min, z\+\_\+max, num\+\_\+points, grid\+\_\+resolution=10)
+\begin{DoxyCompactList}\small\item\em Generates homogeneous points outside the carpet area. \end{DoxyCompactList}\end{DoxyCompactItemize}

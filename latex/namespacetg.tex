@@ -1,0 +1,177 @@
+\hypertarget{namespacetg}{}\doxysection{tg Namespace Reference}
+\label{namespacetg}\index{tg@{tg}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacetg_aaf556fdd99399ccb3b6d1edf3b884ff1}{throw\+\_\+sample}} (\mbox{\hyperlink{namespacetg_aa20654a49fbe5dc92b17a2cb896d5e56}{bin\+\_\+new\+\_\+position}}, is\+Render, \mbox{\hyperlink{namespacetg_ae219bc88ba8a6c73221fd8dc34692c48}{time\+\_\+deviation}}, \mbox{\hyperlink{namespacetg_ae845e3b084b665e40186a388c7a509cd}{release\+\_\+velocity}}, \mbox{\hyperlink{namespacetg_a0fe45b44f9d73302bb9468714bb9acc1}{bot}}, \mbox{\hyperlink{namespacetg_afe3aee58a250bb7e40521037b8d36359}{sleep\+\_\+time}}=20, \mbox{\hyperlink{namespacetg_ab80a7c5c77dc8a8c5d4d132869b2a5fb}{C}}=None)
+\begin{DoxyCompactList}\small\item\em Perform a throwing simulation to place the cargo into the bin. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacetg_ac937d25329ad6ac1df111324149ba672}{check\+\_\+in\+\_\+the\+\_\+bin}} (\mbox{\hyperlink{namespacetg_ab80a7c5c77dc8a8c5d4d132869b2a5fb}{C}}, \mbox{\hyperlink{namespacetg_a0fe45b44f9d73302bb9468714bb9acc1}{bot}}, bin\+\_\+center, binxy\+\_\+length, bin\+\_\+height, cargo\+\_\+height)
+\begin{DoxyCompactList}\small\item\em Check if the cargo is successfully inside the bin. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacetg_af3cb794aa980e97e15b64904b611cdea}{throw\+\_\+object}} (\mbox{\hyperlink{namespacetg_ab80a7c5c77dc8a8c5d4d132869b2a5fb}{C}}, \mbox{\hyperlink{namespacetg_a0fe45b44f9d73302bb9468714bb9acc1}{bot}}, time\+\_\+sleep, velocity, stub\+\_\+function=None, time\+\_\+interval=0.\+1)
+\begin{DoxyCompactList}\small\item\em Perform the object throwing motion. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacetg_ab80a7c5c77dc8a8c5d4d132869b2a5fb}{C}} = ry.\+Config()
+\item 
+\mbox{\hyperlink{namespacetg_a355e80d4d88dbd7b7cc8031d8f476f34}{hardcoded\+\_\+bin}} = C.\+get\+Frame(\char`\"{}bin\char`\"{}).get\+Position()
+\item 
+\mbox{\hyperlink{namespacetg_a0fe45b44f9d73302bb9468714bb9acc1}{bot}} = ry.\+Bot\+Op(\mbox{\hyperlink{namespacetg_ab80a7c5c77dc8a8c5d4d132869b2a5fb}{C}}, use\+Real\+Robot=False)
+\item 
+\mbox{\hyperlink{namespacetg_aa20654a49fbe5dc92b17a2cb896d5e56}{bin\+\_\+new\+\_\+position}}
+\item 
+\mbox{\hyperlink{namespacetg_a7a19e50b891146d5541c1834b486677b}{bin\+\_\+shape}}
+\item 
+\mbox{\hyperlink{namespacetg_ae219bc88ba8a6c73221fd8dc34692c48}{time\+\_\+deviation}}
+\item 
+\mbox{\hyperlink{namespacetg_ae845e3b084b665e40186a388c7a509cd}{release\+\_\+velocity}}
+\item 
+\mbox{\hyperlink{namespacetg_aa70651053eb031b4fb1c836fb714a0cc}{True}}
+\item 
+\mbox{\hyperlink{namespacetg_afe3aee58a250bb7e40521037b8d36359}{sleep\+\_\+time}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacetg_ac937d25329ad6ac1df111324149ba672}\label{namespacetg_ac937d25329ad6ac1df111324149ba672}} 
+\index{tg@{tg}!check\_in\_the\_bin@{check\_in\_the\_bin}}
+\index{check\_in\_the\_bin@{check\_in\_the\_bin}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{check\_in\_the\_bin()}{check\_in\_the\_bin()}}
+{\footnotesize\ttfamily def tg.\+check\+\_\+in\+\_\+the\+\_\+bin (\begin{DoxyParamCaption}\item[{}]{C,  }\item[{}]{bot,  }\item[{}]{bin\+\_\+center,  }\item[{}]{binxy\+\_\+length,  }\item[{}]{bin\+\_\+height,  }\item[{}]{cargo\+\_\+height }\end{DoxyParamCaption})}
+
+
+
+Check if the cargo is successfully inside the bin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & Configuration object for the simulation. \\
+\hline
+{\em bot} & Robot operation interface. \\
+\hline
+{\em bin\+\_\+center} & Center position of the bin. \\
+\hline
+{\em binxy\+\_\+length} & Length of the bin in x and y directions. \\
+\hline
+{\em bin\+\_\+height} & Height of the bin. \\
+\hline
+{\em cargo\+\_\+height} & Height of the cargo.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+tuple Success status (bool) and deviation from the target (float). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetg_af3cb794aa980e97e15b64904b611cdea}\label{namespacetg_af3cb794aa980e97e15b64904b611cdea}} 
+\index{tg@{tg}!throw\_object@{throw\_object}}
+\index{throw\_object@{throw\_object}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{throw\_object()}{throw\_object()}}
+{\footnotesize\ttfamily def tg.\+throw\+\_\+object (\begin{DoxyParamCaption}\item[{}]{C,  }\item[{}]{bot,  }\item[{}]{time\+\_\+sleep,  }\item[{}]{velocity,  }\item[{}]{stub\+\_\+function = {\ttfamily None},  }\item[{}]{time\+\_\+interval = {\ttfamily 0.1} }\end{DoxyParamCaption})}
+
+
+
+Perform the object throwing motion. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & Configuration object for the simulation. \\
+\hline
+{\em bot} & Robot operation interface. \\
+\hline
+{\em time\+\_\+sleep} & Time to sleep before releasing the object. \\
+\hline
+{\em velocity} & Velocity vector for releasing the object. stub\+\_\+function (function, optional)\+: Stub function for additional operations. \\
+\hline
+{\em time\+\_\+interval} & Time interval for synchronization (default\+: 0.\+1). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacetg_aaf556fdd99399ccb3b6d1edf3b884ff1}\label{namespacetg_aaf556fdd99399ccb3b6d1edf3b884ff1}} 
+\index{tg@{tg}!throw\_sample@{throw\_sample}}
+\index{throw\_sample@{throw\_sample}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{throw\_sample()}{throw\_sample()}}
+{\footnotesize\ttfamily def tg.\+throw\+\_\+sample (\begin{DoxyParamCaption}\item[{}]{bin\+\_\+new\+\_\+position,  }\item[{}]{is\+Render,  }\item[{}]{time\+\_\+deviation,  }\item[{}]{release\+\_\+velocity,  }\item[{}]{bot,  }\item[{}]{sleep\+\_\+time = {\ttfamily 20},  }\item[{}]{C = {\ttfamily None} }\end{DoxyParamCaption})}
+
+
+
+Perform a throwing simulation to place the cargo into the bin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bin\+\_\+new\+\_\+position} & New position of the bin. \\
+\hline
+{\em is\+Render} & Whether to render the simulation. \\
+\hline
+{\em time\+\_\+deviation} & Time deviation caused by the grasping process. \\
+\hline
+{\em release\+\_\+velocity} & Velocity vector for releasing the object. \\
+\hline
+{\em bot} & Robot operation interface. \\
+\hline
+{\em sleep\+\_\+time} & Time to wait before continuing simulation (default\+: 20 seconds). \\
+\hline
+{\em C} & Configuration object for the simulation.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+tuple Result of the throw (bool) and deviation from the target (float). 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacetg_aa20654a49fbe5dc92b17a2cb896d5e56}\label{namespacetg_aa20654a49fbe5dc92b17a2cb896d5e56}} 
+\index{tg@{tg}!bin\_new\_position@{bin\_new\_position}}
+\index{bin\_new\_position@{bin\_new\_position}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{bin\_new\_position}{bin\_new\_position}}
+{\footnotesize\ttfamily tg.\+bin\+\_\+new\+\_\+position}
+
+\mbox{\Hypertarget{namespacetg_a7a19e50b891146d5541c1834b486677b}\label{namespacetg_a7a19e50b891146d5541c1834b486677b}} 
+\index{tg@{tg}!bin\_shape@{bin\_shape}}
+\index{bin\_shape@{bin\_shape}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{bin\_shape}{bin\_shape}}
+{\footnotesize\ttfamily tg.\+bin\+\_\+shape}
+
+\mbox{\Hypertarget{namespacetg_a0fe45b44f9d73302bb9468714bb9acc1}\label{namespacetg_a0fe45b44f9d73302bb9468714bb9acc1}} 
+\index{tg@{tg}!bot@{bot}}
+\index{bot@{bot}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{bot}{bot}}
+{\footnotesize\ttfamily tg.\+bot = ry.\+Bot\+Op(\mbox{\hyperlink{namespacetg_ab80a7c5c77dc8a8c5d4d132869b2a5fb}{C}}, use\+Real\+Robot=False)}
+
+\mbox{\Hypertarget{namespacetg_ab80a7c5c77dc8a8c5d4d132869b2a5fb}\label{namespacetg_ab80a7c5c77dc8a8c5d4d132869b2a5fb}} 
+\index{tg@{tg}!C@{C}}
+\index{C@{C}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{C}{C}}
+{\footnotesize\ttfamily tg.\+C = ry.\+Config()}
+
+\mbox{\Hypertarget{namespacetg_a355e80d4d88dbd7b7cc8031d8f476f34}\label{namespacetg_a355e80d4d88dbd7b7cc8031d8f476f34}} 
+\index{tg@{tg}!hardcoded\_bin@{hardcoded\_bin}}
+\index{hardcoded\_bin@{hardcoded\_bin}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{hardcoded\_bin}{hardcoded\_bin}}
+{\footnotesize\ttfamily tg.\+hardcoded\+\_\+bin = C.\+get\+Frame(\char`\"{}bin\char`\"{}).get\+Position()}
+
+\mbox{\Hypertarget{namespacetg_ae845e3b084b665e40186a388c7a509cd}\label{namespacetg_ae845e3b084b665e40186a388c7a509cd}} 
+\index{tg@{tg}!release\_velocity@{release\_velocity}}
+\index{release\_velocity@{release\_velocity}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{release\_velocity}{release\_velocity}}
+{\footnotesize\ttfamily tg.\+release\+\_\+velocity}
+
+\mbox{\Hypertarget{namespacetg_afe3aee58a250bb7e40521037b8d36359}\label{namespacetg_afe3aee58a250bb7e40521037b8d36359}} 
+\index{tg@{tg}!sleep\_time@{sleep\_time}}
+\index{sleep\_time@{sleep\_time}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{sleep\_time}{sleep\_time}}
+{\footnotesize\ttfamily tg.\+sleep\+\_\+time}
+
+\mbox{\Hypertarget{namespacetg_ae219bc88ba8a6c73221fd8dc34692c48}\label{namespacetg_ae219bc88ba8a6c73221fd8dc34692c48}} 
+\index{tg@{tg}!time\_deviation@{time\_deviation}}
+\index{time\_deviation@{time\_deviation}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{time\_deviation}{time\_deviation}}
+{\footnotesize\ttfamily tg.\+time\+\_\+deviation}
+
+\mbox{\Hypertarget{namespacetg_aa70651053eb031b4fb1c836fb714a0cc}\label{namespacetg_aa70651053eb031b4fb1c836fb714a0cc}} 
+\index{tg@{tg}!True@{True}}
+\index{True@{True}!tg@{tg}}
+\doxysubsubsection{\texorpdfstring{True}{True}}
+{\footnotesize\ttfamily tg.\+True}
+

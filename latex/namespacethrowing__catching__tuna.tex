@@ -1,0 +1,107 @@
+\hypertarget{namespacethrowing__catching__tuna}{}\doxysection{throwing\+\_\+catching\+\_\+tuna Namespace Reference}
+\label{namespacethrowing__catching__tuna}\index{throwing\_catching\_tuna@{throwing\_catching\_tuna}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacethrowing__catching__tuna_a2fba1e62f431bb852db56fab2037ca4f}{throw\+\_\+catch}} (ry.\+Config \mbox{\hyperlink{namespacethrowing__catching__tuna_a3b5011127cea5aad5c09b883796eea2c}{C}}, ry.\+Bot\+Op \mbox{\hyperlink{namespacethrowing__catching__tuna_a7be901b1cdfd3e25067ee94c4b1e6220}{bot}}, bool is\+Render, float sleep\+\_\+time=20)
+\begin{DoxyCompactList}\small\item\em Coordinates the interaction between the thrower and catcher robots. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrowing__catching__tuna_a94940849a6eb0d45f92d11d1410d8a84}{run\+\_\+thrower}} (\mbox{\hyperlink{namespacethrowing__catching__tuna_a3b5011127cea5aad5c09b883796eea2c}{C}}, \mbox{\hyperlink{namespacethrowing__catching__tuna_a7be901b1cdfd3e25067ee94c4b1e6220}{bot}})
+\begin{DoxyCompactList}\small\item\em Function to operate the thrower robot. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrowing__catching__tuna_a701b4a86e8afeb6333f811f4d27e1374}{run\+\_\+catcher}} ()
+\begin{DoxyCompactList}\small\item\em Function to operate the catcher robot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacethrowing__catching__tuna_a2a40cf561052ff9acb37980ec3f53d87}{render\+\_\+simulation}} = True
+\begin{DoxyCompactList}\small\item\em Main entry point for the program. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacethrowing__catching__tuna_a3b5011127cea5aad5c09b883796eea2c}{C}} = ry.\+Config()
+\item 
+\mbox{\hyperlink{namespacethrowing__catching__tuna_a5efcab9829d752f4a66e4477819a525f}{q\+Home}} = C.\+get\+Joint\+State()
+\item 
+\mbox{\hyperlink{namespacethrowing__catching__tuna_a7be901b1cdfd3e25067ee94c4b1e6220}{bot}} = ry.\+Bot\+Op(\mbox{\hyperlink{namespacethrowing__catching__tuna_a3b5011127cea5aad5c09b883796eea2c}{C}}, use\+Real\+Robot=False)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacethrowing__catching__tuna_a701b4a86e8afeb6333f811f4d27e1374}\label{namespacethrowing__catching__tuna_a701b4a86e8afeb6333f811f4d27e1374}} 
+\index{throwing\_catching\_tuna@{throwing\_catching\_tuna}!run\_catcher@{run\_catcher}}
+\index{run\_catcher@{run\_catcher}!throwing\_catching\_tuna@{throwing\_catching\_tuna}}
+\doxysubsubsection{\texorpdfstring{run\_catcher()}{run\_catcher()}}
+{\footnotesize\ttfamily def throwing\+\_\+catching\+\_\+tuna.\+run\+\_\+catcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to operate the catcher robot. 
+
+\mbox{\Hypertarget{namespacethrowing__catching__tuna_a94940849a6eb0d45f92d11d1410d8a84}\label{namespacethrowing__catching__tuna_a94940849a6eb0d45f92d11d1410d8a84}} 
+\index{throwing\_catching\_tuna@{throwing\_catching\_tuna}!run\_thrower@{run\_thrower}}
+\index{run\_thrower@{run\_thrower}!throwing\_catching\_tuna@{throwing\_catching\_tuna}}
+\doxysubsubsection{\texorpdfstring{run\_thrower()}{run\_thrower()}}
+{\footnotesize\ttfamily def throwing\+\_\+catching\+\_\+tuna.\+run\+\_\+thrower (\begin{DoxyParamCaption}\item[{}]{C,  }\item[{}]{bot }\end{DoxyParamCaption})}
+
+
+
+Function to operate the thrower robot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The shared configuration object for the robot. \\
+\hline
+{\em bot} & The Bot\+Op object controlling the robot. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacethrowing__catching__tuna_a2fba1e62f431bb852db56fab2037ca4f}\label{namespacethrowing__catching__tuna_a2fba1e62f431bb852db56fab2037ca4f}} 
+\index{throwing\_catching\_tuna@{throwing\_catching\_tuna}!throw\_catch@{throw\_catch}}
+\index{throw\_catch@{throw\_catch}!throwing\_catching\_tuna@{throwing\_catching\_tuna}}
+\doxysubsubsection{\texorpdfstring{throw\_catch()}{throw\_catch()}}
+{\footnotesize\ttfamily def throwing\+\_\+catching\+\_\+tuna.\+throw\+\_\+catch (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C,  }\item[{ry.\+Bot\+Op}]{bot,  }\item[{bool}]{is\+Render,  }\item[{float }]{sleep\+\_\+time = {\ttfamily 20} }\end{DoxyParamCaption})}
+
+
+
+Coordinates the interaction between the thrower and catcher robots. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The shared configuration object for both robots. \\
+\hline
+{\em bot} & The Bot\+Op object controlling the robot. \\
+\hline
+{\em is\+Render} & Flag indicating whether to render the simulation. \\
+\hline
+{\em sleep\+\_\+time} & Duration to pause after rendering. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A tuple containing the result of the throw and the deviation from the target. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacethrowing__catching__tuna_a7be901b1cdfd3e25067ee94c4b1e6220}\label{namespacethrowing__catching__tuna_a7be901b1cdfd3e25067ee94c4b1e6220}} 
+\index{throwing\_catching\_tuna@{throwing\_catching\_tuna}!bot@{bot}}
+\index{bot@{bot}!throwing\_catching\_tuna@{throwing\_catching\_tuna}}
+\doxysubsubsection{\texorpdfstring{bot}{bot}}
+{\footnotesize\ttfamily throwing\+\_\+catching\+\_\+tuna.\+bot = ry.\+Bot\+Op(\mbox{\hyperlink{namespacethrowing__catching__tuna_a3b5011127cea5aad5c09b883796eea2c}{C}}, use\+Real\+Robot=False)}
+
+\mbox{\Hypertarget{namespacethrowing__catching__tuna_a3b5011127cea5aad5c09b883796eea2c}\label{namespacethrowing__catching__tuna_a3b5011127cea5aad5c09b883796eea2c}} 
+\index{throwing\_catching\_tuna@{throwing\_catching\_tuna}!C@{C}}
+\index{C@{C}!throwing\_catching\_tuna@{throwing\_catching\_tuna}}
+\doxysubsubsection{\texorpdfstring{C}{C}}
+{\footnotesize\ttfamily throwing\+\_\+catching\+\_\+tuna.\+C = ry.\+Config()}
+
+\mbox{\Hypertarget{namespacethrowing__catching__tuna_a5efcab9829d752f4a66e4477819a525f}\label{namespacethrowing__catching__tuna_a5efcab9829d752f4a66e4477819a525f}} 
+\index{throwing\_catching\_tuna@{throwing\_catching\_tuna}!qHome@{qHome}}
+\index{qHome@{qHome}!throwing\_catching\_tuna@{throwing\_catching\_tuna}}
+\doxysubsubsection{\texorpdfstring{qHome}{qHome}}
+{\footnotesize\ttfamily throwing\+\_\+catching\+\_\+tuna.\+q\+Home = C.\+get\+Joint\+State()}
+
+\mbox{\Hypertarget{namespacethrowing__catching__tuna_a2a40cf561052ff9acb37980ec3f53d87}\label{namespacethrowing__catching__tuna_a2a40cf561052ff9acb37980ec3f53d87}} 
+\index{throwing\_catching\_tuna@{throwing\_catching\_tuna}!render\_simulation@{render\_simulation}}
+\index{render\_simulation@{render\_simulation}!throwing\_catching\_tuna@{throwing\_catching\_tuna}}
+\doxysubsubsection{\texorpdfstring{render\_simulation}{render\_simulation}}
+{\footnotesize\ttfamily bool throwing\+\_\+catching\+\_\+tuna.\+render\+\_\+simulation = True}
+
+
+
+Main entry point for the program. 
+

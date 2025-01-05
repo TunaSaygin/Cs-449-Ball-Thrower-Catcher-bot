@@ -1,0 +1,187 @@
+\hypertarget{namespacerrt__move}{}\doxysection{rrt\+\_\+move Namespace Reference}
+\label{namespacerrt__move}\index{rrt\_move@{rrt\_move}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacerrt__move_a2240c921986ea38fe53751a513929530}{calc\+\_\+target\+\_\+pos}} (thrower\+\_\+pos, catcher\+\_\+pos, clearance\+\_\+dist=2.\+5)
+\begin{DoxyCompactList}\small\item\em Calculate the target position for the thrower robot based on the catcher robot\textquotesingle{}s position. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacerrt__move_ab653a19106cd7089332213e468cca1f0}{move\+\_\+robot\+\_\+closer}} (\mbox{\hyperlink{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}{thrower\+\_\+fname}}, \mbox{\hyperlink{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}{catcher\+\_\+fname}}, waypoints, ry.\+Config \mbox{\hyperlink{namespacerrt__move_a7dd06a055bb68b4852922f6f0d2c2940}{C}}, bool \mbox{\hyperlink{namespacerrt__move_a52962812df8e4ea65d56a49875c2673d}{is\+Render}}, clearance\+\_\+dist=2.\+5, np.\+array target\+\_\+pos=None, debug=False)
+\begin{DoxyCompactList}\small\item\em Move the robot closer to the target (bin or catcher robot) using KOMO and RRT. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacerrt__move_a9519127725eda023cb9e34272d5f1698}{check\+\_\+if\+\_\+throw\+\_\+is\+\_\+obstructed}} (\mbox{\hyperlink{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}{thrower\+\_\+fname}}, \mbox{\hyperlink{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}{catcher\+\_\+fname}}, \mbox{\hyperlink{namespacerrt__move_a7dd06a055bb68b4852922f6f0d2c2940}{C}}, threshold=0.\+5)
+\begin{DoxyCompactList}\small\item\em Check if the throw path between the thrower and catcher is obstructed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespacerrt__move_a1baf5d85c933c89054a836cd9016a4ec}{max\+\_\+trials}} = 10
+\item 
+\mbox{\hyperlink{namespacerrt__move_a7dd06a055bb68b4852922f6f0d2c2940}{C}} = ry.\+Config()
+\item 
+string \mbox{\hyperlink{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}{thrower\+\_\+fname}} = \char`\"{}l\+\_\+panda\+\_\+base\char`\"{}
+\item 
+string \mbox{\hyperlink{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}{catcher\+\_\+fname}} = \char`\"{}l2\+\_\+panda\+\_\+base\char`\"{}
+\item 
+\mbox{\hyperlink{namespacerrt__move_afbfc4705d6a8e1fb52c12a33806bdd2c}{thrower}} = C.\+get\+Frame(\mbox{\hyperlink{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}{thrower\+\_\+fname}})
+\item 
+\mbox{\hyperlink{namespacerrt__move_a9adbc6ae8b44d32a878954234d4874a1}{catcher}} = C.\+get\+Frame(\mbox{\hyperlink{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}{catcher\+\_\+fname}})
+\item 
+\mbox{\hyperlink{namespacerrt__move_a232b2bec66863364babff71d46a8f042}{initial\+\_\+thrower\+\_\+pos}} = thrower.\+get\+Position()
+\item 
+\mbox{\hyperlink{namespacerrt__move_a99e4ee3af974212c0b46d1185226ee6b}{initial\+\_\+catcher\+\_\+pos}} = catcher.\+get\+Position()
+\item 
+\mbox{\hyperlink{namespacerrt__move_a36734978a7eea69a7adbf1fbf7dd496f}{wall}} = C.\+add\+Frame(\char`\"{}wall\char`\"{}, \char`\"{}base\char`\"{}) \textbackslash{}
+\item 
+def \mbox{\hyperlink{namespacerrt__move_a9713e66ea12594bfb10f2fa4d90489ab}{is\+Obstructed}} = \mbox{\hyperlink{namespacerrt__move_a9519127725eda023cb9e34272d5f1698}{check\+\_\+if\+\_\+throw\+\_\+is\+\_\+obstructed}}(\mbox{\hyperlink{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}{thrower\+\_\+fname}}, \mbox{\hyperlink{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}{catcher\+\_\+fname}}, \mbox{\hyperlink{namespacerrt__move_a7dd06a055bb68b4852922f6f0d2c2940}{C}})
+\item 
+\mbox{\hyperlink{namespacerrt__move_a52962812df8e4ea65d56a49875c2673d}{is\+Render}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacerrt__move_a2240c921986ea38fe53751a513929530}\label{namespacerrt__move_a2240c921986ea38fe53751a513929530}} 
+\index{rrt\_move@{rrt\_move}!calc\_target\_pos@{calc\_target\_pos}}
+\index{calc\_target\_pos@{calc\_target\_pos}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{calc\_target\_pos()}{calc\_target\_pos()}}
+{\footnotesize\ttfamily def rrt\+\_\+move.\+calc\+\_\+target\+\_\+pos (\begin{DoxyParamCaption}\item[{}]{thrower\+\_\+pos,  }\item[{}]{catcher\+\_\+pos,  }\item[{}]{clearance\+\_\+dist = {\ttfamily 2.5} }\end{DoxyParamCaption})}
+
+
+
+Calculate the target position for the thrower robot based on the catcher robot\textquotesingle{}s position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em thrower\+\_\+pos} & Position of the thrower robot. \\
+\hline
+{\em catcher\+\_\+pos} & Position of the catcher robot. \\
+\hline
+{\em clearance\+\_\+dist} & Distance to maintain from the catcher robot.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+np Target position for the thrower robot. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacerrt__move_a9519127725eda023cb9e34272d5f1698}\label{namespacerrt__move_a9519127725eda023cb9e34272d5f1698}} 
+\index{rrt\_move@{rrt\_move}!check\_if\_throw\_is\_obstructed@{check\_if\_throw\_is\_obstructed}}
+\index{check\_if\_throw\_is\_obstructed@{check\_if\_throw\_is\_obstructed}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{check\_if\_throw\_is\_obstructed()}{check\_if\_throw\_is\_obstructed()}}
+{\footnotesize\ttfamily def rrt\+\_\+move.\+check\+\_\+if\+\_\+throw\+\_\+is\+\_\+obstructed (\begin{DoxyParamCaption}\item[{}]{thrower\+\_\+fname,  }\item[{}]{catcher\+\_\+fname,  }\item[{}]{C,  }\item[{}]{threshold = {\ttfamily 0.5} }\end{DoxyParamCaption})}
+
+
+
+Check if the throw path between the thrower and catcher is obstructed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em thrower\+\_\+fname} & Frame name of the thrower robot. \\
+\hline
+{\em catcher\+\_\+fname} & Frame name of the catcher robot or bin. \\
+\hline
+{\em C} & Configuration object for the robotic setup. \\
+\hline
+{\em threshold} & Distance threshold to determine obstruction.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+
+bool True if the throw is obstructed, False otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacerrt__move_ab653a19106cd7089332213e468cca1f0}\label{namespacerrt__move_ab653a19106cd7089332213e468cca1f0}} 
+\index{rrt\_move@{rrt\_move}!move\_robot\_closer@{move\_robot\_closer}}
+\index{move\_robot\_closer@{move\_robot\_closer}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{move\_robot\_closer()}{move\_robot\_closer()}}
+{\footnotesize\ttfamily def rrt\+\_\+move.\+move\+\_\+robot\+\_\+closer (\begin{DoxyParamCaption}\item[{}]{thrower\+\_\+fname,  }\item[{}]{catcher\+\_\+fname,  }\item[{}]{waypoints,  }\item[{ry.\+Config}]{C,  }\item[{bool}]{is\+Render,  }\item[{}]{clearance\+\_\+dist = {\ttfamily 2.5},  }\item[{np.\+array }]{target\+\_\+pos = {\ttfamily None},  }\item[{}]{debug = {\ttfamily False} }\end{DoxyParamCaption})}
+
+
+
+Move the robot closer to the target (bin or catcher robot) using KOMO and RRT. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em thrower\+\_\+fname} & Frame name of the thrower robot. \\
+\hline
+{\em catcher\+\_\+fname} & Frame name of the catcher robot. \\
+\hline
+{\em waypoints} & List of waypoint frame names. \\
+\hline
+{\em C} & Configuration object for the robotic setup. \\
+\hline
+{\em is\+Render} & Whether to render the simulation. \\
+\hline
+{\em clearance\+\_\+dist} & Clearance distance from the target. \\
+\hline
+{\em target\+\_\+pos} & Target position for the thrower robot. \\
+\hline
+{\em debug} & Flag to enable debug information. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacerrt__move_a7dd06a055bb68b4852922f6f0d2c2940}\label{namespacerrt__move_a7dd06a055bb68b4852922f6f0d2c2940}} 
+\index{rrt\_move@{rrt\_move}!C@{C}}
+\index{C@{C}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{C}{C}}
+{\footnotesize\ttfamily rrt\+\_\+move.\+C = ry.\+Config()}
+
+\mbox{\Hypertarget{namespacerrt__move_a9adbc6ae8b44d32a878954234d4874a1}\label{namespacerrt__move_a9adbc6ae8b44d32a878954234d4874a1}} 
+\index{rrt\_move@{rrt\_move}!catcher@{catcher}}
+\index{catcher@{catcher}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{catcher}{catcher}}
+{\footnotesize\ttfamily rrt\+\_\+move.\+catcher = C.\+get\+Frame(\mbox{\hyperlink{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}{catcher\+\_\+fname}})}
+
+\mbox{\Hypertarget{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}\label{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}} 
+\index{rrt\_move@{rrt\_move}!catcher\_fname@{catcher\_fname}}
+\index{catcher\_fname@{catcher\_fname}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{catcher\_fname}{catcher\_fname}}
+{\footnotesize\ttfamily string rrt\+\_\+move.\+catcher\+\_\+fname = \char`\"{}l2\+\_\+panda\+\_\+base\char`\"{}}
+
+\mbox{\Hypertarget{namespacerrt__move_a99e4ee3af974212c0b46d1185226ee6b}\label{namespacerrt__move_a99e4ee3af974212c0b46d1185226ee6b}} 
+\index{rrt\_move@{rrt\_move}!initial\_catcher\_pos@{initial\_catcher\_pos}}
+\index{initial\_catcher\_pos@{initial\_catcher\_pos}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{initial\_catcher\_pos}{initial\_catcher\_pos}}
+{\footnotesize\ttfamily rrt\+\_\+move.\+initial\+\_\+catcher\+\_\+pos = catcher.\+get\+Position()}
+
+\mbox{\Hypertarget{namespacerrt__move_a232b2bec66863364babff71d46a8f042}\label{namespacerrt__move_a232b2bec66863364babff71d46a8f042}} 
+\index{rrt\_move@{rrt\_move}!initial\_thrower\_pos@{initial\_thrower\_pos}}
+\index{initial\_thrower\_pos@{initial\_thrower\_pos}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{initial\_thrower\_pos}{initial\_thrower\_pos}}
+{\footnotesize\ttfamily rrt\+\_\+move.\+initial\+\_\+thrower\+\_\+pos = thrower.\+get\+Position()}
+
+\mbox{\Hypertarget{namespacerrt__move_a9713e66ea12594bfb10f2fa4d90489ab}\label{namespacerrt__move_a9713e66ea12594bfb10f2fa4d90489ab}} 
+\index{rrt\_move@{rrt\_move}!isObstructed@{isObstructed}}
+\index{isObstructed@{isObstructed}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{isObstructed}{isObstructed}}
+{\footnotesize\ttfamily def rrt\+\_\+move.\+is\+Obstructed = \mbox{\hyperlink{namespacerrt__move_a9519127725eda023cb9e34272d5f1698}{check\+\_\+if\+\_\+throw\+\_\+is\+\_\+obstructed}}(\mbox{\hyperlink{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}{thrower\+\_\+fname}}, \mbox{\hyperlink{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}{catcher\+\_\+fname}}, \mbox{\hyperlink{namespacerrt__move_a7dd06a055bb68b4852922f6f0d2c2940}{C}})}
+
+\mbox{\Hypertarget{namespacerrt__move_a52962812df8e4ea65d56a49875c2673d}\label{namespacerrt__move_a52962812df8e4ea65d56a49875c2673d}} 
+\index{rrt\_move@{rrt\_move}!isRender@{isRender}}
+\index{isRender@{isRender}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{isRender}{isRender}}
+{\footnotesize\ttfamily rrt\+\_\+move.\+is\+Render}
+
+\mbox{\Hypertarget{namespacerrt__move_a1baf5d85c933c89054a836cd9016a4ec}\label{namespacerrt__move_a1baf5d85c933c89054a836cd9016a4ec}} 
+\index{rrt\_move@{rrt\_move}!max\_trials@{max\_trials}}
+\index{max\_trials@{max\_trials}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{max\_trials}{max\_trials}}
+{\footnotesize\ttfamily int rrt\+\_\+move.\+max\+\_\+trials = 10}
+
+\mbox{\Hypertarget{namespacerrt__move_afbfc4705d6a8e1fb52c12a33806bdd2c}\label{namespacerrt__move_afbfc4705d6a8e1fb52c12a33806bdd2c}} 
+\index{rrt\_move@{rrt\_move}!thrower@{thrower}}
+\index{thrower@{thrower}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{thrower}{thrower}}
+{\footnotesize\ttfamily rrt\+\_\+move.\+thrower = C.\+get\+Frame(\mbox{\hyperlink{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}{thrower\+\_\+fname}})}
+
+\mbox{\Hypertarget{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}\label{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}} 
+\index{rrt\_move@{rrt\_move}!thrower\_fname@{thrower\_fname}}
+\index{thrower\_fname@{thrower\_fname}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{thrower\_fname}{thrower\_fname}}
+{\footnotesize\ttfamily string rrt\+\_\+move.\+thrower\+\_\+fname = \char`\"{}l\+\_\+panda\+\_\+base\char`\"{}}
+
+\mbox{\Hypertarget{namespacerrt__move_a36734978a7eea69a7adbf1fbf7dd496f}\label{namespacerrt__move_a36734978a7eea69a7adbf1fbf7dd496f}} 
+\index{rrt\_move@{rrt\_move}!wall@{wall}}
+\index{wall@{wall}!rrt\_move@{rrt\_move}}
+\doxysubsubsection{\texorpdfstring{wall}{wall}}
+{\footnotesize\ttfamily rrt\+\_\+move.\+wall = C.\+add\+Frame(\char`\"{}wall\char`\"{}, \char`\"{}base\char`\"{}) \textbackslash{}}
+

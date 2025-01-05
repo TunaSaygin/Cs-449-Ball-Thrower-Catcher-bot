@@ -1,0 +1,116 @@
+\hypertarget{namespacethrowing__catching}{}\doxysection{throwing\+\_\+catching Namespace Reference}
+\label{namespacethrowing__catching}\index{throwing\_catching@{throwing\_catching}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacethrowing__catching_a2197ff4aba456a27596c7dc22fd4efc0}{throw\+\_\+catch}} (ry.\+Config \mbox{\hyperlink{namespacethrowing__catching_ac19770ba192813c9df3a0b5becc791ef}{C}}, ry.\+Bot\+Op \mbox{\hyperlink{namespacethrowing__catching_a1b31c19aa1baf712f3d6d94e221aa273}{bot}}, bool is\+Render, float sleep\+\_\+time=20)
+\begin{DoxyCompactList}\small\item\em Coordinates the thrower robot\textquotesingle{}s operations and checks the result. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrowing__catching_a3d5ff12dd015797a7a6ce6c70e797c9c}{run\+\_\+thrower}} ()
+\begin{DoxyCompactList}\small\item\em Function to operate the thrower robot. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrowing__catching_a4860cc4dcc8700cdc45f2024141f5b8b}{run\+\_\+catcher}} ()
+\begin{DoxyCompactList}\small\item\em Function to operate the catcher robot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacethrowing__catching_a509ccf63cf1ad65ba38e515ad34f46f2}{render\+\_\+simulation}} = True
+\begin{DoxyCompactList}\small\item\em Main function for initializing and running both the thrower and catcher robots. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacethrowing__catching_ac19770ba192813c9df3a0b5becc791ef}{C}} = ry.\+Config()
+\item 
+\mbox{\hyperlink{namespacethrowing__catching_a7b3abdb611cbac32d5e849620a34ffce}{q\+Home}} = C.\+get\+Joint\+State()
+\item 
+\mbox{\hyperlink{namespacethrowing__catching_a1b31c19aa1baf712f3d6d94e221aa273}{bot}} = ry.\+Bot\+Op(\mbox{\hyperlink{namespacethrowing__catching_ac19770ba192813c9df3a0b5becc791ef}{C}}, use\+Real\+Robot=False)
+\item 
+\mbox{\hyperlink{namespacethrowing__catching_ac115156668f5c5eda24d4319c852248f}{thrower\+\_\+thread}} = threading.\+Thread(target=\mbox{\hyperlink{namespacethrowing__catching_a3d5ff12dd015797a7a6ce6c70e797c9c}{run\+\_\+thrower}})
+\item 
+\mbox{\hyperlink{namespacethrowing__catching_a7c8a8a2f5629fc35829f403126aa37e8}{catcher\+\_\+thread}} = threading.\+Thread(target=\mbox{\hyperlink{namespacethrowing__catching_a4860cc4dcc8700cdc45f2024141f5b8b}{run\+\_\+catcher}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacethrowing__catching_a4860cc4dcc8700cdc45f2024141f5b8b}\label{namespacethrowing__catching_a4860cc4dcc8700cdc45f2024141f5b8b}} 
+\index{throwing\_catching@{throwing\_catching}!run\_catcher@{run\_catcher}}
+\index{run\_catcher@{run\_catcher}!throwing\_catching@{throwing\_catching}}
+\doxysubsubsection{\texorpdfstring{run\_catcher()}{run\_catcher()}}
+{\footnotesize\ttfamily def throwing\+\_\+catching.\+run\+\_\+catcher (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to operate the catcher robot. 
+
+\mbox{\Hypertarget{namespacethrowing__catching_a3d5ff12dd015797a7a6ce6c70e797c9c}\label{namespacethrowing__catching_a3d5ff12dd015797a7a6ce6c70e797c9c}} 
+\index{throwing\_catching@{throwing\_catching}!run\_thrower@{run\_thrower}}
+\index{run\_thrower@{run\_thrower}!throwing\_catching@{throwing\_catching}}
+\doxysubsubsection{\texorpdfstring{run\_thrower()}{run\_thrower()}}
+{\footnotesize\ttfamily def throwing\+\_\+catching.\+run\+\_\+thrower (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to operate the thrower robot. 
+
+\mbox{\Hypertarget{namespacethrowing__catching_a2197ff4aba456a27596c7dc22fd4efc0}\label{namespacethrowing__catching_a2197ff4aba456a27596c7dc22fd4efc0}} 
+\index{throwing\_catching@{throwing\_catching}!throw\_catch@{throw\_catch}}
+\index{throw\_catch@{throw\_catch}!throwing\_catching@{throwing\_catching}}
+\doxysubsubsection{\texorpdfstring{throw\_catch()}{throw\_catch()}}
+{\footnotesize\ttfamily def throwing\+\_\+catching.\+throw\+\_\+catch (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C,  }\item[{ry.\+Bot\+Op}]{bot,  }\item[{bool}]{is\+Render,  }\item[{float }]{sleep\+\_\+time = {\ttfamily 20} }\end{DoxyParamCaption})}
+
+
+
+Coordinates the thrower robot\textquotesingle{}s operations and checks the result. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & The shared configuration object for the simulation. \\
+\hline
+{\em bot} & The Bot\+Op object controlling the thrower robot. \\
+\hline
+{\em is\+Render} & Whether to render the simulation. \\
+\hline
+{\em sleep\+\_\+time} & The time to wait before ending the simulation. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A tuple containing the throw result and deviation from the target. 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacethrowing__catching_a1b31c19aa1baf712f3d6d94e221aa273}\label{namespacethrowing__catching_a1b31c19aa1baf712f3d6d94e221aa273}} 
+\index{throwing\_catching@{throwing\_catching}!bot@{bot}}
+\index{bot@{bot}!throwing\_catching@{throwing\_catching}}
+\doxysubsubsection{\texorpdfstring{bot}{bot}}
+{\footnotesize\ttfamily throwing\+\_\+catching.\+bot = ry.\+Bot\+Op(\mbox{\hyperlink{namespacethrowing__catching_ac19770ba192813c9df3a0b5becc791ef}{C}}, use\+Real\+Robot=False)}
+
+\mbox{\Hypertarget{namespacethrowing__catching_ac19770ba192813c9df3a0b5becc791ef}\label{namespacethrowing__catching_ac19770ba192813c9df3a0b5becc791ef}} 
+\index{throwing\_catching@{throwing\_catching}!C@{C}}
+\index{C@{C}!throwing\_catching@{throwing\_catching}}
+\doxysubsubsection{\texorpdfstring{C}{C}}
+{\footnotesize\ttfamily throwing\+\_\+catching.\+C = ry.\+Config()}
+
+\mbox{\Hypertarget{namespacethrowing__catching_a7c8a8a2f5629fc35829f403126aa37e8}\label{namespacethrowing__catching_a7c8a8a2f5629fc35829f403126aa37e8}} 
+\index{throwing\_catching@{throwing\_catching}!catcher\_thread@{catcher\_thread}}
+\index{catcher\_thread@{catcher\_thread}!throwing\_catching@{throwing\_catching}}
+\doxysubsubsection{\texorpdfstring{catcher\_thread}{catcher\_thread}}
+{\footnotesize\ttfamily throwing\+\_\+catching.\+catcher\+\_\+thread = threading.\+Thread(target=\mbox{\hyperlink{namespacethrowing__catching_a4860cc4dcc8700cdc45f2024141f5b8b}{run\+\_\+catcher}})}
+
+\mbox{\Hypertarget{namespacethrowing__catching_a7b3abdb611cbac32d5e849620a34ffce}\label{namespacethrowing__catching_a7b3abdb611cbac32d5e849620a34ffce}} 
+\index{throwing\_catching@{throwing\_catching}!qHome@{qHome}}
+\index{qHome@{qHome}!throwing\_catching@{throwing\_catching}}
+\doxysubsubsection{\texorpdfstring{qHome}{qHome}}
+{\footnotesize\ttfamily throwing\+\_\+catching.\+q\+Home = C.\+get\+Joint\+State()}
+
+\mbox{\Hypertarget{namespacethrowing__catching_a509ccf63cf1ad65ba38e515ad34f46f2}\label{namespacethrowing__catching_a509ccf63cf1ad65ba38e515ad34f46f2}} 
+\index{throwing\_catching@{throwing\_catching}!render\_simulation@{render\_simulation}}
+\index{render\_simulation@{render\_simulation}!throwing\_catching@{throwing\_catching}}
+\doxysubsubsection{\texorpdfstring{render\_simulation}{render\_simulation}}
+{\footnotesize\ttfamily bool throwing\+\_\+catching.\+render\+\_\+simulation = True}
+
+
+
+Main function for initializing and running both the thrower and catcher robots. 
+
+\mbox{\Hypertarget{namespacethrowing__catching_ac115156668f5c5eda24d4319c852248f}\label{namespacethrowing__catching_ac115156668f5c5eda24d4319c852248f}} 
+\index{throwing\_catching@{throwing\_catching}!thrower\_thread@{thrower\_thread}}
+\index{thrower\_thread@{thrower\_thread}!throwing\_catching@{throwing\_catching}}
+\doxysubsubsection{\texorpdfstring{thrower\_thread}{thrower\_thread}}
+{\footnotesize\ttfamily throwing\+\_\+catching.\+thrower\+\_\+thread = threading.\+Thread(target=\mbox{\hyperlink{namespacethrowing__catching_a3d5ff12dd015797a7a6ce6c70e797c9c}{run\+\_\+thrower}})}
+

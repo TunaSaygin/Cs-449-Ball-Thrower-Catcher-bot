@@ -1,0 +1,78 @@
+\hypertarget{namespacevelocity__finder__copy}{}\doxysection{velocity\+\_\+finder\+\_\+copy Namespace Reference}
+\label{namespacevelocity__finder__copy}\index{velocity\_finder\_copy@{velocity\_finder\_copy}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacevelocity__finder__copy_a26605dcc228deb89d003a429374ef969}{find\+\_\+initial\+\_\+point\+\_\+from\+\_\+release}} (ry.\+Config C, release\+\_\+position, release\+\_\+velocity, height\+\_\+threshold=0.\+2)
+\begin{DoxyCompactList}\small\item\em Finds the initial position for the throwing motion based on release position and velocity. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacevelocity__finder__copy_a2693945303b828ebfecf7255ded279aa}{pick\+\_\+last\+\_\+object\+\_\+if\+\_\+valid}} (ry.\+Config C, release\+\_\+position, release\+\_\+velocity)
+\begin{DoxyCompactList}\small\item\em Simulates the robot to pick the last object if conditions are met. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacevelocity__finder__copy_a5bd284d04e21cffe969123a343a62cee}{find\+\_\+velocity}} (ry.\+Config C)
+\begin{DoxyCompactList}\small\item\em Finds the optimal velocity to throw the object into the bin. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacevelocity__finder__copy_a26605dcc228deb89d003a429374ef969}\label{namespacevelocity__finder__copy_a26605dcc228deb89d003a429374ef969}} 
+\index{velocity\_finder\_copy@{velocity\_finder\_copy}!find\_initial\_point\_from\_release@{find\_initial\_point\_from\_release}}
+\index{find\_initial\_point\_from\_release@{find\_initial\_point\_from\_release}!velocity\_finder\_copy@{velocity\_finder\_copy}}
+\doxysubsubsection{\texorpdfstring{find\_initial\_point\_from\_release()}{find\_initial\_point\_from\_release()}}
+{\footnotesize\ttfamily def velocity\+\_\+finder\+\_\+copy.\+find\+\_\+initial\+\_\+point\+\_\+from\+\_\+release (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C,  }\item[{}]{release\+\_\+position,  }\item[{}]{release\+\_\+velocity,  }\item[{}]{height\+\_\+threshold = {\ttfamily 0.2} }\end{DoxyParamCaption})}
+
+
+
+Finds the initial position for the throwing motion based on release position and velocity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & Robot configuration (KOMO simulation object). \\
+\hline
+{\em release\+\_\+position} & The release point (3D coordinates). \\
+\hline
+{\em release\+\_\+velocity} & The release velocity vector. \\
+\hline
+{\em height\+\_\+threshold} & Minimum allowable height for the initial position. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The computed initial position if valid, otherwise None. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacevelocity__finder__copy_a5bd284d04e21cffe969123a343a62cee}\label{namespacevelocity__finder__copy_a5bd284d04e21cffe969123a343a62cee}} 
+\index{velocity\_finder\_copy@{velocity\_finder\_copy}!find\_velocity@{find\_velocity}}
+\index{find\_velocity@{find\_velocity}!velocity\_finder\_copy@{velocity\_finder\_copy}}
+\doxysubsubsection{\texorpdfstring{find\_velocity()}{find\_velocity()}}
+{\footnotesize\ttfamily def velocity\+\_\+finder\+\_\+copy.\+find\+\_\+velocity (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C }\end{DoxyParamCaption})}
+
+
+
+Finds the optimal velocity to throw the object into the bin. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & Robot configuration (KOMO simulation object). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A list containing the optimal velocity vector \mbox{[}vx, vy, vz\mbox{]}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacevelocity__finder__copy_a2693945303b828ebfecf7255ded279aa}\label{namespacevelocity__finder__copy_a2693945303b828ebfecf7255ded279aa}} 
+\index{velocity\_finder\_copy@{velocity\_finder\_copy}!pick\_last\_object\_if\_valid@{pick\_last\_object\_if\_valid}}
+\index{pick\_last\_object\_if\_valid@{pick\_last\_object\_if\_valid}!velocity\_finder\_copy@{velocity\_finder\_copy}}
+\doxysubsubsection{\texorpdfstring{pick\_last\_object\_if\_valid()}{pick\_last\_object\_if\_valid()}}
+{\footnotesize\ttfamily def velocity\+\_\+finder\+\_\+copy.\+pick\+\_\+last\+\_\+object\+\_\+if\+\_\+valid (\begin{DoxyParamCaption}\item[{ry.\+Config}]{C,  }\item[{}]{release\+\_\+position,  }\item[{}]{release\+\_\+velocity }\end{DoxyParamCaption})}
+
+
+
+Simulates the robot to pick the last object if conditions are met. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em C} & Robot configuration (KOMO simulation object). \\
+\hline
+{\em release\+\_\+position} & The release point (3D coordinates). \\
+\hline
+{\em release\+\_\+velocity} & The release velocity vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The computed initial position if valid, otherwise None. 
+\end{DoxyReturn}

@@ -1,0 +1,114 @@
+\hypertarget{namespacethrower__catcher__projectile}{}\doxysection{thrower\+\_\+catcher\+\_\+projectile Namespace Reference}
+\label{namespacethrower__catcher__projectile}\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacethrower__catcher__projectile_a4320a463d6b9974e3be2df4f2ac3c1fb}{on\+\_\+ball\+\_\+release}} ()
+\begin{DoxyCompactList}\small\item\em Callback function triggered when the ball is released by the thrower. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacethrower__catcher__projectile_a60117577ee43deac679694da1bb620e1}{after\+\_\+ball\+\_\+release}} ()
+\begin{DoxyCompactList}\small\item\em Callback function triggered after the ball release process. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacethrower__catcher__projectile_ad415c885c66ab4361867f3a0abceabf2}{C}} = ry.\+Config()
+\item 
+\mbox{\hyperlink{namespacethrower__catcher__projectile_a79f480438a7858f0c6d612281ac99bb0}{q\+Home}} = C.\+get\+Joint\+State()
+\item 
+\mbox{\hyperlink{namespacethrower__catcher__projectile_a4d2dfdc2d5728b98f9c221bbbf16ec8d}{bot}} = ry.\+Bot\+Op(\mbox{\hyperlink{namespacethrower__catcher__projectile_ad415c885c66ab4361867f3a0abceabf2}{C}}, use\+Real\+Robot=False)
+\item 
+\mbox{\hyperlink{namespacethrower__catcher__projectile_a01a4fde167b234a2e173427f15bfa032}{catcher\+\_\+robot}} = \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot}{Catcher\+Robot}}(\mbox{\hyperlink{namespacethrower__catcher__projectile_ad415c885c66ab4361867f3a0abceabf2}{C}}, \mbox{\hyperlink{namespacethrower__catcher__projectile_a4d2dfdc2d5728b98f9c221bbbf16ec8d}{bot}})
+\item 
+\mbox{\hyperlink{namespacethrower__catcher__projectile_ad3edc580979d9f1ea39080a240dfc59f}{is\+Render}}
+\item 
+\mbox{\hyperlink{namespacethrower__catcher__projectile_a95b2a2c304368aa8d4d6f2a804b04ee1}{True}}
+\item 
+\mbox{\hyperlink{namespacethrower__catcher__projectile_a3dcf7675fdee56123a2945272530b25a}{sleep\+\_\+time}}
+\item 
+\mbox{\hyperlink{namespacethrower__catcher__projectile_a9bd46839b03367860ff968c9e3b2b21f}{catch\+\_\+callback1}}
+\item 
+\mbox{\hyperlink{namespacethrower__catcher__projectile_afd9473329dcd18b1b72b30493c49a962}{catch\+\_\+callback2}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_a60117577ee43deac679694da1bb620e1}\label{namespacethrower__catcher__projectile_a60117577ee43deac679694da1bb620e1}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!after\_ball\_release@{after\_ball\_release}}
+\index{after\_ball\_release@{after\_ball\_release}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{after\_ball\_release()}{after\_ball\_release()}}
+{\footnotesize\ttfamily def thrower\+\_\+catcher\+\_\+projectile.\+after\+\_\+ball\+\_\+release (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Callback function triggered after the ball release process. 
+
+\begin{DoxyVerb}   This function stops the catcher robot's prediction and movement threads.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespacethrower__catcher__projectile_a4320a463d6b9974e3be2df4f2ac3c1fb}\label{namespacethrower__catcher__projectile_a4320a463d6b9974e3be2df4f2ac3c1fb}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!on\_ball\_release@{on\_ball\_release}}
+\index{on\_ball\_release@{on\_ball\_release}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{on\_ball\_release()}{on\_ball\_release()}}
+{\footnotesize\ttfamily def thrower\+\_\+catcher\+\_\+projectile.\+on\+\_\+ball\+\_\+release (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Callback function triggered when the ball is released by the thrower. 
+
+\begin{DoxyVerb}   This function starts the catcher robot's prediction and movement threads.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_a4d2dfdc2d5728b98f9c221bbbf16ec8d}\label{namespacethrower__catcher__projectile_a4d2dfdc2d5728b98f9c221bbbf16ec8d}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!bot@{bot}}
+\index{bot@{bot}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{bot}{bot}}
+{\footnotesize\ttfamily thrower\+\_\+catcher\+\_\+projectile.\+bot = ry.\+Bot\+Op(\mbox{\hyperlink{namespacethrower__catcher__projectile_ad415c885c66ab4361867f3a0abceabf2}{C}}, use\+Real\+Robot=False)}
+
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_ad415c885c66ab4361867f3a0abceabf2}\label{namespacethrower__catcher__projectile_ad415c885c66ab4361867f3a0abceabf2}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!C@{C}}
+\index{C@{C}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{C}{C}}
+{\footnotesize\ttfamily thrower\+\_\+catcher\+\_\+projectile.\+C = ry.\+Config()}
+
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_a9bd46839b03367860ff968c9e3b2b21f}\label{namespacethrower__catcher__projectile_a9bd46839b03367860ff968c9e3b2b21f}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!catch\_callback1@{catch\_callback1}}
+\index{catch\_callback1@{catch\_callback1}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{catch\_callback1}{catch\_callback1}}
+{\footnotesize\ttfamily thrower\+\_\+catcher\+\_\+projectile.\+catch\+\_\+callback1}
+
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_afd9473329dcd18b1b72b30493c49a962}\label{namespacethrower__catcher__projectile_afd9473329dcd18b1b72b30493c49a962}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!catch\_callback2@{catch\_callback2}}
+\index{catch\_callback2@{catch\_callback2}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{catch\_callback2}{catch\_callback2}}
+{\footnotesize\ttfamily thrower\+\_\+catcher\+\_\+projectile.\+catch\+\_\+callback2}
+
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_a01a4fde167b234a2e173427f15bfa032}\label{namespacethrower__catcher__projectile_a01a4fde167b234a2e173427f15bfa032}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!catcher\_robot@{catcher\_robot}}
+\index{catcher\_robot@{catcher\_robot}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{catcher\_robot}{catcher\_robot}}
+{\footnotesize\ttfamily thrower\+\_\+catcher\+\_\+projectile.\+catcher\+\_\+robot = \mbox{\hyperlink{classcatcher__robot__projectile_1_1CatcherRobot}{Catcher\+Robot}}(\mbox{\hyperlink{namespacethrower__catcher__projectile_ad415c885c66ab4361867f3a0abceabf2}{C}}, \mbox{\hyperlink{namespacethrower__catcher__projectile_a4d2dfdc2d5728b98f9c221bbbf16ec8d}{bot}})}
+
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_ad3edc580979d9f1ea39080a240dfc59f}\label{namespacethrower__catcher__projectile_ad3edc580979d9f1ea39080a240dfc59f}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!isRender@{isRender}}
+\index{isRender@{isRender}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{isRender}{isRender}}
+{\footnotesize\ttfamily thrower\+\_\+catcher\+\_\+projectile.\+is\+Render}
+
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_a79f480438a7858f0c6d612281ac99bb0}\label{namespacethrower__catcher__projectile_a79f480438a7858f0c6d612281ac99bb0}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!qHome@{qHome}}
+\index{qHome@{qHome}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{qHome}{qHome}}
+{\footnotesize\ttfamily thrower\+\_\+catcher\+\_\+projectile.\+q\+Home = C.\+get\+Joint\+State()}
+
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_a3dcf7675fdee56123a2945272530b25a}\label{namespacethrower__catcher__projectile_a3dcf7675fdee56123a2945272530b25a}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!sleep\_time@{sleep\_time}}
+\index{sleep\_time@{sleep\_time}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{sleep\_time}{sleep\_time}}
+{\footnotesize\ttfamily thrower\+\_\+catcher\+\_\+projectile.\+sleep\+\_\+time}
+
+\mbox{\Hypertarget{namespacethrower__catcher__projectile_a95b2a2c304368aa8d4d6f2a804b04ee1}\label{namespacethrower__catcher__projectile_a95b2a2c304368aa8d4d6f2a804b04ee1}} 
+\index{thrower\_catcher\_projectile@{thrower\_catcher\_projectile}!True@{True}}
+\index{True@{True}!thrower\_catcher\_projectile@{thrower\_catcher\_projectile}}
+\doxysubsubsection{\texorpdfstring{True}{True}}
+{\footnotesize\ttfamily thrower\+\_\+catcher\+\_\+projectile.\+True}
+

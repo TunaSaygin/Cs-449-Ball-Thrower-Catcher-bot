@@ -1,16 +1,21 @@
 import numpy as np
+
 def find_line_intersections_2d(bin_pos, initial_position, bin_dimensions):
     """
-    Finds the intersection points of the line defined by bin_pos and initial_position
-    with the boundaries of the bin in the x-y plane.
+    Finds the intersection points of a line with the boundaries of a rectangular bin in the x-y plane.
+
+    The line is defined by its start position (initial_position) and a target position (bin_pos).
+    The bin boundaries are defined by a dictionary containing the bottom-left and top-right coordinates.
 
     Args:
-        bin_pos (list): Position of the bin center.
-        initial_position (list): Initial position of the line.
-        bin_dimensions (dict): Dictionary defining the bin dimensions with 'bottom_left' and 'top_right'.
+        bin_pos (list): Position of the bin center [x, y].
+        initial_position (list): Initial position of the line [x, y].
+        bin_dimensions (dict): Dictionary with bin dimensions:
+                               - 'bottom_left': [x_min, y_min]
+                               - 'top_right': [x_max, y_max].
 
     Returns:
-        list: Intersection points of the line with the bin boundaries in the x-y plane.
+        list: A list of intersection points [x, y] with the bin boundaries.
     """
     line_dir = np.array([bin_pos[0] - initial_position[0], bin_pos[1] - initial_position[1]])  # Line direction in x-y
     line_dir /= np.linalg.norm(line_dir)  # Normalize the direction vector
@@ -39,103 +44,107 @@ def find_line_intersections_2d(bin_pos, initial_position, bin_dimensions):
                 intersections.append([x, y])
 
     return intersections
+
 def velocity_to_rotation_matrix(velocity_vector):
-   """
-   Construct a rotation matrix where the y-axis aligns with the given velocity vector.
+    """
+    Constructs a rotation matrix where the y-axis aligns with the given velocity vector.
 
+    Args:
+        velocity_vector (np.ndarray): Velocity vector in world frame.
 
-   Args:
-       velocity_vector (np.ndarray): Velocity vector in world frame.
+    Returns:
+        np.ndarray: 3x3 rotation matrix aligning the y-axis with the velocity vector.
+    """
+    # Normalize the velocity vector to get the y-axis
+    y_axis = velocity_vector / np.linalg.norm(velocity_vector)
 
+    # Define a reference z-axis (world z-axis)
+    z_axis_world = np.array([0, 0, 1])
 
-   Returns:
-       np.ndarray: 3x3 rotation matrix.
-   """
-   # Normalize the velocity vector to get the y-axis
-   y_axis = velocity_vector / np.linalg.norm(velocity_vector)
+    # Compute the x-axis using the cross product of z and y
+    x_axis = np.cross(z_axis_world, y_axis)
 
+    # Handle the case where the velocity vector is parallel to the z-axis
+    if np.linalg.norm(x_axis) < 1e-6:
+        z_axis_world = np.array([1, 0, 0])  # Choose x-axis as reference
+        x_axis = np.cross(z_axis_world, y_axis)
 
-   # Define a reference z-axis (world z-axis)
-   z_axis_world = np.array([0, 0, 1])
+    x_axis /= np.linalg.norm(x_axis)  # Normalize the x-axis
 
+    # Recompute the z-axis to ensure orthogonality
+    z_axis = np.cross(y_axis, x_axis)
+    z_axis /= np.linalg.norm(z_axis)
 
-   # Compute the x-axis using the cross product of z and y
-   x_axis = np.cross(z_axis_world, y_axis)
-
-
-   # Handle the case where the velocity vector is parallel to the z-axis
-   if np.linalg.norm(x_axis) < 1e-6:
-       z_axis_world = np.array([1, 0, 0])  # Choose x-axis as reference
-       x_axis = np.cross(z_axis_world, y_axis)
-
-
-   x_axis /= np.linalg.norm(x_axis)  # Normalize the x-axis
-
-
-   # Recompute the z-axis to ensure orthogonality
-   z_axis = np.cross(y_axis, x_axis)
-   z_axis /= np.linalg.norm(z_axis)
-
-
-   # Construct the rotation matrix
-   rotation_matrix = np.column_stack((x_axis, y_axis, z_axis))
-   return rotation_matrix
-
-
-
+    # Construct the rotation matrix
+    rotation_matrix = np.column_stack((x_axis, y_axis, z_axis))
+    return rotation_matrix
 
 def rotation_matrix_to_quaternion(rotation_matrix):
-   """
-   Converts a 3x3 rotation matrix to a quaternion.
-  
-   Args:
-       rotation_matrix (numpy.ndarray): 3x3 rotation matrix.
-      
-   Returns:
-       numpy.ndarray: Quaternion [w, x, y, z].
-   """
-   R = rotation_matrix
-   trace = np.trace(R)
+    """
+    Converts a 3x3 rotation matrix to a quaternion.
 
+    Args:
+        rotation_matrix (numpy.ndarray): 3x3 rotation matrix.
 
-   if trace > 0:
-       S = np.sqrt(trace + 1.0) * 2  # S=4*qw
-       w = 0.25 * S
-       x = (R[2, 1] - R[1, 2]) / S
-       y = (R[0, 2] - R[2, 0]) / S
-       z = (R[1, 0] - R[0, 1]) / S
-   elif (R[0, 0] > R[1, 1]) and (R[0, 0] > R[2, 2]):
-       S = np.sqrt(1.0 + R[0, 0] - R[1, 1] - R[2, 2]) * 2  # S=4*qx
-       w = (R[2, 1] - R[1, 2]) / S
-       x = 0.25 * S
-       y = (R[0, 1] + R[1, 0]) / S
-       z = (R[0, 2] + R[2, 0]) / S
-   elif R[1, 1] > R[2, 2]:
-       S = np.sqrt(1.0 + R[1, 1] - R[0, 0] - R[2, 2]) * 2  # S=4*qy
-       w = (R[0, 2] - R[2, 0]) / S
-       x = (R[0, 1] + R[1, 0]) / S
-       y = 0.25 * S
-       z = (R[1, 2] + R[2, 1]) / S
-   else:
-       S = np.sqrt(1.0 + R[2, 2] - R[0, 0] - R[1, 1]) * 2  # S=4*qz
-       w = (R[1, 0] - R[0, 1]) / S
-       x = (R[0, 2] + R[2, 0]) / S
-       y = (R[1, 2] + R[2, 1]) / S
-       z = 0.25 * S
+    Returns:
+        numpy.ndarray: Quaternion [w, x, y, z].
+    """
+    R = rotation_matrix
+    trace = np.trace(R)
 
+    if trace > 0:
+        S = np.sqrt(trace + 1.0) * 2  # S=4*qw
+        w = 0.25 * S
+        x = (R[2, 1] - R[1, 2]) / S
+        y = (R[0, 2] - R[2, 0]) / S
+        z = (R[1, 0] - R[0, 1]) / S
+    elif (R[0, 0] > R[1, 1]) and (R[0, 0] > R[2, 2]):
+        S = np.sqrt(1.0 + R[0, 0] - R[1, 1] - R[2, 2]) * 2  # S=4*qx
+        w = (R[2, 1] - R[1, 2]) / S
+        x = 0.25 * S
+        y = (R[0, 1] + R[1, 0]) / S
+        z = (R[0, 2] + R[2, 0]) / S
+    elif R[1, 1] > R[2, 2]:
+        S = np.sqrt(1.0 + R[1, 1] - R[0, 0] - R[2, 2]) * 2  # S=4*qy
+        w = (R[0, 2] - R[2, 0]) / S
+        x = (R[0, 1] + R[1, 0]) / S
+        y = 0.25 * S
+        z = (R[1, 2] + R[2, 1]) / S
+    else:
+        S = np.sqrt(1.0 + R[2, 2] - R[0, 0] - R[1, 1]) * 2  # S=4*qz
+        w = (R[1, 0] - R[0, 1]) / S
+        x = (R[0, 2] + R[2, 0]) / S
+        y = (R[1, 2] + R[2, 1]) / S
+        z = 0.25 * S
 
-   return np.array([w, x, y, z])
+    return np.array([w, x, y, z])
+
 def get_quat_from_velocity(velocity):
-    normalized_vel = velocity/np.linalg.norm(velocity)
+    """
+    Generates a quaternion representing orientation from a velocity vector.
+
+    Args:
+        velocity (np.ndarray): A velocity vector in the world frame.
+
+    Returns:
+        np.ndarray: Quaternion [w, x, y, z].
+    """
+    normalized_vel = velocity / np.linalg.norm(velocity)
     vec_x = normalized_vel
-    vec_z = np.array([0,0,1]) #will be changed
-    vec_y = np.cross(vec_z,vec_x)
-    vec_z = np.cross(vec_x,vec_y)
-    rotation_matrix = np.column_stack((vec_x,vec_y,vec_z))
+    vec_z = np.array([0, 0, 1])  # Default z-axis
+    vec_y = np.cross(vec_z, vec_x)
+    vec_z = np.cross(vec_x, vec_y)
+    rotation_matrix = np.column_stack((vec_x, vec_y, vec_z))
     return rotation_matrix_to_quaternion(rotation_matrix)
 
-# TODO(Shayan): Remove this printer
+# TODO(Shayan): Temporary printer for debugging purposes
 def my_printer(msg="Here"):
+    """
+    A simple debug printer function.
+
+    Args:
+        msg (str): Message to print. Defaults to "Here".
+    """
     print("\n\n\n\n\n\n\n")
     print("*****", msg, "*****")
     print("\n\n\n\n\n\n\n")

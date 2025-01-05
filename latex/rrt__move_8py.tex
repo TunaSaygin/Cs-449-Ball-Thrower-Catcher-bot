@@ -1,0 +1,41 @@
+\hypertarget{rrt__move_8py}{}\doxysection{rrt\+\_\+move.\+py File Reference}
+\label{rrt__move_8py}\index{rrt\_move.py@{rrt\_move.py}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacerrt__move}{rrt\+\_\+move}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacerrt__move_a2240c921986ea38fe53751a513929530}{rrt\+\_\+move.\+calc\+\_\+target\+\_\+pos}} (thrower\+\_\+pos, catcher\+\_\+pos, clearance\+\_\+dist=2.\+5)
+\begin{DoxyCompactList}\small\item\em Calculate the target position for the thrower robot based on the catcher robot\textquotesingle{}s position. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacerrt__move_ab653a19106cd7089332213e468cca1f0}{rrt\+\_\+move.\+move\+\_\+robot\+\_\+closer}} (thrower\+\_\+fname, catcher\+\_\+fname, waypoints, ry.\+Config C, bool is\+Render, clearance\+\_\+dist=2.\+5, np.\+array target\+\_\+pos=None, debug=False)
+\begin{DoxyCompactList}\small\item\em Move the robot closer to the target (bin or catcher robot) using KOMO and RRT. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacerrt__move_a9519127725eda023cb9e34272d5f1698}{rrt\+\_\+move.\+check\+\_\+if\+\_\+throw\+\_\+is\+\_\+obstructed}} (thrower\+\_\+fname, catcher\+\_\+fname, C, threshold=0.\+5)
+\begin{DoxyCompactList}\small\item\em Check if the throw path between the thrower and catcher is obstructed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespacerrt__move_a1baf5d85c933c89054a836cd9016a4ec}{rrt\+\_\+move.\+max\+\_\+trials}} = 10
+\item 
+\mbox{\hyperlink{namespacerrt__move_a7dd06a055bb68b4852922f6f0d2c2940}{rrt\+\_\+move.\+C}} = ry.\+Config()
+\item 
+string \mbox{\hyperlink{namespacerrt__move_aee8c9e49d4eaf882e6b8e087bea300fb}{rrt\+\_\+move.\+thrower\+\_\+fname}} = \char`\"{}l\+\_\+panda\+\_\+base\char`\"{}
+\item 
+string \mbox{\hyperlink{namespacerrt__move_aad2771014635d54c544e2c9de6f44cfb}{rrt\+\_\+move.\+catcher\+\_\+fname}} = \char`\"{}l2\+\_\+panda\+\_\+base\char`\"{}
+\item 
+\mbox{\hyperlink{namespacerrt__move_afbfc4705d6a8e1fb52c12a33806bdd2c}{rrt\+\_\+move.\+thrower}} = C.\+get\+Frame(thrower\+\_\+fname)
+\item 
+\mbox{\hyperlink{namespacerrt__move_a9adbc6ae8b44d32a878954234d4874a1}{rrt\+\_\+move.\+catcher}} = C.\+get\+Frame(catcher\+\_\+fname)
+\item 
+\mbox{\hyperlink{namespacerrt__move_a232b2bec66863364babff71d46a8f042}{rrt\+\_\+move.\+initial\+\_\+thrower\+\_\+pos}} = thrower.\+get\+Position()
+\item 
+\mbox{\hyperlink{namespacerrt__move_a99e4ee3af974212c0b46d1185226ee6b}{rrt\+\_\+move.\+initial\+\_\+catcher\+\_\+pos}} = catcher.\+get\+Position()
+\item 
+\mbox{\hyperlink{namespacerrt__move_a36734978a7eea69a7adbf1fbf7dd496f}{rrt\+\_\+move.\+wall}} = C.\+add\+Frame(\char`\"{}wall\char`\"{}, \char`\"{}base\char`\"{}) \textbackslash{}
+\item 
+def \mbox{\hyperlink{namespacerrt__move_a9713e66ea12594bfb10f2fa4d90489ab}{rrt\+\_\+move.\+is\+Obstructed}} = check\+\_\+if\+\_\+throw\+\_\+is\+\_\+obstructed(thrower\+\_\+fname, catcher\+\_\+fname, C)
+\item 
+\mbox{\hyperlink{namespacerrt__move_a52962812df8e4ea65d56a49875c2673d}{rrt\+\_\+move.\+is\+Render}}
+\end{DoxyCompactItemize}
